@@ -93,7 +93,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 		onCreate(db);
 	}
 
-	public void addPlace(Place place) {
+	public void addPlace(RisePlace place) {
 		if (!this.tableName.equals(TABLE_PLACE)) {
 			throw new UnsupportedOperationException();
 		}
@@ -114,7 +114,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 		}
 	}
 
-	public void addEvent(Event event) {
+	public void addEvent(RiseEvent event) {
 		if (!this.tableName.equals(TABLE_EVENT)) {
 			throw new UnsupportedOperationException();
 		}
@@ -144,7 +144,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 		}
 	}
 
-	public Place getPlaceByName(String placeName) {
+	public RisePlace getPlaceByName(String placeName) {
 		if (!this.tableName.equals(TABLE_PLACE)) {
 			throw new UnsupportedOperationException();
 		}
@@ -157,18 +157,22 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 					KEY_TABLE_PLACE_LATITUDE, KEY_TABLE_PLACE_LONGITUDE,
 					KEY_TABLE_PLACE_TYPES }, KEY_TABLE_PLACE_NAME + "=?",
 					new String[] { placeName }, null, null, null, null);
-			if (cursor != null)
-				cursor.moveToFirst();
+			if (cursor != null) {
+				if (!cursor.moveToFirst()) {
+					return null;
+				}
+			}
 
-			Place place = new Place(cursor.getString(1), cursor.getString(2),
-					cursor.getString(3), cursor.getString(4),
-					cursor.getString(5), cursor.getString(6));
+			RisePlace place = new RisePlace(cursor.getString(1),
+					cursor.getString(2), cursor.getString(3),
+					cursor.getString(4), cursor.getString(5),
+					cursor.getString(6));
 
 			return place;
 		}
 	}
 
-	public Place getPlaceByPrimaryKeyID(int id) {
+	public RisePlace getPlaceByPrimaryKeyID(int id) {
 		if (!this.tableName.equals(TABLE_PLACE)) {
 			throw new UnsupportedOperationException();
 		}
@@ -183,19 +187,22 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 							KEY_PRIMARY_ID + "=?",
 							new String[] { String.valueOf(id) }, null, null,
 							null, null);
-			if (cursor != null)
-				cursor.moveToFirst();
-
-			Place place = new Place(cursor.getString(1), cursor.getString(2),
-					cursor.getString(3), cursor.getString(4),
-					cursor.getString(5), cursor.getString(6));
+			if (cursor != null) {
+				if (!cursor.moveToFirst()) {
+					return null;
+				}
+			}
+			RisePlace place = new RisePlace(cursor.getString(1),
+					cursor.getString(2), cursor.getString(3),
+					cursor.getString(4), cursor.getString(5),
+					cursor.getString(6));
 
 			return place;
 		}
 
 	}
 
-	public Event getEventByName(String eventName) {
+	public RiseEvent getEventByName(String eventName) {
 		if (!this.tableName.equals(TABLE_EVENT)) {
 			throw new UnsupportedOperationException();
 		}
@@ -211,19 +218,22 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 					KEY_TABLE_EVENT_IS_NOTIFICATION_ON,
 					KEY_TABLE_EVENT_LOCATION_LIST }, KEY_TABLE_EVENT_NAME
 					+ "=?", new String[] { eventName }, null, null, null, null);
-			if (cursor != null)
-				cursor.moveToFirst();
-
-			Event event = new Event(cursor.getString(1), cursor.getString(2),
-					cursor.getString(3), cursor.getString(4),
-					cursor.getString(5), cursor.getString(6),
-					cursor.getString(7), cursor.getString(8),
-					cursor.getString(9), cursor.getString(10));
+			if (cursor != null) {
+				if (!cursor.moveToFirst()) {
+					return null;
+				}
+			}
+			RiseEvent event = new RiseEvent(cursor.getString(1),
+					cursor.getString(2), cursor.getString(3),
+					cursor.getString(4), cursor.getString(5),
+					cursor.getString(6), cursor.getString(7),
+					cursor.getString(8), cursor.getString(9),
+					cursor.getString(10));
 			return event;
 		}
 	}
 
-	public Event getEventByPrimaryKeyID(int id) {
+	public RiseEvent getEventByPrimaryKeyID(int id) {
 		if (!this.tableName.equals(TABLE_EVENT)) {
 			throw new UnsupportedOperationException();
 		}
@@ -243,25 +253,28 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 							KEY_TABLE_EVENT_LOCATION_LIST }, KEY_PRIMARY_ID
 							+ "=?", new String[] { String.valueOf(id) }, null,
 							null, null, null);
-			if (cursor != null)
-				cursor.moveToFirst();
-
-			Event event = new Event(cursor.getString(1), cursor.getString(2),
-					cursor.getString(3), cursor.getString(4),
-					cursor.getString(5), cursor.getString(6),
-					cursor.getString(7), cursor.getString(8),
-					cursor.getString(9), cursor.getString(10));
+			if (cursor != null) {
+				if (!cursor.moveToFirst()) {
+					return null;
+				}
+			}
+			RiseEvent event = new RiseEvent(cursor.getString(1),
+					cursor.getString(2), cursor.getString(3),
+					cursor.getString(4), cursor.getString(5),
+					cursor.getString(6), cursor.getString(7),
+					cursor.getString(8), cursor.getString(9),
+					cursor.getString(10));
 
 			return event;
 		}
 	}
 
-	public List<Place> getAllPlaces() {
+	public List<RisePlace> getAllPlaces() {
 		if (!this.tableName.equals(TABLE_PLACE)) {
 			throw new UnsupportedOperationException();
 		}
 		else {
-			List<Place> placeList = new ArrayList<Place>();
+			List<RisePlace> placeList = new ArrayList<RisePlace>();
 
 			String selectQuery = "SELECT  * FROM " + this.tableName;
 
@@ -271,7 +284,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 			if (cursor.moveToFirst()) {
 				do {
 
-					placeList.add(new Place(cursor.getString(1), cursor
+					placeList.add(new RisePlace(cursor.getString(1), cursor
 							.getString(2), cursor.getString(3), cursor
 							.getString(4), cursor.getString(5), cursor
 							.getString(6)));
@@ -284,12 +297,12 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
 	}
 
-	public List<Event> getAllEvents() {
+	public List<RiseEvent> getAllEvents() {
 		if (!this.tableName.equals(TABLE_EVENT)) {
 			throw new UnsupportedOperationException();
 		}
 		else {
-			List<Event> eventList = new ArrayList<Event>();
+			List<RiseEvent> eventList = new ArrayList<RiseEvent>();
 
 			String selectQuery = "SELECT  * FROM " + this.tableName;
 
@@ -299,7 +312,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 			if (cursor.moveToFirst()) {
 				do {
 
-					eventList.add(new Event(cursor.getString(1), cursor
+					eventList.add(new RiseEvent(cursor.getString(1), cursor
 							.getString(2), cursor.getString(3), cursor
 							.getString(4), cursor.getString(5), cursor
 							.getString(6), cursor.getString(7), cursor
@@ -313,7 +326,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 		}
 	}
 
-	public int updatePlaceByID(int id, Place place) {
+	public int updatePlaceByID(int id, RisePlace place) {
 		if (!this.tableName.equals(TABLE_PLACE)) {
 			throw new UnsupportedOperationException();
 		}
@@ -336,7 +349,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
 	}
 
-	public int updatePlaceByName(String name, Place place) {
+	public int updatePlaceByName(String name, RisePlace place) {
 		if (!this.tableName.equals(TABLE_PLACE)) {
 			throw new UnsupportedOperationException();
 		}
@@ -358,7 +371,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 		}
 	}
 
-	public int updateEventByID(int id, Event event) {
+	public int updateEventByID(int id, RiseEvent event) {
 		if (!this.tableName.equals(TABLE_EVENT)) {
 			throw new UnsupportedOperationException();
 		}
@@ -389,7 +402,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 		}
 	}
 
-	public int updateEventByName(String name, Event event) {
+	public int updateEventByName(String name, RiseEvent event) {
 		if (!this.tableName.equals(TABLE_EVENT)) {
 			throw new UnsupportedOperationException();
 		}
@@ -434,6 +447,19 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
 	}
 
+	public void deletePlaceByName(String name) {
+		if (!this.tableName.equals(TABLE_PLACE)) {
+			throw new UnsupportedOperationException();
+		}
+		else {
+			SQLiteDatabase db = this.getWritableDatabase();
+			db.delete(this.tableName, KEY_TABLE_PLACE_NAME + " = ?",
+					new String[] { name });
+			db.close();
+		}
+
+	}
+
 	public void deleteEventById(int id) {
 		if (!this.tableName.equals(TABLE_EVENT)) {
 			throw new UnsupportedOperationException();
@@ -444,6 +470,19 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 					new String[] { String.valueOf(id) });
 			db.close();
 		}
+	}
+
+	public void deleteEventByName(String name) {
+		if (!this.tableName.equals(TABLE_PLACE)) {
+			throw new UnsupportedOperationException();
+		}
+		else {
+			SQLiteDatabase db = this.getWritableDatabase();
+			db.delete(this.tableName, KEY_TABLE_EVENT_NAME + " = ?",
+					new String[] { name });
+			db.close();
+		}
+
 	}
 
 	public int getPlacesCount() {

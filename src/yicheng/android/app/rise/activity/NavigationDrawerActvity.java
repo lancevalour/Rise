@@ -54,15 +54,15 @@ public class NavigationDrawerActvity extends ActionBarActivity {
 	int DRAWER_ROW_ITEM_IMAGE_IDS[] = { R.drawable.ic_action_events,
 			R.drawable.ic_action_places };
 
-	String USER_NAME = "Yicheng Zhang";
-	String USER_EMAIL = "yicheng@gmail.com";
-	int USER_AVATER_IMAGE_ID = R.drawable.ic_launcher;
-	Uri USER_BACKGROUND_IMAGE_ID;
+	String USER_NAME = "User name";
+	String USER_EMAIL = "user@gmail.com";
+	String USER_AVATER_IMAGE_ID = "http://i.imgur.com/DvpvklR.png";
+	String USER_BACKGROUND_IMAGE_ID;
 
 	FloatingActionsMenu activity_navigation_drawer_floatingActionMenu;
 
-	FloatingActionButton test_floatingActionButton1,
-			test_floatingActionButton2, test_floatingActionButton3;
+	FloatingActionButton activity_navigation_drawer_new_event_floatingActionButton,
+			activity_navigation_drawer_new_place_floatingActionButton;
 
 	FrameLayout activity_navigation_drawer_content_framelayout;
 
@@ -89,7 +89,7 @@ public class NavigationDrawerActvity extends ActionBarActivity {
 		setGoogleApiClient();
 		setComponentStyle();
 		setComponentControl();
-		setRecyclerViewControl();
+		// setRecyclerViewControl();
 	}
 
 	private void goToLoginActivity() {
@@ -112,17 +112,34 @@ public class NavigationDrawerActvity extends ActionBarActivity {
 							Person currentPerson = Plus.PeopleApi
 									.getCurrentPerson(googleApiClient);
 
-							String personName = currentPerson.getDisplayName();
-							Image personPhoto = currentPerson.getImage();
-
-							String personGooglePlusProfile = currentPerson
+							USER_NAME = currentPerson.getDisplayName();
+							USER_AVATER_IMAGE_ID = currentPerson.getImage()
 									.getUrl();
 
-							USER_BACKGROUND_IMAGE_ID = Uri.parse(currentPerson
-									.getImage().getUrl().toString());
+							USER_EMAIL = currentPerson.getUrl();
 
-							System.out.println(currentPerson.getImage()
-									.getUrl());
+							USER_BACKGROUND_IMAGE_ID = currentPerson.getCover()
+									.getCoverPhoto().getUrl();
+
+							System.out.println(USER_NAME);
+							System.out.println(USER_AVATER_IMAGE_ID);
+							System.out.println(USER_EMAIL);
+							System.out.println(USER_BACKGROUND_IMAGE_ID);
+
+							activity_navigation_drawer_recyclerView_adapter = new NavigationDrawerRecyclerViewAdapter(
+									getBaseContext(), DRAWER_ROW_ITEM_TITLES,
+									DRAWER_ROW_ITEM_IMAGE_IDS, USER_NAME,
+									USER_EMAIL, USER_AVATER_IMAGE_ID,
+									USER_BACKGROUND_IMAGE_ID);
+
+							activity_navigation_drawer_recyclerView
+									.setAdapter(activity_navigation_drawer_recyclerView_adapter);
+
+							activity_navigation_drawer_recyclerView_layoutManager = new LinearLayoutManager(
+									NavigationDrawerActvity.this);
+
+							activity_navigation_drawer_recyclerView
+									.setLayoutManager(activity_navigation_drawer_recyclerView_layoutManager);
 
 						}
 
@@ -162,9 +179,13 @@ public class NavigationDrawerActvity extends ActionBarActivity {
 	}
 
 	private void initiateComponents() {
-		test_floatingActionButton1 = (FloatingActionButton) findViewById(R.id.test_floatingActionButton1);
-		test_floatingActionButton2 = (FloatingActionButton) findViewById(R.id.test_floatingActionButton2);
-		test_floatingActionButton3 = (FloatingActionButton) findViewById(R.id.test_floatingActionButton3);
+
+		activity_navigation_drawer_new_event_floatingActionButton = (FloatingActionButton) findViewById(R.id.activity_navigation_drawer_new_event_floatingActionButton);
+		activity_navigation_drawer_new_event_floatingActionButton
+				.setIcon(R.drawable.ic_action_event);
+		activity_navigation_drawer_new_place_floatingActionButton = (FloatingActionButton) findViewById(R.id.activity_navigation_drawer_new_place_floatingActionButton);
+		activity_navigation_drawer_new_place_floatingActionButton
+				.setIcon(R.drawable.ic_action_location_searching);
 
 		activity_navigation_drawer_floatingActionMenu = (FloatingActionsMenu) findViewById(R.id.activity_navigation_drawer_floatingActionMenu);
 
@@ -176,20 +197,6 @@ public class NavigationDrawerActvity extends ActionBarActivity {
 		activity_navigation_drawer_recyclerView = (RecyclerView) findViewById(R.id.activity_navigation_drawer_recyclerView); // Assigning
 
 		activity_navigation_drawer_recyclerView.setHasFixedSize(true);
-
-		activity_navigation_drawer_recyclerView_adapter = new NavigationDrawerRecyclerViewAdapter(
-				getBaseContext(), DRAWER_ROW_ITEM_TITLES,
-				DRAWER_ROW_ITEM_IMAGE_IDS, USER_NAME, USER_EMAIL,
-				USER_AVATER_IMAGE_ID, USER_BACKGROUND_IMAGE_ID);
-
-		activity_navigation_drawer_recyclerView
-				.setAdapter(activity_navigation_drawer_recyclerView_adapter);
-
-		activity_navigation_drawer_recyclerView_layoutManager = new LinearLayoutManager(
-				this);
-
-		activity_navigation_drawer_recyclerView
-				.setLayoutManager(activity_navigation_drawer_recyclerView_layoutManager);
 
 		activity_navigation_drawer_layout = (DrawerLayout) findViewById(R.id.activity_navigation_drawer_layout);
 
@@ -243,40 +250,38 @@ public class NavigationDrawerActvity extends ActionBarActivity {
 	private void setFloatingActionButtonControl() {
 		placeSQLiteHelper = new SQLiteHelper(getBaseContext(),
 				SQLiteHelper.TABLE_PLACE);
-		test_floatingActionButton1
+		/*		test_floatingActionButton1
+						.setOnClickListener(new View.OnClickListener() {
+
+							@Override
+							public void onClick(View v) {
+								// TODO Auto-generated method stub
+
+									placeSQLiteHelper.addPlace(new Place("home",
+											"227 Namar Ave", "place_id", "100", "200",
+											"type"));
+								
+
+								openPlacePickerActivity();
+							}
+						});*/
+		activity_navigation_drawer_new_place_floatingActionButton
 				.setOnClickListener(new View.OnClickListener() {
 
 					@Override
 					public void onClick(View v) {
-						// TODO Auto-generated method stub
 
-						/*	placeSQLiteHelper.addPlace(new Place("home",
-									"227 Namar Ave", "place_id", "100", "200",
-									"type"));
-						*/
-
-						openPlacePickerActivity();
-					}
-				});
-		test_floatingActionButton2
-				.setOnClickListener(new View.OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						// TODO Auto-generated method stub
 						goToNewPlaceActivity();
 
 					}
 				});
 
-		test_floatingActionButton3
+		activity_navigation_drawer_new_event_floatingActionButton
 				.setOnClickListener(new View.OnClickListener() {
 
 					@Override
 					public void onClick(View v) {
-						// TODO Auto-generated method stub
-						/*placeSQLiteHelper.deletePlaceById(placeSQLiteHelper
-								.getPlacesCount());*/
+
 						goToNewEventActivity();
 					}
 				});
@@ -369,33 +374,34 @@ public class NavigationDrawerActvity extends ActionBarActivity {
 						if (child != null
 								&& mGestureDetector.onTouchEvent(motionEvent)) {
 
-							activity_navigation_drawer_layout.closeDrawers();
-							Toast.makeText(
-									NavigationDrawerActvity.this,
-									"The Item Clicked is: "
-											+ recyclerView
-													.getChildPosition(child),
-									Toast.LENGTH_SHORT).show();
-
 							switch (recyclerView.getChildPosition(child)) {
 
 							case 0: {
-								if (googleApiClient.isConnected()) {
-									Plus.AccountApi
-											.clearDefaultAccount(googleApiClient);
-									googleApiClient.disconnect();
-									googleApiClient.connect();
-									Toast.makeText(getBaseContext(),
-											"Logged Out!", Toast.LENGTH_SHORT)
-											.show();
+								/*	if (googleApiClient.isConnected()) {
+										Plus.AccountApi
+												.clearDefaultAccount(googleApiClient);
+										googleApiClient.disconnect();
+										googleApiClient.connect();
+										Toast.makeText(getBaseContext(),
+												"Logged Out!", Toast.LENGTH_SHORT)
+												.show();
 
-									goToLoginActivity();
-								}
+										goToLoginActivity();
+									}*/
 
 							}
 								break;
 
 							case 1: {
+								activity_navigation_drawer_layout
+										.closeDrawers();
+								Toast.makeText(
+										NavigationDrawerActvity.this,
+										"The Item Clicked is: "
+												+ recyclerView
+														.getChildPosition(child),
+										Toast.LENGTH_SHORT).show();
+
 								FragmentManager fragmentManager = getFragmentManager();
 
 								Fragment frontFragment = new EventsFragment();
@@ -411,6 +417,14 @@ public class NavigationDrawerActvity extends ActionBarActivity {
 							}
 								break;
 							case 2: {
+								activity_navigation_drawer_layout
+										.closeDrawers();
+								Toast.makeText(
+										NavigationDrawerActvity.this,
+										"The Item Clicked is: "
+												+ recyclerView
+														.getChildPosition(child),
+										Toast.LENGTH_SHORT).show();
 								FragmentManager fragmentManager = getFragmentManager();
 
 								Fragment frontFragment = new PlacesFragment();

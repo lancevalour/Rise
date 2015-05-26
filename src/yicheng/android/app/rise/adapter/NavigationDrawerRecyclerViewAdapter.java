@@ -2,6 +2,8 @@ package yicheng.android.app.rise.adapter;
 
 import java.net.URI;
 
+import com.squareup.picasso.Picasso;
+
 import yicheng.android.app.rise.R;
 import android.content.Context;
 import android.net.Uri;
@@ -27,8 +29,8 @@ public class NavigationDrawerRecyclerViewAdapter extends
 	private int drawerIcons[];
 
 	private String profileName;
-	private int profileAvatarImageID;
-	private Uri profileBackgroundImageID;
+	private String profileAvatarImageID;
+	private String profileBackgroundImageID;
 
 	private String profileEmail;
 
@@ -72,8 +74,8 @@ public class NavigationDrawerRecyclerViewAdapter extends
 
 	public NavigationDrawerRecyclerViewAdapter(Context context,
 			String navigationTitles[], int navigationIcons[],
-			String profileName, String profileEmail, int profileAvatarImageID,
-			Uri profileBackgroundImageID) {
+			String profileName, String profileEmail,
+			String profileAvatarImageID, String profileBackgroundImageID) {
 
 		this.context = context;
 		this.drawerTitles = navigationTitles;
@@ -126,10 +128,14 @@ public class NavigationDrawerRecyclerViewAdapter extends
 			// setDrawerButtonControl(holder.itemView, position);
 		}
 		else {
-			holder.profile_background_imageView
-					.setImageURI(profileBackgroundImageID);
-			holder.profile_avatar_imageView
-					.setImageResource(profileAvatarImageID);
+			/*	holder.profile_background_imageView
+						.setImageURI(profileBackgroundImageID);*/
+			Picasso.with(context).load(profileBackgroundImageID)
+					.into(holder.profile_background_imageView);
+
+			Picasso.with(context).load(profileAvatarImageID)
+					.into(holder.profile_avatar_imageView);
+
 			holder.profile_name_textView.setText(profileName);
 			holder.profile_email_textView.setText(profileEmail);
 

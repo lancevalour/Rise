@@ -2,16 +2,17 @@
 
     <!--
         Base application theme for API 11+. This theme completely replaces
-        AppBaseTheme from res/values/styles.xml on API 11+ devices.
+        AppBaseTheme from res/values/styles.xml on API 11+ devices.
     -->
     <style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
 
-        <!-- API 11 theme customizations can go here. --> <item name="android:windowTranslucentStatus">true</item>
-      <item name="android:colorPrimary">@color/theme_primary</item>
+        <!-- API 11 theme customizations can go here. -->
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="colorPrimary">@color/theme_primary</item>
         <!-- darker variant for the status bar and contextual app bars -->
-        <item name="android:colorPrimaryDark">@color/theme_primary_dark</item>
+        <item name="colorPrimaryDark">@color/theme_primary_dark</item>
         <!-- theme UI controls like checkboxes and text fields -->
-        <item name="android:colorAccent">@color/theme_primary_light</item>
+        <item name="colorAccent">@color/theme_accent</item>
     </style>
 
 </resources>

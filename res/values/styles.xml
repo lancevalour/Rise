@@ -2,19 +2,19 @@
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
     <style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
-         <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:colorPrimary">@color/theme_primary</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="colorPrimary">@color/theme_primary</item>
         <!-- darker variant for the status bar and contextual app bars -->
-        <item name="android:colorPrimaryDark">@color/theme_primary_dark</item>
+        <item name="colorPrimaryDark">@color/theme_primary_dark</item>
         <!-- theme UI controls like checkboxes and text fields -->
-        <item name="android:colorAccent">@color/theme_primary_light</item>
+        <item name="colorAccent">@color/theme_accent</item>
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
+            backward-compatibility can go here.
         -->
     </style>
 
@@ -30,6 +30,13 @@
         <item name="android:textColorPrimary">@color/text_primary_light</item>
         <item name="actionMenuTextColor">@color/text_primary_light</item>
         <item name="android:textColorSecondary">@color/text_primary_light</item>
+    </style>
+
+    <style name="SpinnerTheme" parent="Widget.AppCompat.Spinner.DropDown.ActionBar">
+        <item name="android:background">?android:selectableItemBackground</item>
+        <item name="android:dropDownSelector">?android:selectableItemBackground</item>
+        <item name="android:divider">@null</item>
+        <item name="android:overlapAnchor">true</item>
     </style>
 
 </resources>

@@ -95,7 +95,12 @@ public class NewEventActivity extends ActionBarActivity {
 	}
 
 	private void addNewEvent() {
+		addNewEventInDatabase();
 		finish();
+	}
+
+	private void addNewEventInDatabase() {
+
 	}
 
 }
