@@ -1,130 +1,89 @@
 package yicheng.android.app.rise.adapter;
 
+import java.net.URI;
+
 import yicheng.android.app.rise.R;
+import android.content.Context;
+import android.net.Uri;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class NavigationDrawerRecyclerViewAdapter extends
 		RecyclerView.Adapter<NavigationDrawerRecyclerViewAdapter.ViewHolder> {
-	private static final int TYPE_HEADER = 0; // Declaring Variable to
-												// Understand which View is
-												// being worked on
-	// IF the view under inflation and population is header or Item
+
+	Context context;
+
+	private static final int TYPE_HEADER = 0;
 	private static final int TYPE_ITEM = 1;
 
-	private String mNavTitles[]; // String Array to store the passed titles
-									// Value from MainActivity.java
-	private int mIcons[]; // Int Array to store the passed icons resource value
-							// from MainActivity.java
+	private String drawerTitles[];
 
-	private String name; // String Resource for header View Name
-	private int profile; // int Resource for header view profile picture
-	private String email; // String Resource for header view email
+	private int drawerIcons[];
 
-	// Creating a ViewHolder which extends the RecyclerView View Holder
-	// ViewHolder are used to to store the inflated views in order to recycle
-	// them
+	private String profileName;
+	private int profileAvatarImageID;
+	private Uri profileBackgroundImageID;
 
-	public static class ViewHolder extends RecyclerView.ViewHolder {
-		int Holderid;
+	private String profileEmail;
 
-		TextView textView;
-		ImageView imageView;
-		ImageView profile;
-		TextView Name;
-		TextView email;
+	public class ViewHolder extends RecyclerView.ViewHolder {
+		int holderTypeID;
 
-		public ViewHolder(View itemView, int ViewType) { // Creating ViewHolder
-															// Constructor with
-															// View and viewType
-															// As a parameter
+		ImageView profile_background_imageView, profile_avatar_imageView;
+		TextView profile_name_textView, profile_email_textView;
+
+		TextView row_item_textView;
+		ImageView row_item_imageView;
+
+		public ViewHolder(View itemView, int ViewType) {
 			super(itemView);
-
-			// Here we set the appropriate view in accordance with the the view
-			// type as passed when the holder object is created
+			itemView.setClickable(true);
 
 			if (ViewType == TYPE_ITEM) {
-				textView = (TextView) itemView.findViewById(R.id.rowText); // Creating
-																			// TextView
-																			// object
-																			// with
-																			// the
-																			// id
-																			// of
-																			// textView
-																			// from
-																			// item_row.xml
-				imageView = (ImageView) itemView.findViewById(R.id.rowIcon);// Creating
-																			// ImageView
-																			// object
-																			// with
-																			// the
-																			// id
-																			// of
-																			// ImageView
-																			// from
-																			// item_row.xml
-				Holderid = 1; // setting holder id as 1 as the object being
-								// populated are of type item row
+				row_item_textView = (TextView) itemView
+						.findViewById(R.id.navigation_drawer_recyclerview_row_textView);
+				row_item_imageView = (ImageView) itemView
+						.findViewById(R.id.navigation_drawer_recyclerview_row_imageView);
+
+				holderTypeID = 1;
 			}
 			else {
+				profile_name_textView = (TextView) itemView
+						.findViewById(R.id.navigation_drawer_recyclerview_header_name_textView);
+				profile_email_textView = (TextView) itemView
+						.findViewById(R.id.navigation_drawer_recyclerview_header_email_textView);
+				profile_avatar_imageView = (ImageView) itemView
+						.findViewById(R.id.navigation_drawer_recyclerview_header_circleImageView);
+				profile_background_imageView = (ImageView) itemView
+						.findViewById(R.id.navigation_drawer_header_imageView);
 
-				Name = (TextView) itemView.findViewById(R.id.name); // Creating
-																	// Text View
-																	// object
-																	// from
-																	// header.xml
-																	// for name
-				email = (TextView) itemView.findViewById(R.id.email); // Creating
-																		// Text
-																		// View
-																		// object
-																		// from
-																		// header.xml
-																		// for
-																		// email
-				profile = (ImageView) itemView.findViewById(R.id.circleView);// Creating
-																				// Image
-																				// view
-																				// object
-																				// from
-																				// header.xml
-																				// for
-																				// profile
-																				// pic
-				Holderid = 0; // Setting holder id = 0 as the object being
-								// populated are of type header view
+				holderTypeID = 0;
 			}
+
 		}
 
 	}
 
-	public NavigationDrawerRecyclerViewAdapter(String Titles[], int Icons[],
-			String Name, String Email, int Profile) { // MyAdapter Constructor
-														// with titles and icons
-														// parameter
-		// titles, icons, name, email, profile pic are passed from the main
-		// activity as we
-		mNavTitles = Titles; // have seen earlier
-		mIcons = Icons;
-		name = Name;
-		email = Email;
-		profile = Profile; // here we assign those passed values to the values
-							// we declared here
-		// in adapter
+	public NavigationDrawerRecyclerViewAdapter(Context context,
+			String navigationTitles[], int navigationIcons[],
+			String profileName, String profileEmail, int profileAvatarImageID,
+			Uri profileBackgroundImageID) {
+
+		this.context = context;
+		this.drawerTitles = navigationTitles;
+		this.drawerIcons = navigationIcons;
+		this.profileName = profileName;
+		this.profileEmail = profileEmail;
+		this.profileAvatarImageID = profileAvatarImageID;
+		this.profileBackgroundImageID = profileBackgroundImageID;
 
 	}
-
-	// Below first we ovverride the method onCreateViewHolder which is called
-	// when the ViewHolder is
-	// Created, In this method we inflate the item_row.xml layout if the
-	// viewType is Type_ITEM or else we inflate header.xml
-	// if the viewType is TYPE_HEADER
-	// and pass it to the view holder
 
 	@Override
 	public NavigationDrawerRecyclerViewAdapter.ViewHolder onCreateViewHolder(
@@ -132,91 +91,91 @@ public class NavigationDrawerRecyclerViewAdapter extends
 
 		if (viewType == TYPE_ITEM) {
 			View v = LayoutInflater.from(parent.getContext()).inflate(
-					R.layout.recyclerview_row_item, parent, false); // Inflating
-																	// the
-																	// layout
+					R.layout.navigation_drawer_recyclerview_row_item, parent,
+					false);
 
-			ViewHolder vhItem = new ViewHolder(v, viewType); // Creating
-																// ViewHolder
-																// and passing
-																// the object of
-																// type view
-
-			return vhItem; // Returning the created object
-
-			// inflate your layout and pass it to view holder
+			ViewHolder vhItem = new ViewHolder(v, viewType);
+			return vhItem;
 
 		}
 		else if (viewType == TYPE_HEADER) {
 
 			View v = LayoutInflater.from(parent.getContext()).inflate(
-					R.layout.recyclerview_header, parent, false); // Inflating
-																	// the
-																	// layout
+					R.layout.navigation_drawer_recyclerview_header, parent,
+					false);
 
-			ViewHolder vhHeader = new ViewHolder(v, viewType); // Creating
-																// ViewHolder
-																// and passing
-																// the object of
-																// type view
+			ViewHolder vhHeader = new ViewHolder(v, viewType);
 
-			return vhHeader; // returning the object created
+			return vhHeader;
 
 		}
 		return null;
 
 	}
 
-	// Next we override a method which is called when the item in a row is
-	// needed to be displayed, here the int position
-	// Tells us item at which position is being constructed to be displayed and
-	// the holder id of the holder object tell us
-	// which view type is being created 1 for item row
 	@Override
 	public void onBindViewHolder(
 			NavigationDrawerRecyclerViewAdapter.ViewHolder holder, int position) {
-		if (holder.Holderid == 1) { // as the list view is going to be called
-									// after the header view so we decrement the
-			// position by 1 and pass it to the holder while setting the text
-			// and image
-			holder.textView.setText(mNavTitles[position - 1]); // Setting the
-																// Text with the
-																// array of our
-																// Titles
-			holder.imageView.setImageResource(mIcons[position - 1]);// Settimg
-																	// the image
-																	// with
-																	// array of
-																	// our icons
+		if (holder.holderTypeID == 1) {
+
+			holder.row_item_textView.setText(drawerTitles[position - 1]);
+
+			holder.row_item_imageView
+					.setImageResource(drawerIcons[position - 1]);
+
+			// setDrawerButtonControl(holder.itemView, position);
 		}
 		else {
+			holder.profile_background_imageView
+					.setImageURI(profileBackgroundImageID);
+			holder.profile_avatar_imageView
+					.setImageResource(profileAvatarImageID);
+			holder.profile_name_textView.setText(profileName);
+			holder.profile_email_textView.setText(profileEmail);
 
-			holder.profile.setImageResource(profile); // Similarly we set the
-														// resources for header
-														// view
-			holder.Name.setText(name);
-			holder.email.setText(email);
+			// setDrawerHeaderControl();
+
 		}
+
 	}
 
-	// This method returns the number of items present in the list
+	private void setDrawerHeaderControl() {
+
+	}
+
+	/*	private void setDrawerButtonControl(View v, final int position) {
+			v.setOnClickListener(new View.OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					Toast.makeText(context, "" + position, Toast.LENGTH_SHORT)
+							.show();
+
+					FragmentManager fragmentManager = 
+							
+					fragmentManager
+							.beginTransaction()
+							.replace(
+									R.id.activity_navigation_drawer_content_framelayout,
+									fragment).commit();
+
+				}
+			});
+		}
+	*/
 	@Override
 	public int getItemCount() {
-		return mNavTitles.length + 1; // the number of items in the list will be
-										// +1 the titles including the header
-										// view.
+		return drawerTitles.length + 1;
 	}
 
-	// Witht the following method we check what type of view is being passed
 	@Override
 	public int getItemViewType(int position) {
-		if (isPositionHeader(position))
+		if (position == 0) {
 			return TYPE_HEADER;
+		}
 
 		return TYPE_ITEM;
 	}
 
-	private boolean isPositionHeader(int position) {
-		return position == 0;
-	}
 }

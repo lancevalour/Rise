@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activity.NewEventActivity" >
+
+    <item
+        android:id="@+id/menu_new_event_settings"
+        android:orderInCategory="100"
+        android:title="@string/menu_toolbar_action_settings"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/menu_new_event_add"
+        android:icon="@drawable/ic_action_new"
+        android:orderInCategory="200"
+        android:title="@string/menu_toolbar_action_settings"
+        app:showAsAction="ifRoom"/>
+
+</menu>

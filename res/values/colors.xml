@@ -8,10 +8,11 @@
     <color name="text_secondary_dark">#89000000</color>
     <color name="text_disabled_dark">#42000000</color>
     <color name="divider_dark">#1e000000</color>
-    <color name="text_primary_light">#ddffffff</color>
-    <color name="text_secondary_light">#89ffffff</color>
-    <color name="text_disabled_light">#42ffffff</color>
+    <color name="text_primary_light">#ffffffff</color>
+    <color name="text_secondary_light">#b3ffffff</color>
+    <color name="text_disabled_light">#4dffffff</color>
     <color name="divider_light">#1effffff</color>
+    <color name="button_press_light">#f0f0f0</color>
 
     <!-- Main theme colors -->
     <!-- your app branding color for the app bar -->
@@ -20,7 +21,7 @@
     darker variant for the status bar and contextual app bars
     <item name="theme_primary_color_dark">@color/primary_dark</item>
     theme UI controls like checkboxes and text fields
-    <item name="theme_primary_color_accent">@color/accent</item>
+    <item name="theme_primary_color_accent">@color/accent</item>
     -->
 
 </resources>

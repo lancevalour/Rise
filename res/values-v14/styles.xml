@@ -6,7 +6,15 @@
         res/values-v11/styles.xml on API 14+ devices.
     -->
     <style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
+         <!-- darker variant for the status bar and contextual app bars --> <item name="android:windowTranslucentStatus">true</item>
+     <item name="android:colorPrimary">@color/theme_primary</item>
+        <!-- darker variant for the status bar and contextual app bars -->
+        <item name="android:colorPrimaryDark">@color/theme_primary_dark</item>
+        <!-- theme UI controls like checkboxes and text fields -->
+        <item name="android:colorAccent">@color/theme_primary_light</item>
+        
         <!-- API 14 theme customizations can go here. -->
+        
     </style>
 
 </resources>
