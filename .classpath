@@ -7,5 +7,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry exported="true" kind="lib" path="C:/Users/ZhangY/workspace/Rise/extlibs/picasso-2.5.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/ZhangY/workspace/Rise/extlibs/AndroidSwipeLayout-v1.1.8.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

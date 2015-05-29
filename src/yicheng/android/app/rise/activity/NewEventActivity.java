@@ -10,10 +10,34 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.RatingBar;
+import android.widget.RatingBar.OnRatingBarChangeListener;
+import android.widget.TextClock;
 
 public class NewEventActivity extends ActionBarActivity {
 
 	Toolbar activity_new_event_toolbar;
+
+	Button activity_new_event_start_time_button,
+			activity_new_event_end_time_button,
+			activity_new_event_time_interval_button;
+
+	RatingBar activity_new_event_event_priority_ratingBar;
+
+	String eventStartTime;
+	String eventEndTime;
+	String eventCycleInterval;
+
+	String eventName;
+	String eventContent;
+	String eventCreateDate;
+	String eventPriority;
+
+	String isEventFinished;
+	String isNotificationOn;
+
+	String eventLocationList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +49,7 @@ public class NewEventActivity extends ActionBarActivity {
 		initiateComponents();
 		setComponentStyle();
 		setComponentControl();
+
 	}
 
 	private void setComponentStyle() {
@@ -47,10 +72,70 @@ public class NewEventActivity extends ActionBarActivity {
 
 		setSupportActionBar(activity_new_event_toolbar);
 		getSupportActionBar().setTitle(R.string.toolbar_new_event_title);
+
+		activity_new_event_start_time_button = (Button) findViewById(R.id.activity_new_event_start_time_button);
+		activity_new_event_end_time_button = (Button) findViewById(R.id.activity_new_event_end_time_button);
+		activity_new_event_time_interval_button = (Button) findViewById(R.id.activity_new_event_time_interval_button);
+
+		activity_new_event_event_priority_ratingBar = (RatingBar) findViewById(R.id.activity_new_event_event_priority_ratingBar);
 	}
 
 	private void setComponentControl() {
 		setToolbarControl();
+		setStartTimeButtonControl();
+		setEndTimeButtonControl();
+		setTimeIntervalButtonControl();
+		setRatingBarControl();
+	}
+
+	private void setRatingBarControl() {
+		activity_new_event_event_priority_ratingBar
+				.setOnRatingBarChangeListener(new OnRatingBarChangeListener() {
+
+					@Override
+					public void onRatingChanged(RatingBar ratingBar,
+							float rating, boolean fromUser) {
+						// TODO Auto-generated method stub
+
+					}
+
+				});
+	}
+
+	private void setStartTimeButtonControl() {
+		activity_new_event_start_time_button
+				.setOnClickListener(new View.OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+
+					}
+				});
+	}
+
+	private void setEndTimeButtonControl() {
+		activity_new_event_end_time_button
+				.setOnClickListener(new View.OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+
+					}
+				});
+	}
+
+	private void setTimeIntervalButtonControl() {
+		activity_new_event_time_interval_button
+				.setOnClickListener(new View.OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+
+					}
+				});
 	}
 
 	private void setToolbarControl() {

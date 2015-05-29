@@ -25,7 +25,8 @@
         <FrameLayout
             android:id="@+id/activity_navigation_drawer_content_framelayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_below="@id/activity_navigation_drawer_toolbar" />
 
         <yicheng.android.ui.floatingactionbutton.FloatingActionsMenu
             android:id="@+id/activity_navigation_drawer_floatingActionMenu"

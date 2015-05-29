@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Set;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.common.api.PendingResult;
@@ -13,6 +15,7 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
@@ -20,6 +23,7 @@ import yicheng.android.app.rise.R;
 import yicheng.android.app.rise.adapter.PlaceAutoCompleteAdapter;
 import yicheng.android.app.rise.database.RisePlace;
 import yicheng.android.app.rise.database.SQLiteHelper;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
@@ -35,10 +39,14 @@ import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 public class NewPlaceActivity extends ActionBarActivity {
+
+	ImageButton activity_new_place_autocomplete_clear_button,
+			activity_new_place_place_picker_button;
 
 	CheckBox activity_new_place_place_label_work_checkbox,
 			activity_new_place_place_label_home_checkbox,
@@ -104,6 +112,9 @@ public class NewPlaceActivity extends ActionBarActivity {
 
 	private void initiateComponents() {
 
+		activity_new_place_autocomplete_clear_button = (ImageButton) findViewById(R.id.activity_new_place_autocomplete_clear_button);
+		activity_new_place_place_picker_button = (ImageButton) findViewById(R.id.activity_new_place_place_picker_button);
+
 		activity_new_place_place_label_work_checkbox = (CheckBox) findViewById(R.id.activity_new_place_place_label_work_checkbox);
 		activity_new_place_place_label_home_checkbox = (CheckBox) findViewById(R.id.activity_new_place_place_label_home_checkbox);
 		activity_new_place_place_label_play_checkbox = (CheckBox) findViewById(R.id.activity_new_place_place_label_play_checkbox);
@@ -137,6 +148,69 @@ public class NewPlaceActivity extends ActionBarActivity {
 		setToolbarControl();
 		setAutoCompleteTextViewControl();
 		setCheckBoxControl();
+		setPlacePickerButtonControl();
+		setClearButtonControl();
+	}
+
+	int PLACE_PICKER_REQUEST = 1;
+
+	private void openPlacePickerActivity() {
+		PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+
+		try {
+			startActivityForResult(builder.build(getApplicationContext()),
+					PLACE_PICKER_REQUEST);
+		}
+		catch (GooglePlayServicesRepairableException
+				| GooglePlayServicesNotAvailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == PLACE_PICKER_REQUEST) {
+			if (resultCode == RESULT_OK) {
+				Place place = PlacePicker.getPlace(data, this);
+				String toastMsg = String.format("Place: %s", place.getName());
+				Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+
+				activity_new_place_autocomplete_textView.setText(place
+						.getAddress());
+
+				placeName = "" + place.getName();
+				placeAddress = "" + place.getAddress();
+				placeID = "" + place.getId();
+				placeLatitude = "" + place.getLatLng().latitude;
+				placeLongitude = "" + place.getLatLng().longitude;
+
+			}
+		}
+	}
+
+	private void setPlacePickerButtonControl() {
+		activity_new_place_place_picker_button
+				.setOnClickListener(new View.OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						openPlacePickerActivity();
+					}
+				});
+	}
+
+	private void setClearButtonControl() {
+		activity_new_place_autocomplete_clear_button
+				.setOnClickListener(new View.OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						activity_new_place_autocomplete_textView.setText("");
+					}
+				});
 	}
 
 	private void setCheckBoxControl() {

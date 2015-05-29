@@ -37,6 +37,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.internal.widget.AdapterViewCompat.OnItemClickListener;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.Toolbar.OnMenuItemClickListener;
 import android.view.GestureDetector;
@@ -227,7 +228,7 @@ public class NavigationDrawerActvity extends ActionBarActivity {
 
 		actionBarDrawerToggle.syncState();
 
-		Fragment frontFragment = new PlacesFragment();
+		Fragment frontFragment = new EventsFragment();
 
 		getFragmentManager()
 				.beginTransaction()
