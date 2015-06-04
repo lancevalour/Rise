@@ -1,5 +1,9 @@
 package yicheng.android.app.rise.activity;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -17,12 +21,18 @@ import yicheng.android.app.rise.adapter.NavigationDrawerRecyclerViewAdapter;
 import yicheng.android.app.rise.database.SQLiteHelper;
 import yicheng.android.app.rise.fragment.EventsFragment;
 import yicheng.android.app.rise.fragment.PlacesFragment;
+import yicheng.android.app.rise.receiver.EventAlarmReceiver;
 import yicheng.android.ui.floatingactionbutton.FloatingActionButton;
 import yicheng.android.ui.floatingactionbutton.FloatingActionsMenu;
 import yicheng.android.ui.floatingactionbutton.FloatingActionsMenu.OnFloatingActionsMenuUpdateListener;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
@@ -31,13 +41,13 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.internal.widget.AdapterViewCompat.OnItemClickListener;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.Toolbar.OnMenuItemClickListener;
 import android.view.GestureDetector;
@@ -45,8 +55,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -60,7 +73,7 @@ public class NavigationDrawerActvity extends ActionBarActivity {
 	String USER_AVATER_IMAGE_ID = "http://i.imgur.com/DvpvklR.png";
 	String USER_BACKGROUND_IMAGE_ID;
 
-	FloatingActionsMenu activity_navigation_drawer_floatingActionMenu;
+	public static FloatingActionsMenu activity_navigation_drawer_floatingActionMenu;
 
 	FloatingActionButton activity_navigation_drawer_new_event_floatingActionButton,
 			activity_navigation_drawer_new_place_floatingActionButton;
@@ -85,12 +98,31 @@ public class NavigationDrawerActvity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_navigation_drawer);
-
+		startAlarm();
 		initiateComponents();
 		setGoogleApiClient();
 		setComponentStyle();
 		setComponentControl();
 		// setRecyclerViewControl();
+	}
+
+	private AlarmManager alarmManager;
+	PendingIntent pendingIntent;
+
+	public void startAlarm() {
+		Intent alarmIntent = new Intent(this, EventAlarmReceiver.class);
+
+		alarmIntent.putExtra("alarm_interval", "44"); // data to pass
+
+		pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
+
+		alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+		int interval = 60000;
+
+		alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
+				System.currentTimeMillis(), interval, pendingIntent);
+
+		Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
 	}
 
 	private void goToLoginActivity() {
@@ -167,7 +199,7 @@ public class NavigationDrawerActvity extends ActionBarActivity {
 	}
 
 	private void setComponentStyle() {
-		if (Build.VERSION.SDK_INT >= 21) {
+		/*if (Build.VERSION.SDK_INT >= 21) {
 			Window window = getWindow();
 
 			window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -175,7 +207,7 @@ public class NavigationDrawerActvity extends ActionBarActivity {
 			window.setStatusBarColor(getResources().getColor(
 					R.color.theme_primary_dark));
 
-		}
+		}*/
 
 	}
 
@@ -251,21 +283,19 @@ public class NavigationDrawerActvity extends ActionBarActivity {
 	private void setFloatingActionButtonControl() {
 		placeSQLiteHelper = new SQLiteHelper(getBaseContext(),
 				SQLiteHelper.TABLE_PLACE);
-		/*		test_floatingActionButton1
-						.setOnClickListener(new View.OnClickListener() {
-
-							@Override
-							public void onClick(View v) {
-								// TODO Auto-generated method stub
-
-									placeSQLiteHelper.addPlace(new Place("home",
-											"227 Namar Ave", "place_id", "100", "200",
-											"type"));
-								
-
-								openPlacePickerActivity();
-							}
-						});*/
+		/*
+		 * test_floatingActionButton1 .setOnClickListener(new
+		 * View.OnClickListener() {
+		 * 
+		 * @Override public void onClick(View v) { // TODO Auto-generated method
+		 * stub
+		 * 
+		 * placeSQLiteHelper.addPlace(new Place("home", "227 Namar Ave",
+		 * "place_id", "100", "200", "type"));
+		 * 
+		 * 
+		 * openPlacePickerActivity(); } });
+		 */
 		activity_navigation_drawer_new_place_floatingActionButton
 				.setOnClickListener(new View.OnClickListener() {
 
@@ -334,22 +364,28 @@ public class NavigationDrawerActvity extends ActionBarActivity {
 
 	private void setFloatingActionMenuControl() {
 
-		activity_navigation_drawer_floatingActionMenu
-				.setOnFloatingActionsMenuUpdateListener(new OnFloatingActionsMenuUpdateListener() {
+	}
 
-					@Override
-					public void onMenuExpanded() {
-						// TODO Auto-generated method stub
+	private static class ButtonAnimatorHelper {
 
-					}
+		final FloatingActionsMenu mButton;
 
-					@Override
-					public void onMenuCollapsed() {
-						// TODO Auto-generated method stub
+		/**
+		 * Default constructor
+		 * @param speakButton
+		 */
+		public ButtonAnimatorHelper(final FloatingActionsMenu button) {
+			mButton = button;
+		}
 
-					}
+		public void setMarginLeft(final int margin) {
+			final ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mButton
+					.getLayoutParams();
 
-				});
+			params.leftMargin = margin;
+
+			mButton.setLayoutParams(params);
+		}
 	}
 
 	private void setRecyclerViewControl() {
@@ -378,17 +414,6 @@ public class NavigationDrawerActvity extends ActionBarActivity {
 							switch (recyclerView.getChildPosition(child)) {
 
 							case 0: {
-								/*	if (googleApiClient.isConnected()) {
-										Plus.AccountApi
-												.clearDefaultAccount(googleApiClient);
-										googleApiClient.disconnect();
-										googleApiClient.connect();
-										Toast.makeText(getBaseContext(),
-												"Logged Out!", Toast.LENGTH_SHORT)
-												.show();
-
-										goToLoginActivity();
-									}*/
 
 							}
 								break;

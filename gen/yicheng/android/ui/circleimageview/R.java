@@ -8,22 +8,22 @@ package yicheng.android.ui.circleimageview;
 
 public final class R {
 	public static final class attr {
-		public static final int border_color = 0x7f0100f6;
-		public static final int border_overlay = 0x7f0100f7;
-		public static final int border_width = 0x7f0100f5;
+		public static final int border_color = 0x7f010106;
+		public static final int border_overlay = 0x7f010107;
+		public static final int border_width = 0x7f010105;
 	}
 	public static final class drawable {
-		public static final int ic_launcher = 0x7f020061;
+		public static final int ic_launcher = 0x7f02006f;
 	}
 	public static final class string {
-		public static final int app_name = 0x7f060000;
+		public static final int app_name = 0x7f0a0028;
 	}
 	public static final class style {
-		public static final int AppBaseTheme = 0x7f070000;
-		public static final int AppTheme = 0x7f070001;
+		public static final int AppBaseTheme = 0x7f09000b;
+		public static final int AppTheme = 0x7f09000c;
 	}
 	public static final class styleable {
-		public static final int[] CircleImageView = { 0x7f0100f5, 0x7f0100f6, 0x7f0100f7 };
+		public static final int[] CircleImageView = { 0x7f010105, 0x7f010106, 0x7f010107 };
 		public static final int CircleImageView_border_color = 1;
 		public static final int CircleImageView_border_overlay = 2;
 		public static final int CircleImageView_border_width = 0;

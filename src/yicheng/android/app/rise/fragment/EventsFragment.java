@@ -1,10 +1,12 @@
 package yicheng.android.app.rise.fragment;
 
-import com.daimajia.swipe.util.Attributes;
+import java.util.List;
 
 import yicheng.android.app.rise.R;
 import yicheng.android.app.rise.adapter.EventsFragmentGridViewAdapter;
 import yicheng.android.app.rise.adapter.PlacesFragmentGridViewAdapter;
+import yicheng.android.app.rise.database.RiseEvent;
+import yicheng.android.app.rise.database.SQLiteHelper;
 import yicheng.android.ui.staggeredgridview.StaggeredGridView;
 import android.app.Fragment;
 import android.os.Bundle;
@@ -15,12 +17,19 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class EventsFragment extends Fragment {
 
 	ViewGroup rootView;
 
 	StaggeredGridView fragment_events_gridView;
+
+	List<RiseEvent> eventList;
+
+	EventsFragmentGridViewAdapter gridViewAdapter;
+
+	public static SQLiteHelper eventSQLiteHelper;
 
 	public EventsFragment() {
 
@@ -32,6 +41,7 @@ public class EventsFragment extends Fragment {
 		rootView = (ViewGroup) inflater.inflate(R.layout.fragment_events,
 				container, false);
 
+		loadEventsFromDatabase();
 		initiateComponents();
 		setComponentControl();
 
@@ -39,15 +49,23 @@ public class EventsFragment extends Fragment {
 
 	}
 
+	private void loadEventsFromDatabase() {
+		eventSQLiteHelper = new SQLiteHelper(rootView.getContext(),
+				SQLiteHelper.TABLE_EVENT);
+		eventList = eventSQLiteHelper.getAllEvents();
+		System.out.println(eventList.size());
+
+	}
+
 	private void initiateComponents() {
 		fragment_events_gridView = (StaggeredGridView) rootView
 				.findViewById(R.id.fragment_events_gridView);
 
-		EventsFragmentGridViewAdapter gridViewAdapter = new EventsFragmentGridViewAdapter(
-				rootView.getContext());
-		gridViewAdapter.setMode(Attributes.Mode.Multiple);
+		gridViewAdapter = new EventsFragmentGridViewAdapter(
+				rootView.getContext(), getActivity(), this.eventList);
+
 		fragment_events_gridView.setAdapter(gridViewAdapter);
-		fragment_events_gridView.setSelected(false);
+
 	}
 
 	private void setComponentControl() {
@@ -55,36 +73,29 @@ public class EventsFragment extends Fragment {
 	}
 
 	private void setGridViewControl() {
-		fragment_events_gridView
-				.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-					@Override
-					public boolean onItemLongClick(AdapterView<?> parent,
-							View view, int position, long id) {
 
-						return false;
-					}
-				});
-		fragment_events_gridView
-				.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-					@Override
-					public void onItemClick(AdapterView<?> parent, View view,
-							int position, long id) {
-
-					}
-				});
-
-		fragment_events_gridView
-				.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-					@Override
-					public void onItemSelected(AdapterView<?> parent,
-							View view, int position, long id) {
-
-					}
-
-					@Override
-					public void onNothingSelected(AdapterView<?> parent) {
-
-					}
-				});
 	}
+
+	private void updateGridView() {
+		loadEventsFromDatabase();
+		gridViewAdapter = new EventsFragmentGridViewAdapter(
+				rootView.getContext(), getActivity(), this.eventList);
+
+		fragment_events_gridView.setAdapter(gridViewAdapter);
+
+	}
+
+	@Override
+	public void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+		updateGridView();
+	}
+
+	@Override
+	public void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+	}
+
 }

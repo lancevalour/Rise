@@ -1,8 +1,5 @@
 # cache for current jar dependency. DO NOT EDIT.
 # format is <lastModified> <length> <SHA-1> <path>
 # Encoding is UTF-8
-1432920689664 1157388 605c447c20ca216b5556af9f215af5d4bba1b117 C:\Users\ZhangY\workspace\StaggeredGridView\libs\android-support-v4.jar
-1430338612038 1157388 605c447c20ca216b5556af9f215af5d4bba1b117 C:\Users\ZhangY\workspace\appcompat_v7\libs\android-support-v4.jar
-1431958676497 1157388 605c447c20ca216b5556af9f215af5d4bba1b117 C:\Users\ZhangY\workspace\FloatingActionButton\libs\android-support-v4.jar
-1431957406056 1157388 605c447c20ca216b5556af9f215af5d4bba1b117 C:\Users\ZhangY\workspace\Rise\libs\android-support-v4.jar
-1431981582024 1157388 605c447c20ca216b5556af9f215af5d4bba1b117 C:\Users\ZhangY\workspace\CircleImageView\libs\android-support-v4.jar
+1379951702000 110751 a43cf9e271b5bc564e880a0a4be63ab9c69c97f8 C:\Users\ZhangY\workspace\SwipeToDismissUndoList-master\libs\nineoldandroids-2.4.0.jar
+1421767638000 110746 59f19e43354d32de831379c23ce03bb259a4c2b7 C:\Users\ZhangY\workspace\MaterialDesignLibrary-master\MaterialDesign\libs\nineoldandroids-2.4.0.jar
