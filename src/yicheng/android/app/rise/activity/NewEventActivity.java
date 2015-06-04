@@ -174,6 +174,29 @@ public class NewEventActivity extends ActionBarActivity {
 		setSliderControl();
 		setRatingBarControl();
 		setCheckBoxControl();
+		setAddPlaceButtonControl();
+	}
+
+	private void setAddPlaceButtonControl() {
+		activity_new_event_event_location_add_button
+				.setOnClickListener(new View.OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						goToAddPlaceActivity();
+					}
+				});
+	}
+
+	private void goToAddPlaceActivity() {
+
+		Intent intent = new Intent(NewEventActivity.this,
+				NewEventAddPlaceActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(intent);
+
+		// finish();
 	}
 
 	private void setCheckBoxControl() {

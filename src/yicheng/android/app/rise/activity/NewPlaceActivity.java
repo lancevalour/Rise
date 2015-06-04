@@ -71,7 +71,7 @@ public class NewPlaceActivity extends ActionBarActivity {
 
 	Set<String> placeTypesSet;
 
-	private static final LatLngBounds BOUNDS_GREATER_SYDNEY = new LatLngBounds(
+	private static final LatLngBounds BOUNDS_UNITED_STATES = new LatLngBounds(
 			new LatLng(18.911064, 172.445896),
 			new LatLng(71.386775, -66.945395));
 
@@ -131,7 +131,7 @@ public class NewPlaceActivity extends ActionBarActivity {
 
 		autoCompleteAdapter = new PlaceAutoCompleteAdapter(this,
 				android.R.layout.simple_list_item_1, googleApiClient,
-				BOUNDS_GREATER_SYDNEY, null);
+				BOUNDS_UNITED_STATES, null);
 
 		activity_new_place_autocomplete_textView
 				.setAdapter(autoCompleteAdapter);
