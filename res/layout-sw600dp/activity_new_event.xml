@@ -233,14 +233,13 @@
         <RelativeLayout
             android:id="@+id/activity_new_event_event_location_add_location_layout"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_below="@id/activity_new_event_event_location_checkbox" >
 
             <ImageButton
                 android:id="@+id/activity_new_event_event_location_add_button"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_alignParentBottom="true"
                 android:background="@drawable/background_ripple"
                 android:src="@drawable/ic_action_events" />
 
@@ -248,7 +247,7 @@
                 android:id="@+id/activity_new_event_event_location_listView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_above="@id/activity_new_event_event_location_add_button"
+                android:layout_below="@id/activity_new_event_event_location_add_button"
                 android:background="?android:attr/activatedBackgroundIndicator"
                 android:choiceMode="multipleChoice" >
             </ListView>

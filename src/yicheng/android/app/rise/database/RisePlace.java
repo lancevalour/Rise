@@ -1,6 +1,9 @@
 package yicheng.android.app.rise.database;
 
-public class RisePlace {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class RisePlace  {
 	String placeName;
 	String placeAddress;
 	String placeID;
@@ -65,4 +68,6 @@ public class RisePlace {
 	public String getPlaceTypes() {
 		return this.placeTypes;
 	}
+
+
 }

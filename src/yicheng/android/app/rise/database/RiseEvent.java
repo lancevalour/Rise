@@ -2,6 +2,9 @@ package yicheng.android.app.rise.database;
 
 import java.util.ArrayList;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 public class RiseEvent {
 	String eventStartTime;
 	String eventEndTime;
@@ -17,8 +20,9 @@ public class RiseEvent {
 
 	String eventLocationList;
 
-	public RiseEvent(String eventName, String eventContent, String eventCreateDate,
-			String eventPriority, String eventStartTime, String eventEndTime,
+	public RiseEvent(String eventName, String eventContent,
+			String eventCreateDate, String eventPriority,
+			String eventStartTime, String eventEndTime,
 			String eventCycleInterval, String isEventFinished,
 			String isNotificationOn, String eventLocatonList) {
 
@@ -113,4 +117,5 @@ public class RiseEvent {
 	public String getEventLocationList() {
 		return this.eventLocationList;
 	}
+
 }

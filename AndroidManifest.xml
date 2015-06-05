@@ -48,9 +48,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.NewEventAddPlaceActivity" >
+        <activity android:name=".activity.AddPlaceActivity" >
             <intent-filter>
-                <action android:name="ACTIVITY_NEW_EVENT_ADD_PLACE" />
+                <action android:name="ACTIVITY_ADD_PLACE" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

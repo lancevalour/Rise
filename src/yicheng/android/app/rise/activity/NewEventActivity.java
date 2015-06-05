@@ -2,7 +2,9 @@ package yicheng.android.app.rise.activity;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.gc.materialdesign.views.Slider;
 import com.gc.materialdesign.views.Slider.OnValueChangedListener;
@@ -69,6 +71,8 @@ public class NewEventActivity extends ActionBarActivity {
 
 	ListView activity_new_event_event_location_listView;
 
+	ArrayAdapter<String> placeListAdapter;
+
 	String eventStartTime;
 	String eventEndTime;
 	String eventCycleInterval;
@@ -109,22 +113,21 @@ public class NewEventActivity extends ActionBarActivity {
 		*/
 	}
 
+	private void updatePlaceList() {
+
+		placeListAdapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_list_item_1,
+				selectedNameList.toArray(new String[selectedNameList.size()]));
+
+		activity_new_event_event_location_listView.setAdapter(placeListAdapter);
+	}
+
 	private void initiateComponents() {
 
 		activity_new_event_event_location_add_location_layout = (RelativeLayout) findViewById(R.id.activity_new_event_event_location_add_location_layout);
 
 		activity_new_event_event_location_checkbox = (CheckBox) findViewById(R.id.activity_new_event_event_location_checkbox);
 		activity_new_event_event_location_checkbox.setChecked(true);
-
-		activity_new_event_event_location_listView = (ListView) findViewById(R.id.activity_new_event_event_location_listView);
-
-		String[] items = new String[] { "1", "2", "3", "4", "5", "6", "7", "1",
-				"1", "2", "1", "2", "3", "4", "5", "6", "7", "1", "1", "2" };
-
-		ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, items);
-
-		activity_new_event_event_location_listView.setAdapter(itemsAdapter);
 
 		activity_new_event_event_location_add_button = (ImageButton) findViewById(R.id.activity_new_event_event_location_add_button);
 
@@ -165,6 +168,18 @@ public class NewEventActivity extends ActionBarActivity {
 		activity_new_event_time_interval_textView = (TextView) findViewById(R.id.activity_new_event_time_interval_textView);
 		activity_new_event_time_interval_textView.setText(""
 				+ activity_new_event_time_interval_slider.getValue());
+
+		selectedNameList = new ArrayList<String>();
+		selectedAddressList = new ArrayList<String>();
+		selectedIDList = new ArrayList<String>();
+		selectedLatList = new ArrayList<String>();
+		selectedLongList = new ArrayList<String>();
+		selectedTypeList = new ArrayList<String>();
+
+		activity_new_event_event_location_listView = (ListView) findViewById(R.id.activity_new_event_event_location_listView);
+
+		updatePlaceList();
+
 	}
 
 	private void setComponentControl() {
@@ -192,9 +207,17 @@ public class NewEventActivity extends ActionBarActivity {
 	private void goToAddPlaceActivity() {
 
 		Intent intent = new Intent(NewEventActivity.this,
-				NewEventAddPlaceActivity.class);
+				AddPlaceActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		startActivity(intent);
+
+		intent.putExtra("selected_name_list", selectedNameList);
+		intent.putExtra("selected_address_list", selectedAddressList);
+		intent.putExtra("selected_id_list", selectedIDList);
+		intent.putExtra("selected_lat_list", selectedLatList);
+		intent.putExtra("selected_long_list", selectedLongList);
+		intent.putExtra("selected_type_list", selectedTypeList);
+
+		startActivityForResult(intent, REQUEST_CODE);
 
 		// finish();
 	}
@@ -389,4 +412,34 @@ public class NewEventActivity extends ActionBarActivity {
 		Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
 	}
 
+	int REQUEST_CODE = 1;
+
+	ArrayList<String> selectedNameList;
+	ArrayList<String> selectedAddressList;
+	ArrayList<String> selectedIDList;
+	ArrayList<String> selectedLatList;
+	ArrayList<String> selectedLongList;
+	ArrayList<String> selectedTypeList;
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+			if (data.hasExtra("selected_name_list")) {
+				selectedNameList = (ArrayList<String>) data
+						.getSerializableExtra("selected_name_list");
+				selectedAddressList = (ArrayList<String>) data
+						.getSerializableExtra("selected_address_list");
+				selectedIDList = (ArrayList<String>) data
+						.getSerializableExtra("selected_id_list");
+				selectedLatList = (ArrayList<String>) data
+						.getSerializableExtra("selected_lat_list");
+				selectedLongList = (ArrayList<String>) data
+						.getSerializableExtra("selected_long_list");
+				selectedTypeList = (ArrayList<String>) data
+						.getSerializableExtra("selected_type_list");
+				updatePlaceList();
+
+			}
+		}
+	}
 }
