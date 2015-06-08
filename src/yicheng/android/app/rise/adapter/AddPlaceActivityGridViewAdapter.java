@@ -1,5 +1,6 @@
 package yicheng.android.app.rise.adapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import yicheng.android.app.rise.R;
@@ -18,12 +19,14 @@ public class AddPlaceActivityGridViewAdapter extends BaseAdapter {
 	Context context;
 	Activity activity;
 	List<RisePlace> placesList;
+	ArrayList<String> selectedNameList;
 
 	public AddPlaceActivityGridViewAdapter(Context context, Activity activity,
-			List<RisePlace> placesList) {
+			List<RisePlace> placesList, ArrayList<String> selectedNameList) {
 		this.context = context;
 		this.activity = activity;
 		this.placesList = placesList;
+		this.selectedNameList = selectedNameList;
 
 	}
 
@@ -101,7 +104,13 @@ public class AddPlaceActivityGridViewAdapter extends BaseAdapter {
 			activity_add_place_place_latlong_textView.setText(placesList.get(
 					position).getPlaceLatitude()
 					+ " " + placesList.get(position).getPlaceLongitude());
+		}
 
+		if (selectedNameList.contains(placesList.get(position).getPlaceName())) {
+			gridView.setBackgroundResource(R.drawable.green_card_background);
+		}
+		else {
+			gridView.setBackgroundResource(R.drawable.card_background);
 		}
 
 		/*	final RelativeLayout fragment_places_layout = (RelativeLayout) gridView

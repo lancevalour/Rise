@@ -88,17 +88,17 @@ public class AddPlaceActivity extends ActionBarActivity {
 		selectedTypeList = (ArrayList<String>) data
 				.getSerializableExtra("selected_type_list");
 
-		for (int i = 0; i < selectedNameList.size(); i++) {
+	/*	for (int i = 0; i < selectedNameList.size(); i++) {
 			selectedList.add(new RisePlace(selectedNameList.get(i),
 					selectedAddressList.get(i), selectedIDList.get(i),
 					selectedLatList.get(i), selectedLongList.get(i),
 					selectedTypeList.get(i)));
-		}
+		}*/
 
 		activity_new_event_add_place_gridView = (StaggeredGridView) findViewById(R.id.activity_new_event_add_place_gridView);
 
 		gridViewAdapter = new AddPlaceActivityGridViewAdapter(getBaseContext(),
-				this, placesList);
+				this, placesList, selectedNameList);
 
 		activity_new_event_add_place_gridView.setAdapter(gridViewAdapter);
 
@@ -125,11 +125,35 @@ public class AddPlaceActivity extends ActionBarActivity {
 						if (!selectedNameList.contains(placesList.get(position)
 								.getPlaceName())) {
 							view.setBackgroundResource(R.drawable.green_card_background);
-							selectedList.add(placesList.get(position));
+							/*		selectedList.add(placesList.get(position));*/
+							selectedNameList.add(placesList.get(position)
+									.getPlaceName());
+							selectedAddressList.add(placesList.get(position)
+									.getPlaceAddress());
+							selectedIDList.add(placesList.get(position)
+									.getPlaceID());
+							selectedLatList.add(placesList.get(position)
+									.getPlaceLatitude());
+							selectedLongList.add(placesList.get(position)
+									.getPlaceLongitude());
+							selectedTypeList.add(placesList.get(position)
+									.getPlaceTypes());
 						}
 						else {
 							view.setBackgroundResource(R.drawable.card_background);
-							selectedList.remove(placesList.get(position));
+							/*selectedList.remove(placesList.get(position));*/
+							selectedNameList.remove(placesList.get(position)
+									.getPlaceName());
+							selectedAddressList.remove(placesList.get(position)
+									.getPlaceAddress());
+							selectedIDList.remove(placesList.get(position)
+									.getPlaceID());
+							selectedLatList.remove(placesList.get(position)
+									.getPlaceLatitude());
+							selectedLongList.remove(placesList.get(position)
+									.getPlaceLongitude());
+							selectedTypeList.remove(placesList.get(position)
+									.getPlaceTypes());
 						}
 
 					}
@@ -163,26 +187,33 @@ public class AddPlaceActivity extends ActionBarActivity {
 		case R.id.menu_new_place_add: {
 			// addNewPlace();
 
-			for (RisePlace place : selectedList) {
-				selectedNameList.add(place.getPlaceName());
-				selectedAddressList.add(place.getPlaceAddress());
-				selectedIDList.add(place.getPlaceID());
-				selectedLatList.add(place.getPlaceLatitude());
-				selectedLongList.add(place.getPlaceLongitude());
-				selectedTypeList.add(place.getPlaceTypes());
-			}
+			/*	selectedNameList.clear();
+				selectedAddressList.clear();
+				selectedIDList.clear();
+				selectedLatList.clear();
+				selectedLongList.clear();
+				selectedTypeList.clear();*/
+
+			/*		for (RisePlace place : selectedList) {
+						selectedNameList.add(place.getPlaceName());
+						selectedAddressList.add(place.getPlaceAddress());
+						selectedIDList.add(place.getPlaceID());
+						selectedLatList.add(place.getPlaceLatitude());
+						selectedLongList.add(place.getPlaceLongitude());
+						selectedTypeList.add(place.getPlaceTypes());
+					}*/
 
 			Intent addPlaceIntent = new Intent();
-			if (selectedList.size() != 0) {
-				addPlaceIntent.putExtra("selected_name_list", selectedNameList);
-				addPlaceIntent.putExtra("selected_address_list",
-						selectedAddressList);
-				addPlaceIntent.putExtra("selected_id_list", selectedIDList);
-				addPlaceIntent.putExtra("selected_lat_list", selectedLatList);
-				addPlaceIntent.putExtra("selected_long_list", selectedLongList);
-				addPlaceIntent.putExtra("selected_type_list", selectedTypeList);
+			/*			if (selectedNameList.size() != 0) {*/
+			addPlaceIntent.putExtra("selected_name_list", selectedNameList);
+			addPlaceIntent.putExtra("selected_address_list",
+					selectedAddressList);
+			addPlaceIntent.putExtra("selected_id_list", selectedIDList);
+			addPlaceIntent.putExtra("selected_lat_list", selectedLatList);
+			addPlaceIntent.putExtra("selected_long_list", selectedLongList);
+			addPlaceIntent.putExtra("selected_type_list", selectedTypeList);
 
-			}
+			/*}*/
 			setResult(RESULT_OK, addPlaceIntent);
 			finish();
 
