@@ -6,16 +6,22 @@ import com.gc.materialdesign.widgets.SnackBar;
 
 import yicheng.android.app.rise.R;
 import yicheng.android.app.rise.activity.NavigationDrawerActvity;
+import yicheng.android.app.rise.activity.NewEventActivity;
 import yicheng.android.app.rise.database.RiseEvent;
 import yicheng.android.app.rise.fragment.EventsFragment;
 import yicheng.android.app.rise.fragment.PlacesFragment;
+import yicheng.android.app.rise.receiver.EventAlarmReceiver;
 import yicheng.android.app.rise.ui.utility.SwipeDimissTouchListener;
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.BaseAdapter;
@@ -108,6 +114,15 @@ public class EventsFragmentGridViewAdapter extends BaseAdapter {
 					position).getEventContent());
 		}
 
+		gridView.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				goToNewEventActivity(eventsList.get(curPosition));
+			}
+		});
+
 		gridView.setOnTouchListener(new SwipeDimissTouchListener(gridView,
 				null, new SwipeDimissTouchListener.DismissCallbacks() {
 
@@ -172,6 +187,11 @@ public class EventsFragmentGridViewAdapter extends BaseAdapter {
 												new AccelerateDecelerateInterpolator());
 
 								if (isDeleted) {
+									cancelEventAlarm(Integer
+											.valueOf(EventsFragment.eventSQLiteHelper
+													.getEventPrimaryIDByName(deletedEvent
+															.getEventName())));
+
 									deleteEventFromDatabase();
 								}
 
@@ -196,6 +216,37 @@ public class EventsFragmentGridViewAdapter extends BaseAdapter {
 	private void deleteEventFromDatabase() {
 		EventsFragment.eventSQLiteHelper.deleteEventByName(this.deletedEvent
 				.getEventName());
+	}
+
+	private void cancelEventAlarm(int eventID) {
+		Intent myIntent = new Intent(activity, EventAlarmReceiver.class);
+
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(activity,
+				eventID, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+		AlarmManager alarmManager = (AlarmManager) activity
+				.getSystemService(Context.ALARM_SERVICE);
+
+		alarmManager.cancel(pendingIntent);
+
+	}
+
+	private void goToNewEventActivity(RiseEvent event) {
+
+		Intent intent = new Intent(activity, NewEventActivity.class);
+		intent.putExtra("event_name", event.getEventName());
+		intent.putExtra("event_content", event.getEventContent());
+		intent.putExtra("event_start_time", event.getEventStartTime());
+		intent.putExtra("event_end_time", event.getEventEndTime());
+		intent.putExtra("event_cycle_interval", event.getEventCycleInterval());
+		intent.putExtra("event_location_list", event.getEventLocationList());
+		intent.putExtra("event_priority", event.getEventPriority());
+		intent.putExtra("event_is_notification_on", event.getIsNotificationOn());
+
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		activity.startActivity(intent);
+
+		// finish();
 	}
 
 }

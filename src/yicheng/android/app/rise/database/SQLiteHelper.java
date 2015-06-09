@@ -193,6 +193,32 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 		}
 	}
 
+	public String getPlacePrimaryIDByName(String placeName) {
+		String id;
+		if (!this.tableName.equals(TABLE_PLACE)) {
+			throw new UnsupportedOperationException();
+		}
+		else {
+			SQLiteDatabase db = this.getReadableDatabase();
+
+			Cursor cursor = db.query(this.tableName, new String[] {
+					KEY_PRIMARY_ID, KEY_TABLE_PLACE_NAME,
+					KEY_TABLE_PLACE_ADDRESS, KEY_TABLE_PLACE_ID,
+					KEY_TABLE_PLACE_LATITUDE, KEY_TABLE_PLACE_LONGITUDE,
+					KEY_TABLE_PLACE_TYPES }, KEY_TABLE_PLACE_NAME + "=?",
+					new String[] { placeName }, null, null, null, null);
+			if (cursor != null) {
+				if (!cursor.moveToFirst()) {
+					return null;
+				}
+			}
+
+			id = cursor.getString(0);
+
+			return id;
+		}
+	}
+
 	public RisePlace getPlaceByPrimaryKeyID(int id) {
 		if (!this.tableName.equals(TABLE_PLACE)) {
 			throw new UnsupportedOperationException();
@@ -221,6 +247,34 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 			return place;
 		}
 
+	}
+
+	public String getEventPrimaryIDByName(String eventName) {
+		String id;
+		if (!this.tableName.equals(TABLE_EVENT)) {
+			throw new UnsupportedOperationException();
+		}
+		else {
+			SQLiteDatabase db = this.getReadableDatabase();
+
+			Cursor cursor = db.query(this.tableName, new String[] {
+					KEY_PRIMARY_ID, KEY_TABLE_EVENT_NAME,
+					KEY_TABLE_EVENT_CONTENT, KEY_TABLE_EVENT_CREATE_DATE,
+					KEY_TABLE_EVENT_PRIORITY, KEY_TABLE_EVENT_START_TIME,
+					KEY_TABLE_EVENT_END_TIME, KEY_TABLE_EVENT_CYCLE_INTERVAL,
+					KEY_TABLE_EVENT_IS_EVENT_FINISHED,
+					KEY_TABLE_EVENT_IS_NOTIFICATION_ON,
+					KEY_TABLE_EVENT_LOCATION_LIST }, KEY_TABLE_EVENT_NAME
+					+ "=?", new String[] { eventName }, null, null, null, null);
+			if (cursor != null) {
+				if (!cursor.moveToFirst()) {
+					return null;
+				}
+			}
+
+			id = cursor.getString(0);
+			return id;
+		}
 	}
 
 	public RiseEvent getEventByName(String eventName) {
@@ -494,7 +548,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 	}
 
 	public void deleteEventByName(String name) {
-		if (!this.tableName.equals(TABLE_PLACE)) {
+		if (!this.tableName.equals(TABLE_EVENT)) {
 			throw new UnsupportedOperationException();
 		}
 		else {

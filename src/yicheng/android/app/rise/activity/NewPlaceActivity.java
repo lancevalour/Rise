@@ -1,6 +1,7 @@
 package yicheng.android.app.rise.activity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -71,6 +72,8 @@ public class NewPlaceActivity extends ActionBarActivity {
 
 	Set<String> placeTypesSet;
 
+	boolean isUpdatingPlace = false;
+
 	private static final LatLngBounds BOUNDS_UNITED_STATES = new LatLngBounds(
 			new LatLng(18.911064, 172.445896),
 			new LatLng(71.386775, -66.945395));
@@ -80,6 +83,14 @@ public class NewPlaceActivity extends ActionBarActivity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_place);
+
+		Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+			placeName = extras.getString("place_name");
+			placeAddress = extras.getString("place_address");
+			placeTypes = extras.getString("place_types");
+			isUpdatingPlace = true;
+		}
 
 		setGoogleApiClient();
 
@@ -138,6 +149,36 @@ public class NewPlaceActivity extends ActionBarActivity {
 
 		placeTypesSet = new HashSet<String>();
 
+		if (placeAddress != null) {
+			activity_new_place_autocomplete_textView.setText(placeAddress);
+		}
+
+		if (isUpdatingPlace) {
+			activity_new_place_autocomplete_textView.setEnabled(false);
+			activity_new_place_autocomplete_clear_button.setEnabled(false);
+			activity_new_place_place_picker_button.setEnabled(false);
+		}
+
+		if (placeTypes != null) {
+			String[] placeTypesArray = placeTypes.split(",");
+
+			System.out.println(Arrays.toString(placeTypesArray));
+			for (String s : placeTypesArray) {
+				placeTypesSet.add(s);
+			}
+
+			if (placeTypesSet.contains("work")) {
+				activity_new_place_place_label_work_checkbox.setChecked(true);
+			}
+			if (placeTypesSet.contains("play")) {
+				activity_new_place_place_label_play_checkbox.setChecked(true);
+			}
+			if (placeTypesSet.contains("home")) {
+				activity_new_place_place_label_home_checkbox.setChecked(true);
+			}
+			placeTypes = "";
+
+		}
 	}
 
 	private void setComponentStyle() {
@@ -395,30 +436,62 @@ public class NewPlaceActivity extends ActionBarActivity {
 	private void addNewPlace() {
 
 		for (String s : placeTypesSet) {
-			placeTypes += s + "|";
+			if (placeTypes == null) {
+				placeTypes = "";
+			}
+
+			placeTypes += s + ",";
 		}
 
-		if (this.placeName == null || this.placeAddress == null
-				|| this.placeID == null || this.placeLatitude == null
-				|| this.placeLongitude == null || this.placeTypes == null
-				|| this.placeTypes.length() <= 0) {
-			Toast.makeText(getBaseContext(), "One of the place info is empty!",
-					Toast.LENGTH_SHORT).show();
+		if (!isUpdatingPlace) {
+			if (this.placeName == null || this.placeAddress == null
+					|| this.placeID == null || this.placeLatitude == null
+					|| this.placeLongitude == null || this.placeTypes == null
+					|| this.placeTypes.length() <= 0) {
+				Toast.makeText(getBaseContext(),
+						"One of the place info is empty!", Toast.LENGTH_SHORT)
+						.show();
+			}
+			else {
+
+				addNewPlaceInDatabase();
+				finish();
+			}
 		}
 		else {
-
-			addNewPlaceInDatabase();
-			finish();
+			if (this.placeTypes == null || this.placeTypes.length() <= 0) {
+				Toast.makeText(getBaseContext(),
+						"One of the place info is empty!", Toast.LENGTH_SHORT)
+						.show();
+			}
+			else {
+				updatePlaceInDatabase();
+				finish();
+			}
 		}
 
 	}
 
+	private void updatePlaceInDatabase() {
+		placeSQLiteHelper = new SQLiteHelper(getBaseContext(),
+				SQLiteHelper.TABLE_PLACE);
+		RisePlace place = placeSQLiteHelper.getPlaceByName(placeName);
+		placeSQLiteHelper.updatePlaceByName(
+				this.placeName,
+				new RisePlace(this.placeName, this.placeAddress, place
+						.getPlaceID(), place.getPlaceLatitude(), place
+						.getPlaceLongitude(), placeTypes));
+	}
+
 	private void addNewPlaceInDatabase() {
+
+		System.out.println(placeTypes);
 
 		placeSQLiteHelper = new SQLiteHelper(getBaseContext(),
 				SQLiteHelper.TABLE_PLACE);
 
 		if (placeSQLiteHelper.getPlaceByName(this.placeName) != null) {
+
 			placeSQLiteHelper.updatePlaceByName(this.placeName, new RisePlace(
 					this.placeName, this.placeAddress, this.placeID,
 					this.placeLatitude, this.placeLongitude, this.placeTypes));

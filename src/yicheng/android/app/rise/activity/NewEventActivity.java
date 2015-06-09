@@ -3,6 +3,7 @@ package yicheng.android.app.rise.activity;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -95,6 +96,18 @@ public class NewEventActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_new_event);
+
+		Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+			eventStartTime = extras.getString("event_start_time");
+			eventEndTime = extras.getString("event_end_time");
+			eventCycleInterval = extras.getString("event_cycle_interval");
+			eventName = extras.getString("event_name");
+			eventContent = extras.getString("event_content");
+			eventPriority = extras.getString("event_priority");
+			isNotificationOn = extras.getString("event_is_notification_on");
+			eventLocationList = extras.getString("event_location_list");
+		}
 
 		initiateComponents();
 		setComponentStyle();
@@ -354,6 +367,32 @@ public class NewEventActivity extends ActionBarActivity {
 		this.eventContent = activity_new_event_event_content_editText.getText()
 				.toString().trim();
 
+		DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		this.eventCreateDate = df.format(Calendar.getInstance().getTime());
+
+		this.eventPriority = String
+				.valueOf(activity_new_event_event_priority_ratingBar
+						.getRating());
+
+		this.eventStartTime = activity_new_event_start_time_button.getText()
+				.toString();
+		this.eventEndTime = activity_new_event_end_time_button.getText()
+				.toString();
+
+		this.eventCycleInterval = String
+				.valueOf(activity_new_event_time_interval_slider.getValue());
+
+		this.isEventFinished = String.valueOf(false);
+
+		this.isNotificationOn = String.valueOf(true);
+
+		StringBuilder sBuilder = new StringBuilder();
+		for (String s : selectedNameList) {
+			sBuilder.append(s);
+		}
+
+		this.eventLocationList = sBuilder.toString();
+
 		if (this.eventName == null || this.eventName.length() == 1
 				|| this.eventContent == null || this.eventContent.length() == 1
 				|| this.eventCreateDate == null || this.eventPriority == null
@@ -367,6 +406,8 @@ public class NewEventActivity extends ActionBarActivity {
 		}
 		else {
 			addNewEventInDatabase();
+
+			startAlarm();
 			finish();
 		}
 
@@ -391,23 +432,47 @@ public class NewEventActivity extends ActionBarActivity {
 					this.isNotificationOn, this.eventLocationList));
 
 		}
+
 	}
 
 	private AlarmManager alarmManager;
 	PendingIntent pendingIntent;
 
 	public void startAlarm() {
+		int eventID = Integer.valueOf(eventSQLiteHelper
+				.getEventPrimaryIDByName(this.eventName));
+
+		System.out.println(eventID);
+
 		Intent alarmIntent = new Intent(this, EventAlarmReceiver.class);
 
-		alarmIntent.putExtra("alarm_interval", "44"); // data to pass
+		alarmIntent.putExtra("event_content", this.eventContent);
+		alarmIntent.putExtra("event_id", eventID);
 
-		pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
+		pendingIntent = PendingIntent.getBroadcast(this, eventID, alarmIntent,
+				0);
 
 		alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 		int interval = 60000;
 
-		alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
-				System.currentTimeMillis(), interval, pendingIntent);
+		/*	alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
+					System.currentTimeMillis(), interval, pendingIntent);*/
+
+		String[] startTime = eventStartTime.split(":");
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(System.currentTimeMillis());
+		calendar.set(Calendar.HOUR_OF_DAY, Integer.valueOf(startTime[0]));
+		calendar.set(Calendar.MINUTE, Integer.valueOf(startTime[1]));
+
+		// setRepeating() lets you specify a precise custom interval--in this
+		// case,
+		// 20 minutes.
+
+		alarmManager
+				.setRepeating(AlarmManager.RTC_WAKEUP,
+						calendar.getTimeInMillis(), (long) 1000 * 60 * 1,
+						pendingIntent);
 
 		Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
 	}

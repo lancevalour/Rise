@@ -30,21 +30,26 @@ public class EventAlarmReceiver extends BroadcastReceiver {
 
 	Context context;
 
+	String eventName;
+	int eventID;
+
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		// TODO Auto-generated method stub
 		this.context = context;
 
-		// alarm_interval = intent.getStringExtra("alarm_interval");
-
+		eventName = intent.getStringExtra("event_content");
+		eventID = intent.getIntExtra("event_id", -1);
 		// showNotification();
 		startEventAlarmIntentService();
 
 	}
 
 	private void startEventAlarmIntentService() {
-		Intent inService = new Intent(context, EventAlarmIntentService.class);
-		context.startService(inService);
+		Intent intent = new Intent(context, EventAlarmIntentService.class);
+		intent.putExtra("event_content", eventName);
+		intent.putExtra("event_id", eventID);
+		context.startService(intent);
 	}
 
 }

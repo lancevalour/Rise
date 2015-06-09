@@ -6,6 +6,8 @@ import com.gc.materialdesign.widgets.SnackBar;
 
 import yicheng.android.app.rise.R;
 import yicheng.android.app.rise.activity.NavigationDrawerActvity;
+import yicheng.android.app.rise.activity.NewEventActivity;
+import yicheng.android.app.rise.activity.NewPlaceActivity;
 import yicheng.android.app.rise.database.RisePlace;
 import yicheng.android.app.rise.fragment.PlacesFragment;
 import yicheng.android.app.rise.ui.utility.SwipeDimissTouchListener;
@@ -13,6 +15,7 @@ import yicheng.android.ui.floatingactionbutton.FloatingActionsMenu;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.DialogInterface.OnDismissListener;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -122,6 +125,15 @@ public class PlacesFragmentGridViewAdapter extends BaseAdapter {
 
 		}
 
+		gridView.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				goToNewPlaceActivity(placesList.get(curPosition));
+			}
+		});
+
 		gridView.setOnTouchListener(new SwipeDimissTouchListener(gridView,
 				null, new SwipeDimissTouchListener.DismissCallbacks() {
 
@@ -205,6 +217,17 @@ public class PlacesFragmentGridViewAdapter extends BaseAdapter {
 
 		return gridView;
 
+	}
+
+	private void goToNewPlaceActivity(RisePlace place) {
+		Intent intent = new Intent(activity, NewPlaceActivity.class);
+		intent.putExtra("place_name", place.getPlaceName());
+
+		intent.putExtra("place_address", place.getPlaceAddress());
+		intent.putExtra("place_types", place.getPlaceTypes());
+
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		activity.startActivity(intent);
 	}
 
 	private void deletePlaceFromDatabase() {

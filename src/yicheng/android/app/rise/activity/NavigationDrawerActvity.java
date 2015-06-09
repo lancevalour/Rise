@@ -41,6 +41,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.service.notification.StatusBarNotification;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -98,7 +99,7 @@ public class NavigationDrawerActvity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_navigation_drawer);
-		startAlarm();
+		// startAlarm();
 		initiateComponents();
 		setGoogleApiClient();
 		setComponentStyle();
@@ -389,6 +390,7 @@ public class NavigationDrawerActvity extends ActionBarActivity {
 	}
 
 	private void setRecyclerViewControl() {
+
 		final GestureDetector mGestureDetector = new GestureDetector(
 				NavigationDrawerActvity.this,
 				new GestureDetector.SimpleOnGestureListener() {

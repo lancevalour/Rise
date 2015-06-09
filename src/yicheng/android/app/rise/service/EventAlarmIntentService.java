@@ -25,6 +25,10 @@ public class EventAlarmIntentService extends IntentService {
 	String placeLatitude;
 	String placeLongitude;
 	String alarm_interval;
+	String eventContent;
+	int eventID;
+
+	final static String GROUP_KEY_EVENT = "notification_group_event";
 
 	public EventAlarmIntentService() {
 		super("EventAlarmIntentService");
@@ -34,7 +38,8 @@ public class EventAlarmIntentService extends IntentService {
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		// TODO Auto-generated method stub
-
+		eventContent = intent.getStringExtra("event_content");
+		eventID = intent.getIntExtra("event_id", -1);
 		getCurrentPlace();
 
 	}
@@ -48,7 +53,7 @@ public class EventAlarmIntentService extends IntentService {
 				.setContentTitle("Current Place")
 				.setContentText(
 						placeLatitude + "\n" + placeLongitude + "\n"
-								+ alarm_interval);
+								+ eventContent).setGroup(GROUP_KEY_EVENT);
 		/*
 				Intent resultIntent = new Intent(context, NavigationDrawerActvity.class);
 
@@ -57,7 +62,7 @@ public class EventAlarmIntentService extends IntentService {
 
 				mBuilder.setContentIntent(resultPendingIntent);*/
 
-		notificationManager.notify(0, mBuilder.build());
+		notificationManager.notify(eventID, mBuilder.build());
 	}
 
 	GoogleApiClient mGoogleApiClient;
