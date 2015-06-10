@@ -4,15 +4,14 @@
     tools:context=".activity.NewEventActivity" >
 
     <item
-        android:id="@+id/menu_new_event_settings"
-        android:orderInCategory="100"
-        android:title="@string/menu_toolbar_action_settings"
-        app:showAsAction="never"/>
-    <item
         android:id="@+id/menu_new_event_add"
         android:icon="@drawable/ic_action_new"
-        android:orderInCategory="200"
         android:title="@string/menu_toolbar_action_settings"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/menu_new_event_switch"
+        android:title=""
+        app:actionViewClass="android.widget.Switch"
+        app:showAsAction="always"/>
 
 </menu>

@@ -9,7 +9,9 @@
     <string name="toolbar_navigation_drawer_title_places">Places</string>
     <string name="toolbar_new_event_title">New Event</string>
     <string name="toolbar_new_place_title">New Place</string>
-      <string name="toolbar_add_place_title">Add Place</string>
+    <string name="toolbar_add_place_title">Add Place</string>
     <string name="autocomplete_hint">Enter place name or address</string>
+    <string name="toolbar_edit_event_title">Edit Event</string>
+    <string name="toolbar_edit_place_title">Edit Place</string>
 
 </resources>

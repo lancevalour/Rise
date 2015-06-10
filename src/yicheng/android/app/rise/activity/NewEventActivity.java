@@ -29,6 +29,7 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -43,6 +44,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.RatingBar.OnRatingBarChangeListener;
@@ -72,6 +74,8 @@ public class NewEventActivity extends ActionBarActivity {
 
 	ListView activity_new_event_event_location_listView;
 
+	Switch new_event_actionbar_switch;
+
 	ArrayAdapter<String> placeListAdapter;
 
 	String eventStartTime;
@@ -84,11 +88,13 @@ public class NewEventActivity extends ActionBarActivity {
 	String eventPriority;
 
 	String isEventFinished;
-	String isNotificationOn;
+	String isNotificationOn = String.valueOf(true);
 
 	String eventLocationList;
 
 	SQLiteHelper eventSQLiteHelper;
+
+	boolean isUpdatingEvent = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +113,7 @@ public class NewEventActivity extends ActionBarActivity {
 			eventPriority = extras.getString("event_priority");
 			isNotificationOn = extras.getString("event_is_notification_on");
 			eventLocationList = extras.getString("event_location_list");
+			isUpdatingEvent = true;
 		}
 
 		initiateComponents();
@@ -153,8 +160,12 @@ public class NewEventActivity extends ActionBarActivity {
 				.setNavigationIcon(R.drawable.ic_action_navigation_arrow_back);
 
 		setSupportActionBar(activity_new_event_toolbar);
-		getSupportActionBar().setTitle(R.string.toolbar_new_event_title);
-
+		if (isUpdatingEvent) {
+			getSupportActionBar().setTitle(R.string.toolbar_edit_event_title);
+		}
+		else {
+			getSupportActionBar().setTitle(R.string.toolbar_new_event_title);
+		}
 		activity_new_event_start_time_button = (Button) findViewById(R.id.activity_new_event_start_time_button);
 		DateFormat dateFormat = new SimpleDateFormat("HH:mm");
 		// get current date time with Date()
@@ -191,6 +202,29 @@ public class NewEventActivity extends ActionBarActivity {
 
 		activity_new_event_event_location_listView = (ListView) findViewById(R.id.activity_new_event_event_location_listView);
 
+		if (isUpdatingEvent) {
+			activity_new_event_event_content_editText
+					.setText(this.eventContent);
+			activity_new_event_event_name_editText.setText(this.eventName);
+			activity_new_event_event_name_editText.setEnabled(false);
+
+			activity_new_event_start_time_button.setText(this.eventStartTime);
+			activity_new_event_end_time_button.setText(this.eventEndTime);
+
+			activity_new_event_event_priority_ratingBar.setRating(Float
+					.valueOf(this.eventPriority));
+
+			activity_new_event_time_interval_slider.setValue(Integer
+					.valueOf(this.eventCycleInterval));
+			activity_new_event_time_interval_textView.setText(""
+					+ this.eventCycleInterval);
+
+			String[] array = eventLocationList.split(",");
+			for (String s : array) {
+				selectedNameList.add(s);
+			}
+		}
+
 		updatePlaceList();
 
 	}
@@ -203,6 +237,7 @@ public class NewEventActivity extends ActionBarActivity {
 		setRatingBarControl();
 		setCheckBoxControl();
 		setAddPlaceButtonControl();
+
 	}
 
 	private void setAddPlaceButtonControl() {
@@ -333,10 +368,42 @@ public class NewEventActivity extends ActionBarActivity {
 				});
 	}
 
+	private void setSwitchControl() {
+		new_event_actionbar_switch
+				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+					@Override
+					public void onCheckedChanged(CompoundButton buttonView,
+							boolean isChecked) {
+						// TODO Auto-generated method stub
+						if (isChecked) {
+							isNotificationOn = String.valueOf(true);
+						}
+						else {
+							isNotificationOn = String.valueOf(false);
+						}
+					}
+
+				});
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.menu_new_event, menu);
+
+		if (isUpdatingEvent) {
+			menu.findItem(R.id.menu_new_event_add).setIcon(
+					R.drawable.ic_done_white_48dp);
+		}
+		new_event_actionbar_switch = (Switch) menu.findItem(
+				R.id.menu_new_event_switch).getActionView();
+
+		new_event_actionbar_switch
+				.setChecked(Boolean.valueOf(isNotificationOn));
+
+		setSwitchControl();
+
 		return true;
 	}
 
@@ -345,17 +412,14 @@ public class NewEventActivity extends ActionBarActivity {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
 
 		switch (item.getItemId()) {
 		case R.id.menu_new_event_add: {
+
 			addNewEvent();
 		}
 			break;
-		case R.id.menu_new_event_settings: {
 
-		}
-			break;
 		}
 
 		return super.onOptionsItemSelected(item);
@@ -384,17 +448,17 @@ public class NewEventActivity extends ActionBarActivity {
 
 		this.isEventFinished = String.valueOf(false);
 
-		this.isNotificationOn = String.valueOf(true);
+		/*	this.isNotificationOn = String.valueOf(true);*/
 
 		StringBuilder sBuilder = new StringBuilder();
 		for (String s : selectedNameList) {
-			sBuilder.append(s);
+			sBuilder.append(s).append(",");
 		}
 
 		this.eventLocationList = sBuilder.toString();
 
-		if (this.eventName == null || this.eventName.length() == 1
-				|| this.eventContent == null || this.eventContent.length() == 1
+		if (this.eventName == null || this.eventName.length() == 0
+				|| this.eventContent == null || this.eventContent.length() == 0
 				|| this.eventCreateDate == null || this.eventPriority == null
 				|| this.eventStartTime == null || this.eventEndTime == null
 				|| this.eventCycleInterval == null
@@ -407,7 +471,7 @@ public class NewEventActivity extends ActionBarActivity {
 		else {
 			addNewEventInDatabase();
 
-			startAlarm();
+			startAlarm(isUpdatingEvent);
 			finish();
 		}
 
@@ -438,43 +502,85 @@ public class NewEventActivity extends ActionBarActivity {
 	private AlarmManager alarmManager;
 	PendingIntent pendingIntent;
 
-	public void startAlarm() {
-		int eventID = Integer.valueOf(eventSQLiteHelper
-				.getEventPrimaryIDByName(this.eventName));
+	public void startAlarm(boolean isUpdatingEvent) {
 
-		System.out.println(eventID);
+		if (Boolean.valueOf(isNotificationOn)) {
+			int eventID = Integer.valueOf(eventSQLiteHelper
+					.getEventPrimaryIDByName(this.eventName));
 
-		Intent alarmIntent = new Intent(this, EventAlarmReceiver.class);
+			System.out.println(eventID);
 
-		alarmIntent.putExtra("event_content", this.eventContent);
-		alarmIntent.putExtra("event_id", eventID);
+			Intent alarmIntent = new Intent(this, EventAlarmReceiver.class);
 
-		pendingIntent = PendingIntent.getBroadcast(this, eventID, alarmIntent,
-				0);
+			alarmIntent.putExtra("event_content", this.eventContent);
+			alarmIntent.putExtra("event_id", eventID);
 
-		alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-		int interval = 60000;
+			pendingIntent = PendingIntent.getBroadcast(this, eventID,
+					alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-		/*	alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
-					System.currentTimeMillis(), interval, pendingIntent);*/
+			alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+			int interval = 60000;
 
-		String[] startTime = eventStartTime.split(":");
+			/*	alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
+						System.currentTimeMillis(), interval, pendingIntent);*/
 
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTimeInMillis(System.currentTimeMillis());
-		calendar.set(Calendar.HOUR_OF_DAY, Integer.valueOf(startTime[0]));
-		calendar.set(Calendar.MINUTE, Integer.valueOf(startTime[1]));
+			String[] startTime = eventStartTime.split(":");
 
-		// setRepeating() lets you specify a precise custom interval--in this
-		// case,
-		// 20 minutes.
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTimeInMillis(System.currentTimeMillis());
+			calendar.set(Calendar.HOUR_OF_DAY, Integer.valueOf(startTime[0]));
+			calendar.set(Calendar.MINUTE, Integer.valueOf(startTime[1]));
 
-		alarmManager
-				.setRepeating(AlarmManager.RTC_WAKEUP,
+			// setRepeating() lets you specify a precise custom interval--in
+			// this
+			// case,
+			// 20 minutes.
+
+			alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
+					calendar.getTimeInMillis(), (long) 1000 * 60 * 1,
+					pendingIntent);
+
+			Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
+		}
+		else {
+			int eventID = Integer.valueOf(eventSQLiteHelper
+					.getEventPrimaryIDByName(this.eventName));
+
+			System.out.println(eventID);
+
+			Intent alarmIntent = new Intent(this, EventAlarmReceiver.class);
+
+			alarmIntent.putExtra("event_content", this.eventContent);
+			alarmIntent.putExtra("event_id", eventID);
+
+			pendingIntent = PendingIntent.getBroadcast(this, eventID,
+					alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+			alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+			/*	alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
+						System.currentTimeMillis(), interval, pendingIntent);*/
+
+			/*	String[] startTime = eventStartTime.split(":");
+
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTimeInMillis(System.currentTimeMillis());
+				calendar.set(Calendar.HOUR_OF_DAY, Integer.valueOf(startTime[0]));
+				calendar.set(Calendar.MINUTE, Integer.valueOf(startTime[1]));*/
+
+			// setRepeating() lets you specify a precise custom interval--in
+			// this
+			// case,
+			// 20 minutes.
+			alarmManager.cancel(pendingIntent);
+
+			/*	alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
 						calendar.getTimeInMillis(), (long) 1000 * 60 * 1,
-						pendingIntent);
+						pendingIntent);*/
 
-		Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "Alarm Canceled", Toast.LENGTH_SHORT).show();
+		}
+
 	}
 
 	int REQUEST_CODE = 1;

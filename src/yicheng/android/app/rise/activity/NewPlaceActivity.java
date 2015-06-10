@@ -135,9 +135,12 @@ public class NewPlaceActivity extends ActionBarActivity {
 		activity_new_place_toolbar
 				.setNavigationIcon(R.drawable.ic_action_navigation_arrow_back);
 		setSupportActionBar(activity_new_place_toolbar);
-
-		getSupportActionBar().setTitle(R.string.toolbar_new_place_title);
-
+		if (isUpdatingPlace) {
+			getSupportActionBar().setTitle(R.string.toolbar_edit_place_title);
+		}
+		else {
+			getSupportActionBar().setTitle(R.string.toolbar_new_place_title);
+		}
 		activity_new_place_autocomplete_textView = (AutoCompleteTextView) findViewById(R.id.activity_new_place_autocomplete_textView);
 
 		autoCompleteAdapter = new PlaceAutoCompleteAdapter(this,
@@ -413,6 +416,12 @@ public class NewPlaceActivity extends ActionBarActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.menu_new_place, menu);
+
+		if (isUpdatingPlace) {
+			menu.findItem(R.id.menu_new_place_add).setIcon(
+					R.drawable.ic_done_white_48dp);
+		}
+
 		return true;
 	}
 
@@ -424,10 +433,10 @@ public class NewPlaceActivity extends ActionBarActivity {
 			addNewPlace();
 		}
 			break;
-		case R.id.menu_new_place_settings: {
+		/*	case R.id.menu_new_place_settings: {
 
-		}
-			break;
+			}
+				break;*/
 		}
 
 		return super.onOptionsItemSelected(item);

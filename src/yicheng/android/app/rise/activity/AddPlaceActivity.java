@@ -88,12 +88,12 @@ public class AddPlaceActivity extends ActionBarActivity {
 		selectedTypeList = (ArrayList<String>) data
 				.getSerializableExtra("selected_type_list");
 
-	/*	for (int i = 0; i < selectedNameList.size(); i++) {
-			selectedList.add(new RisePlace(selectedNameList.get(i),
-					selectedAddressList.get(i), selectedIDList.get(i),
-					selectedLatList.get(i), selectedLongList.get(i),
-					selectedTypeList.get(i)));
-		}*/
+		/*	for (int i = 0; i < selectedNameList.size(); i++) {
+				selectedList.add(new RisePlace(selectedNameList.get(i),
+						selectedAddressList.get(i), selectedIDList.get(i),
+						selectedLatList.get(i), selectedLongList.get(i),
+						selectedTypeList.get(i)));
+			}*/
 
 		activity_new_event_add_place_gridView = (StaggeredGridView) findViewById(R.id.activity_new_event_add_place_gridView);
 
@@ -219,10 +219,10 @@ public class AddPlaceActivity extends ActionBarActivity {
 
 		}
 			break;
-		case R.id.menu_new_place_settings: {
+		/*		case R.id.menu_new_place_settings: {
 
-		}
-			break;
+				}
+					break;*/
 		}
 
 		return super.onOptionsItemSelected(item);
