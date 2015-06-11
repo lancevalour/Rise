@@ -219,7 +219,7 @@ public class NavigationDrawerActvity extends ActionBarActivity {
 				.setIcon(R.drawable.ic_action_event);
 		activity_navigation_drawer_new_place_floatingActionButton = (FloatingActionButton) findViewById(R.id.activity_navigation_drawer_new_place_floatingActionButton);
 		activity_navigation_drawer_new_place_floatingActionButton
-				.setIcon(R.drawable.ic_action_location_searching);
+				.setIcon(R.drawable.ic_action_place);
 
 		activity_navigation_drawer_floatingActionMenu = (FloatingActionsMenu) findViewById(R.id.activity_navigation_drawer_floatingActionMenu);
 
@@ -497,12 +497,12 @@ public class NavigationDrawerActvity extends ActionBarActivity {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
-	/*	int id = item.getItemId();
+		/*	int id = item.getItemId();
 
-		// noinspection SimplifiableIfStatement
-		if (id == R.id.menu_new_event_settings) {
-			return true;
-		}*/
+			// noinspection SimplifiableIfStatement
+			if (id == R.id.menu_new_event_settings) {
+				return true;
+			}*/
 
 		return super.onOptionsItemSelected(item);
 	}

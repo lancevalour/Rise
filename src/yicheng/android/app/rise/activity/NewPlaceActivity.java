@@ -419,7 +419,7 @@ public class NewPlaceActivity extends ActionBarActivity {
 
 		if (isUpdatingPlace) {
 			menu.findItem(R.id.menu_new_place_add).setIcon(
-					R.drawable.ic_done_white_48dp);
+					R.drawable.ic_action_done);
 		}
 
 		return true;

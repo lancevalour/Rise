@@ -394,7 +394,7 @@ public class NewEventActivity extends ActionBarActivity {
 
 		if (isUpdatingEvent) {
 			menu.findItem(R.id.menu_new_event_add).setIcon(
-					R.drawable.ic_done_white_48dp);
+					R.drawable.ic_action_done);
 		}
 		new_event_actionbar_switch = (Switch) menu.findItem(
 				R.id.menu_new_event_switch).getActionView();
