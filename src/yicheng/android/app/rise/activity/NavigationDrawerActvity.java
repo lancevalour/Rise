@@ -481,6 +481,13 @@ public class NavigationDrawerActvity extends ActionBarActivity {
 							MotionEvent motionEvent) {
 
 					}
+
+					@Override
+					public void onRequestDisallowInterceptTouchEvent(
+							boolean arg0) {
+						// TODO Auto-generated method stub
+
+					}
 				});
 
 	}

@@ -169,7 +169,7 @@
                 android:layout_toRightOf="@id/activity_new_event_time_interval_textView"
                 android:text=" Mins " />
 
-            <com.gc.materialdesign.views.Slider
+            <yicheng.android.ui.materialdesignlibrary.views.Slider
                 android:id="@+id/activity_new_event_time_interval_slider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

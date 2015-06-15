@@ -2,7 +2,7 @@ package yicheng.android.app.rise.adapter;
 
 import java.util.List;
 
-import com.gc.materialdesign.widgets.SnackBar;
+import yicheng.android.ui.materialdesignlibrary.widgets.SnackBar;
 
 import yicheng.android.app.rise.R;
 import yicheng.android.app.rise.activity.NavigationDrawerActvity;

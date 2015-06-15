@@ -169,7 +169,7 @@
                 android:layout_toRightOf="@id/activity_new_event_time_interval_textView"
                 android:text=" Mins " />
 
-            <com.gc.materialdesign.views.Slider
+            <yicheng.android.ui.materialdesignlibrary.views.Slider
                 android:id="@+id/activity_new_event_time_interval_slider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -209,6 +209,49 @@
             android:numStars="5"
             android:rating="3.0"
             android:stepSize="1.0" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/activity_new_event_event_priority_layout"
+        android:layout_centerHorizontal="true" >
+
+        <TextView
+            android:id="@+id/activity_new_event_event_location_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Event Location" />
+
+        <CheckBox
+            android:id="@+id/activity_new_event_event_location_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/activity_new_event_event_location_textView"
+            android:text="Add Location" />
+
+        <RelativeLayout
+            android:id="@+id/activity_new_event_event_location_add_location_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_below="@id/activity_new_event_event_location_checkbox" >
+
+            <ImageButton
+                android:id="@+id/activity_new_event_event_location_add_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/background_ripple"
+                android:src="@drawable/ic_action_events" />
+
+            <ListView
+                android:id="@+id/activity_new_event_event_location_listView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/activity_new_event_event_location_add_button"
+                android:background="?android:attr/activatedBackgroundIndicator"
+                android:choiceMode="multipleChoice" >
+            </ListView>
+        </RelativeLayout>
     </RelativeLayout>
 
 </RelativeLayout>

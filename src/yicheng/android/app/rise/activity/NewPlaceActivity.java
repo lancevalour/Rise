@@ -206,7 +206,11 @@ public class NewPlaceActivity extends ActionBarActivity {
 					PLACE_PICKER_REQUEST);
 		}
 		catch (GooglePlayServicesRepairableException
-				| GooglePlayServicesNotAvailableException e) {
+				 e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (GooglePlayServicesNotAvailableException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

@@ -9,10 +9,9 @@ import yicheng.android.app.rise.adapter.PlacesFragmentGridViewAdapter;
 import yicheng.android.app.rise.database.RisePlace;
 import yicheng.android.app.rise.database.SQLiteHelper;
 import yicheng.android.ui.staggeredgridview.StaggeredGridView;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,8 +19,9 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.Toolbar;
 
-public class AddPlaceActivity extends ActionBarActivity {
+public class AddPlaceActivity extends Activity {
 
 	Toolbar activity_new_event_add_place_toolbar;
 
@@ -68,8 +68,8 @@ public class AddPlaceActivity extends ActionBarActivity {
 		activity_new_event_add_place_toolbar
 				.setNavigationIcon(R.drawable.ic_action_navigation_arrow_back);
 
-		setSupportActionBar(activity_new_event_add_place_toolbar);
-		getSupportActionBar().setTitle(R.string.toolbar_add_place_title);
+		setActionBar(activity_new_event_add_place_toolbar);
+		getActionBar().setTitle(R.string.toolbar_add_place_title);
 
 		selectedList = new ArrayList<RisePlace>();
 

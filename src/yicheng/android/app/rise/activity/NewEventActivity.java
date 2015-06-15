@@ -7,8 +7,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import com.gc.materialdesign.views.Slider;
-import com.gc.materialdesign.views.Slider.OnValueChangedListener;
+import yicheng.android.ui.materialdesignlibrary.views.Slider;
+import yicheng.android.ui.materialdesignlibrary.views.Slider.OnValueChangedListener;
 
 import yicheng.android.app.rise.R;
 import yicheng.android.app.rise.database.RiseEvent;
