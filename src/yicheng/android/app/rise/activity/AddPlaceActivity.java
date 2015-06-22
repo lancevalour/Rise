@@ -19,9 +19,10 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.Toolbar;
+import android.support.v7.widget.Toolbar;
+import android.support.v7.app.ActionBarActivity;
 
-public class AddPlaceActivity extends Activity {
+public class AddPlaceActivity extends ActionBarActivity {
 
 	Toolbar activity_new_event_add_place_toolbar;
 
@@ -68,8 +69,8 @@ public class AddPlaceActivity extends Activity {
 		activity_new_event_add_place_toolbar
 				.setNavigationIcon(R.drawable.ic_action_navigation_arrow_back);
 
-		setActionBar(activity_new_event_add_place_toolbar);
-		getActionBar().setTitle(R.string.toolbar_add_place_title);
+		setSupportActionBar(activity_new_event_add_place_toolbar);
+		getSupportActionBar().setTitle(R.string.toolbar_add_place_title);
 
 		selectedList = new ArrayList<RisePlace>();
 

@@ -38,7 +38,7 @@ public class SplashActivity extends Activity {
 
 	private void goToNavigationDrawerActivity() {
 		Intent intent = new Intent(SplashActivity.this,
-				NavigationDrawerActvity.class);
+				NavigationDrawerActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
 		finish();

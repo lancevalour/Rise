@@ -1,6 +1,11 @@
 package yicheng.android.app.rise.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import yicheng.android.app.rise.R;
+import yicheng.android.app.rise.database.RisePlace;
+import yicheng.android.app.rise.database.SQLiteHelper;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -25,8 +30,13 @@ public class EventAlarmIntentService extends IntentService {
 	String placeLatitude;
 	String placeLongitude;
 	String alarm_interval;
+
 	String eventContent;
 	int eventID;
+	String eventLocationList;
+
+	SQLiteHelper placeSQLiteHelper;
+	List<Location> locationList;
 
 	final static String GROUP_KEY_EVENT = "notification_group_event";
 
@@ -40,20 +50,36 @@ public class EventAlarmIntentService extends IntentService {
 		// TODO Auto-generated method stub
 		eventContent = intent.getStringExtra("event_content");
 		eventID = intent.getIntExtra("event_id", -1);
+		eventLocationList = intent.getStringExtra("event_location_list");
+
+		readLocationListFromDatabase();
+
 		getCurrentPlace();
 
+	}
+
+	private void readLocationListFromDatabase() {
+		String[] locations = eventLocationList.split(",");
+		locationList = new ArrayList<Location>();
+		placeSQLiteHelper = new SQLiteHelper(getBaseContext(),
+				SQLiteHelper.TABLE_PLACE);
+
+		for (String s : locations) {
+			RisePlace place = placeSQLiteHelper.getPlaceByName(s);
+			Location location = new Location("");
+			location.setLatitude(Double.parseDouble(place.getPlaceLatitude()));
+			location.setLongitude(Double.parseDouble(place.getPlaceLongitude()));
+			locationList.add(location);
+		}
 	}
 
 	private void showNotification() {
 		notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-				this)
-				.setSmallIcon(R.drawable.ic_action_event)
-				.setContentTitle("Current Place")
-				.setContentText(
-						placeLatitude + "\n" + placeLongitude + "\n"
-								+ eventContent).setGroup(GROUP_KEY_EVENT);
+				this).setSmallIcon(R.drawable.ic_action_event)
+				.setContentTitle("Current Place").setContentText(eventContent)
+				.setGroup(GROUP_KEY_EVENT);
 		/*
 				Intent resultIntent = new Intent(context, NavigationDrawerActvity.class);
 
@@ -84,9 +110,16 @@ public class EventAlarmIntentService extends IntentService {
 									.getLatitude());
 							placeLongitude = String.valueOf(mLastLocation
 									.getLongitude());
+
 						}
 
-						showNotification();
+						for (Location location : locationList) {
+							if (location.distanceTo(mLastLocation) < 50) {
+
+								showNotification();
+							}
+						}
+
 					}
 
 					@Override

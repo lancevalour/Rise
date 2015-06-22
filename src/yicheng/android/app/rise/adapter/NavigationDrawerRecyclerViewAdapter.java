@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,6 +57,7 @@ public class NavigationDrawerRecyclerViewAdapter extends
 				holderTypeID = 1;
 			}
 			else {
+
 				profile_name_textView = (TextView) itemView
 						.findViewById(R.id.navigation_drawer_recyclerview_header_name_textView);
 				profile_email_textView = (TextView) itemView
@@ -130,10 +132,11 @@ public class NavigationDrawerRecyclerViewAdapter extends
 		else {
 			/*	holder.profile_background_imageView
 						.setImageURI(profileBackgroundImageID);*/
-			Picasso.with(context).load(profileBackgroundImageID)
+
+			Picasso.with(context).load(profileBackgroundImageID).fit()
 					.into(holder.profile_background_imageView);
 
-			Picasso.with(context).load(profileAvatarImageID)
+			Picasso.with(context).load(profileAvatarImageID).fit()
 					.into(holder.profile_avatar_imageView);
 
 			holder.profile_name_textView.setText(profileName);

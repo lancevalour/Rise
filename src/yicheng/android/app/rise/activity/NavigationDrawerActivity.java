@@ -62,9 +62,10 @@ import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-public class NavigationDrawerActvity extends ActionBarActivity {
+public class NavigationDrawerActivity extends ActionBarActivity {
 	String DRAWER_ROW_ITEM_TITLES[] = { "Events", "Places" };
 	int DRAWER_ROW_ITEM_IMAGE_IDS[] = { R.drawable.ic_action_events,
 			R.drawable.ic_action_places };
@@ -127,7 +128,7 @@ public class NavigationDrawerActvity extends ActionBarActivity {
 	}
 
 	private void goToLoginActivity() {
-		Intent intent = new Intent(NavigationDrawerActvity.this,
+		Intent intent = new Intent(NavigationDrawerActivity.this,
 				LoginActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
@@ -170,7 +171,7 @@ public class NavigationDrawerActvity extends ActionBarActivity {
 									.setAdapter(activity_navigation_drawer_recyclerView_adapter);
 
 							activity_navigation_drawer_recyclerView_layoutManager = new LinearLayoutManager(
-									NavigationDrawerActvity.this);
+									NavigationDrawerActivity.this);
 
 							activity_navigation_drawer_recyclerView
 									.setLayoutManager(activity_navigation_drawer_recyclerView_layoutManager);
@@ -246,12 +247,16 @@ public class NavigationDrawerActvity extends ActionBarActivity {
 				// code here will execute once the drawer is opened( As I dont
 				// want anything happened whe drawer is
 				// open I am not going to put anything here)
+				if (activity_navigation_drawer_floatingActionMenu.isExpanded()) {
+					activity_navigation_drawer_floatingActionMenu.collapse();
+				}
 			}
 
 			@Override
 			public void onDrawerClosed(View drawerView) {
 				super.onDrawerClosed(drawerView);
 				// Code here will execute once drawer is closed
+
 			}
 
 		};
@@ -270,6 +275,7 @@ public class NavigationDrawerActvity extends ActionBarActivity {
 
 		getSupportActionBar().setTitle(
 				R.string.toolbar_navigation_drawer_title_events);
+
 	}
 
 	private void setComponentControl() {
@@ -348,7 +354,7 @@ public class NavigationDrawerActvity extends ActionBarActivity {
 
 	private void goToNewEventActivity() {
 
-		Intent intent = new Intent(NavigationDrawerActvity.this,
+		Intent intent = new Intent(NavigationDrawerActivity.this,
 				NewEventActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
@@ -357,13 +363,42 @@ public class NavigationDrawerActvity extends ActionBarActivity {
 	}
 
 	private void goToNewPlaceActivity() {
-		Intent intent = new Intent(NavigationDrawerActvity.this,
+		Intent intent = new Intent(NavigationDrawerActivity.this,
 				NewPlaceActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
 	}
 
 	private void setFloatingActionMenuControl() {
+		activity_navigation_drawer_content_framelayout
+				.setOnTouchListener(new View.OnTouchListener() {
+
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						// TODO Auto-generated method stub
+						if (activity_navigation_drawer_floatingActionMenu
+								.isExpanded()) {
+							activity_navigation_drawer_floatingActionMenu
+									.collapse();
+						}
+						return false;
+					}
+				});
+
+		activity_navigation_drawer_toolbar
+				.setOnTouchListener(new View.OnTouchListener() {
+
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						// TODO Auto-generated method stub
+						if (activity_navigation_drawer_floatingActionMenu
+								.isExpanded()) {
+							activity_navigation_drawer_floatingActionMenu
+									.collapse();
+						}
+						return false;
+					}
+				});
 
 	}
 
@@ -392,7 +427,7 @@ public class NavigationDrawerActvity extends ActionBarActivity {
 	private void setRecyclerViewControl() {
 
 		final GestureDetector mGestureDetector = new GestureDetector(
-				NavigationDrawerActvity.this,
+				NavigationDrawerActivity.this,
 				new GestureDetector.SimpleOnGestureListener() {
 
 					@Override
@@ -424,7 +459,7 @@ public class NavigationDrawerActvity extends ActionBarActivity {
 								activity_navigation_drawer_layout
 										.closeDrawers();
 								Toast.makeText(
-										NavigationDrawerActvity.this,
+										NavigationDrawerActivity.this,
 										"The Item Clicked is: "
 												+ recyclerView
 														.getChildPosition(child),
@@ -448,7 +483,7 @@ public class NavigationDrawerActvity extends ActionBarActivity {
 								activity_navigation_drawer_layout
 										.closeDrawers();
 								Toast.makeText(
-										NavigationDrawerActvity.this,
+										NavigationDrawerActivity.this,
 										"The Item Clicked is: "
 												+ recyclerView
 														.getChildPosition(child),
@@ -504,12 +539,17 @@ public class NavigationDrawerActvity extends ActionBarActivity {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
-		/*	int id = item.getItemId();
 
-			// noinspection SimplifiableIfStatement
-			if (id == R.id.menu_new_event_settings) {
-				return true;
-			}*/
+		if (activity_navigation_drawer_floatingActionMenu.isExpanded()) {
+			activity_navigation_drawer_floatingActionMenu.collapse();
+		}
+		int id = item.getItemId();
+
+		// noinspection SimplifiableIfStatement
+		if (id == R.id.menu_navigation_drawer_settings) {
+
+			return true;
+		}
 
 		return super.onOptionsItemSelected(item);
 	}

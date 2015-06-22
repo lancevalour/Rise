@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/navigation_drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="178dp"
     android:orientation="vertical" >
@@ -40,8 +41,8 @@
 
     <yicheng.android.ui.circleimageview.CircleImageView
         android:id="@+id/navigation_drawer_recyclerview_header_circleImageView"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
         android:layout_above="@id/navigation_drawer_userinfo_layout"
         android:layout_marginBottom="15dp"
         android:layout_marginLeft="15dp"

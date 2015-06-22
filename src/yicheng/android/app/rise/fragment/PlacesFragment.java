@@ -4,13 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import yicheng.android.app.rise.R;
+import yicheng.android.app.rise.activity.NavigationDrawerActivity;
 import yicheng.android.app.rise.adapter.PlacesFragmentGridViewAdapter;
 import yicheng.android.app.rise.database.RisePlace;
 import yicheng.android.app.rise.database.SQLiteHelper;
 import yicheng.android.app.rise.ui.utility.SwipeDimissTouchListener;
 import yicheng.android.ui.staggeredgridview.StaggeredGridView;
 import android.app.Fragment;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -33,6 +36,8 @@ public class PlacesFragment extends Fragment {
 
 	public static SQLiteHelper placeSQLiteHelper;
 
+	boolean isBigScreen;
+
 	public PlacesFragment() {
 
 	}
@@ -42,13 +47,21 @@ public class PlacesFragment extends Fragment {
 			Bundle savedInstanceState) {
 		rootView = (ViewGroup) inflater.inflate(R.layout.fragment_places,
 				container, false);
-
+		isBigScreen = isBigScreen();
 		loadPlacesFromDatabase();
 		initiateComponents();
 		setComponentControl();
 
 		return rootView;
 
+	}
+
+	private boolean isBigScreen() {
+		Display display = getActivity().getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+		int screenWidth = size.x;
+		return !(screenWidth < 1000);
 	}
 
 	private void loadPlacesFromDatabase() {
@@ -63,7 +76,7 @@ public class PlacesFragment extends Fragment {
 				.findViewById(R.id.fragment_places_gridView);
 
 		gridViewAdapter = new PlacesFragmentGridViewAdapter(
-				rootView.getContext(), getActivity(), placesList);
+				rootView.getContext(), getActivity(), placesList, isBigScreen);
 
 		fragment_places_gridView.setAdapter(gridViewAdapter);
 
@@ -74,7 +87,19 @@ public class PlacesFragment extends Fragment {
 	}
 
 	private void setGridViewControl() {
+		rootView.setOnTouchListener(new View.OnTouchListener() {
 
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				// TODO Auto-generated method stub
+				if (NavigationDrawerActivity.activity_navigation_drawer_floatingActionMenu
+						.isExpanded()) {
+					NavigationDrawerActivity.activity_navigation_drawer_floatingActionMenu
+							.collapse();
+				}
+				return false;
+			}
+		});
 	}
 
 	private void updateGridView() {
@@ -82,7 +107,7 @@ public class PlacesFragment extends Fragment {
 
 		// gridViewAdapter.notifyDataSetChanged();
 		gridViewAdapter = new PlacesFragmentGridViewAdapter(
-				rootView.getContext(), getActivity(), placesList);
+				rootView.getContext(), getActivity(), placesList, isBigScreen);
 
 		fragment_places_gridView.setAdapter(gridViewAdapter);
 	}

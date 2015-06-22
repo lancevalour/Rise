@@ -8,13 +8,13 @@
         android:id="@+id/menu_new_place_settings"
         android:orderInCategory="100"
         android:title="@string/menu_toolbar_action_settings"
-        app:showAsAction="never"/>
+        app:showAsAction="never"/>
     -->
 
     <item
         android:id="@+id/menu_new_place_add"
         android:icon="@drawable/ic_action_add"
-        android:title="@string/menu_toolbar_action_settings"
+        android:title="@string/menu_toolbar_action_new_place"
         app:showAsAction="ifRoom"/>
 
 </menu>

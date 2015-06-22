@@ -5,7 +5,7 @@ import java.util.List;
 import yicheng.android.ui.materialdesignlibrary.widgets.SnackBar;
 
 import yicheng.android.app.rise.R;
-import yicheng.android.app.rise.activity.NavigationDrawerActvity;
+import yicheng.android.app.rise.activity.NavigationDrawerActivity;
 import yicheng.android.app.rise.activity.NewEventActivity;
 import yicheng.android.app.rise.database.RiseEvent;
 import yicheng.android.app.rise.fragment.EventsFragment;
@@ -34,12 +34,14 @@ public class EventsFragmentGridViewAdapter extends BaseAdapter {
 	private List<RiseEvent> eventsList;
 
 	RiseEvent deletedEvent;
+	boolean isBigScreen;
 
 	public EventsFragmentGridViewAdapter(Context context, Activity activity,
-			List<RiseEvent> eventsList) {
+			List<RiseEvent> eventsList, boolean isBigScreen) {
 		this.context = context;
 		this.activity = activity;
 		this.eventsList = eventsList;
+		this.isBigScreen = isBigScreen;
 	}
 
 	@Override
@@ -119,6 +121,11 @@ public class EventsFragmentGridViewAdapter extends BaseAdapter {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				if (NavigationDrawerActivity.activity_navigation_drawer_floatingActionMenu
+						.isExpanded()) {
+					NavigationDrawerActivity.activity_navigation_drawer_floatingActionMenu
+							.collapse();
+				}
 				goToNewEventActivity(eventsList.get(curPosition));
 			}
 		});
@@ -142,7 +149,7 @@ public class EventsFragmentGridViewAdapter extends BaseAdapter {
 
 						notifyDataSetChanged();
 
-						NavigationDrawerActvity.activity_navigation_drawer_floatingActionMenu
+						NavigationDrawerActivity.activity_navigation_drawer_floatingActionMenu
 								.animate()
 								.translationY(-120)
 								.setDuration(100)
@@ -171,7 +178,7 @@ public class EventsFragmentGridViewAdapter extends BaseAdapter {
 										isDeleted = false;
 									}
 
-								});
+								}, !isBigScreen);
 
 						snackbar.setOnDismissListener(new OnDismissListener() {
 
@@ -179,7 +186,7 @@ public class EventsFragmentGridViewAdapter extends BaseAdapter {
 							public void onDismiss(DialogInterface dialog) {
 								// TODO Auto-generated method stub
 
-								NavigationDrawerActvity.activity_navigation_drawer_floatingActionMenu
+								NavigationDrawerActivity.activity_navigation_drawer_floatingActionMenu
 										.animate()
 										.translationY(0)
 										.setDuration(100)

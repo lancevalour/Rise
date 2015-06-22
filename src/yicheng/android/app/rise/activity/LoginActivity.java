@@ -48,7 +48,7 @@ public class LoginActivity extends Activity {
 
 	private void goToNavigationDrawerActivity() {
 		Intent intent = new Intent(LoginActivity.this,
-				NavigationDrawerActvity.class);
+				NavigationDrawerActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
 		finish();

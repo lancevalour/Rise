@@ -9,7 +9,6 @@ import java.util.List;
 
 import yicheng.android.ui.materialdesignlibrary.views.Slider;
 import yicheng.android.ui.materialdesignlibrary.views.Slider.OnValueChangedListener;
-
 import yicheng.android.app.rise.R;
 import yicheng.android.app.rise.database.RiseEvent;
 import yicheng.android.app.rise.database.RisePlace;
@@ -28,9 +27,12 @@ import android.os.Bundle;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -66,7 +68,9 @@ public class NewEventActivity extends ActionBarActivity {
 
 	TextView activity_new_event_time_interval_textView;
 
-	ImageButton activity_new_event_event_location_add_button;
+	ImageButton activity_new_event_event_location_add_button,
+			activity_new_event_event_name_clear_button,
+			activity_new_event_event_content_clear_button;
 
 	RelativeLayout activity_new_event_event_location_add_location_layout;
 
@@ -150,6 +154,12 @@ public class NewEventActivity extends ActionBarActivity {
 		activity_new_event_event_location_checkbox.setChecked(true);
 
 		activity_new_event_event_location_add_button = (ImageButton) findViewById(R.id.activity_new_event_event_location_add_button);
+		activity_new_event_event_name_clear_button = (ImageButton) findViewById(R.id.activity_new_event_event_name_clear_button);
+		activity_new_event_event_content_clear_button = (ImageButton) findViewById(R.id.activity_new_event_event_content_clear_button);
+		activity_new_event_event_name_clear_button.setAlpha(0.0f);
+		activity_new_event_event_name_clear_button.setEnabled(false);
+		activity_new_event_event_content_clear_button.setAlpha(0.0f);
+		activity_new_event_event_content_clear_button.setEnabled(false);
 
 		activity_new_event_event_name_editText = (EditText) findViewById(R.id.activity_new_event_event_name_editText);
 		activity_new_event_event_content_editText = (EditText) findViewById(R.id.activity_new_event_event_content_editText);
@@ -237,6 +247,159 @@ public class NewEventActivity extends ActionBarActivity {
 		setRatingBarControl();
 		setCheckBoxControl();
 		setAddPlaceButtonControl();
+		setEditTextControl();
+		setClearButtonControl();
+	}
+
+	private void setClearButtonControl() {
+		activity_new_event_event_content_clear_button
+				.setOnClickListener(new View.OnClickListener() {
+
+					@Override
+					public void onClick(View arg0) {
+						// TODO Auto-generated method stub
+						activity_new_event_event_content_editText.setText("");
+					}
+				});
+		activity_new_event_event_name_editText
+				.setOnClickListener(new View.OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						activity_new_event_event_name_editText.setText("");
+					}
+				});
+	}
+
+	private void setEditTextControl() {
+		activity_new_event_event_name_editText
+				.setOnTouchListener(new View.OnTouchListener() {
+
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						// TODO Auto-generated method stub
+						if (activity_new_event_event_name_editText.getText()
+								.toString().length() != 0) {
+							activity_new_event_event_name_clear_button
+									.animate().alpha(1.0f);
+							activity_new_event_event_name_clear_button
+									.setEnabled(true);
+
+						}
+						return false;
+					}
+				});
+
+		activity_new_event_event_name_editText
+				.addTextChangedListener(new TextWatcher() {
+
+					@Override
+					public void afterTextChanged(Editable s) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void beforeTextChanged(CharSequence s, int start,
+							int count, int after) {
+						// TODO Auto-generated method stub
+						if (s.length() > 0) {
+							activity_new_event_event_name_clear_button
+									.animate().alpha(1.0f);
+							activity_new_event_event_name_clear_button
+									.setEnabled(true);
+						}
+						else {
+							activity_new_event_event_name_clear_button
+									.animate().alpha(0.0f);
+							activity_new_event_event_name_clear_button
+									.setEnabled(false);
+						}
+					}
+
+					@Override
+					public void onTextChanged(CharSequence s, int start,
+							int before, int count) {
+						if (s.length() > 0) {
+							activity_new_event_event_name_clear_button
+									.animate().alpha(1.0f);
+							activity_new_event_event_name_clear_button
+									.setEnabled(true);
+						}
+						else {
+							activity_new_event_event_name_clear_button
+									.animate().alpha(0.0f);
+							activity_new_event_event_name_clear_button
+									.setEnabled(false);
+						}
+					}
+
+				});
+
+		activity_new_event_event_content_editText
+				.setOnTouchListener(new View.OnTouchListener() {
+
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						// TODO Auto-generated method stub
+						if (activity_new_event_event_content_editText.getText()
+								.toString().length() != 0) {
+							activity_new_event_event_content_clear_button
+									.animate().alpha(1.0f);
+							activity_new_event_event_content_clear_button
+									.setEnabled(true);
+
+						}
+						return false;
+					}
+				});
+
+		activity_new_event_event_content_editText
+				.addTextChangedListener(new TextWatcher() {
+
+					@Override
+					public void afterTextChanged(Editable s) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void beforeTextChanged(CharSequence s, int start,
+							int count, int after) {
+						// TODO Auto-generated method stub
+						if (s.length() > 0) {
+							activity_new_event_event_content_clear_button
+									.animate().alpha(1.0f);
+							activity_new_event_event_content_clear_button
+									.setEnabled(true);
+						}
+						else {
+							activity_new_event_event_content_clear_button
+									.animate().alpha(0.0f);
+							activity_new_event_event_content_clear_button
+									.setEnabled(false);
+						}
+					}
+
+					@Override
+					public void onTextChanged(CharSequence s, int start,
+							int before, int count) {
+						if (s.length() > 0) {
+							activity_new_event_event_content_clear_button
+									.animate().alpha(1.0f);
+							activity_new_event_event_content_clear_button
+									.setEnabled(true);
+						}
+						else {
+							activity_new_event_event_content_clear_button
+									.animate().alpha(0.0f);
+							activity_new_event_event_content_clear_button
+									.setEnabled(false);
+						}
+					}
+
+				});
 
 	}
 
@@ -279,11 +442,15 @@ public class NewEventActivity extends ActionBarActivity {
 							boolean isChecked) {
 						// TODO Auto-generated method stub
 						if (isChecked) {
-							activity_new_event_event_location_add_location_layout
+							activity_new_event_event_location_add_button
+									.setVisibility(View.VISIBLE);
+							activity_new_event_event_location_listView
 									.setVisibility(View.VISIBLE);
 						}
 						else {
-							activity_new_event_event_location_add_location_layout
+							activity_new_event_event_location_add_button
+									.setVisibility(View.GONE);
+							activity_new_event_event_location_listView
 									.setVisibility(View.GONE);
 						}
 					}
@@ -514,6 +681,7 @@ public class NewEventActivity extends ActionBarActivity {
 
 			alarmIntent.putExtra("event_content", this.eventContent);
 			alarmIntent.putExtra("event_id", eventID);
+			alarmIntent.putExtra("event_location_list", this.eventLocationList);
 
 			pendingIntent = PendingIntent.getBroadcast(this, eventID,
 					alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -528,6 +696,7 @@ public class NewEventActivity extends ActionBarActivity {
 
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTimeInMillis(System.currentTimeMillis());
+
 			calendar.set(Calendar.HOUR_OF_DAY, Integer.valueOf(startTime[0]));
 			calendar.set(Calendar.MINUTE, Integer.valueOf(startTime[1]));
 
@@ -537,7 +706,7 @@ public class NewEventActivity extends ActionBarActivity {
 			// 20 minutes.
 
 			alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
-					calendar.getTimeInMillis(), (long) 1000 * 60 * 1,
+					calendar.getTimeInMillis(), (long) 1000 * 60 * 60 * 24,
 					pendingIntent);
 
 			Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
@@ -550,8 +719,8 @@ public class NewEventActivity extends ActionBarActivity {
 
 			Intent alarmIntent = new Intent(this, EventAlarmReceiver.class);
 
-			alarmIntent.putExtra("event_content", this.eventContent);
-			alarmIntent.putExtra("event_id", eventID);
+			/*alarmIntent.putExtra("event_content", this.eventContent);
+			alarmIntent.putExtra("event_id", eventID);*/
 
 			pendingIntent = PendingIntent.getBroadcast(this, eventID,
 					alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);

@@ -304,8 +304,8 @@ public final class R {
 		public static final int secondary_text_disabled_material_light = 0x7f09002b;
 		public static final int switch_thumb_disabled_material_dark = 0x7f090014;
 		public static final int switch_thumb_disabled_material_light = 0x7f090015;
-		public static final int switch_thumb_material_dark = 0x7f090065;
-		public static final int switch_thumb_material_light = 0x7f090066;
+		public static final int switch_thumb_material_dark = 0x7f090067;
+		public static final int switch_thumb_material_light = 0x7f090068;
 		public static final int switch_thumb_normal_material_dark = 0x7f090012;
 		public static final int switch_thumb_normal_material_light = 0x7f090013;
 	}
@@ -568,10 +568,10 @@ public final class R {
 		public static final int abc_search_view = 0x7f030016;
 		public static final int abc_select_dialog_material = 0x7f030017;
 		public static final int abc_simple_dropdown_hint = 0x7f030018;
-		public static final int select_dialog_item_material = 0x7f03002d;
-		public static final int select_dialog_multichoice_material = 0x7f03002e;
-		public static final int select_dialog_singlechoice_material = 0x7f03002f;
-		public static final int support_simple_spinner_dropdown_item = 0x7f030032;
+		public static final int select_dialog_item_material = 0x7f03002c;
+		public static final int select_dialog_multichoice_material = 0x7f03002d;
+		public static final int select_dialog_singlechoice_material = 0x7f03002e;
+		public static final int support_simple_spinner_dropdown_item = 0x7f030031;
 	}
 	public static final class string {
 		public static final int abc_action_bar_home_description = 0x7f0b0001;

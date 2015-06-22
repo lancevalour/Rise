@@ -29,9 +29,12 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.Toolbar.OnMenuItemClickListener;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -124,6 +127,10 @@ public class NewPlaceActivity extends ActionBarActivity {
 	private void initiateComponents() {
 
 		activity_new_place_autocomplete_clear_button = (ImageButton) findViewById(R.id.activity_new_place_autocomplete_clear_button);
+
+		activity_new_place_autocomplete_clear_button.setAlpha(0.0f);
+		activity_new_place_autocomplete_clear_button.setEnabled(false);
+
 		activity_new_place_place_picker_button = (ImageButton) findViewById(R.id.activity_new_place_place_picker_button);
 
 		activity_new_place_place_label_work_checkbox = (CheckBox) findViewById(R.id.activity_new_place_place_label_work_checkbox);
@@ -194,6 +201,74 @@ public class NewPlaceActivity extends ActionBarActivity {
 		setCheckBoxControl();
 		setPlacePickerButtonControl();
 		setClearButtonControl();
+		setEditTextControl();
+	}
+
+	private void setEditTextControl() {
+		activity_new_place_autocomplete_textView
+				.setOnTouchListener(new View.OnTouchListener() {
+
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						// TODO Auto-generated method stub
+						if (activity_new_place_autocomplete_textView.getText()
+								.toString().length() != 0) {
+							activity_new_place_autocomplete_clear_button
+									.animate().alpha(1.0f);
+							activity_new_place_autocomplete_clear_button
+									.setEnabled(true);
+
+						}
+						return false;
+					}
+				});
+
+		activity_new_place_autocomplete_textView
+				.addTextChangedListener(new TextWatcher() {
+
+					@Override
+					public void afterTextChanged(Editable s) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void beforeTextChanged(CharSequence s, int start,
+							int count, int after) {
+						// TODO Auto-generated method stub
+						if (s.length() > 0) {
+							activity_new_place_autocomplete_clear_button
+									.animate().alpha(1.0f);
+							activity_new_place_autocomplete_clear_button
+									.setEnabled(true);
+						}
+						else {
+							activity_new_place_autocomplete_clear_button
+									.animate().alpha(0.0f);
+							activity_new_place_autocomplete_clear_button
+									.setEnabled(false);
+						}
+					}
+
+					@Override
+					public void onTextChanged(CharSequence s, int start,
+							int before, int count) {
+						if (s.length() > 0) {
+							activity_new_place_autocomplete_clear_button
+									.animate().alpha(1.0f);
+							activity_new_place_autocomplete_clear_button
+									.setEnabled(true);
+						}
+						else {
+							activity_new_place_autocomplete_clear_button
+									.animate().alpha(0.0f);
+							activity_new_place_autocomplete_clear_button
+									.setEnabled(false);
+						}
+					}
+
+				});
+
 	}
 
 	int PLACE_PICKER_REQUEST = 1;
@@ -205,8 +280,7 @@ public class NewPlaceActivity extends ActionBarActivity {
 			startActivityForResult(builder.build(getApplicationContext()),
 					PLACE_PICKER_REQUEST);
 		}
-		catch (GooglePlayServicesRepairableException
-				 e) {
+		catch (GooglePlayServicesRepairableException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

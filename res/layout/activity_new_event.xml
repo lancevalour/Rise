@@ -24,13 +24,15 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/activity_new_event_toolbar"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp" >
+        android:layout_marginLeft="@dimen/layout_margin_left"
+        android:layout_marginRight="@dimen/layout_margin_right"
+        android:layout_marginTop="@dimen/layout_margin_top" >
 
         <TextView
             android:id="@+id/activity_new_event_event_name_textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Event Name" />
+            style="@style/FontSubheader"
+            android:text="Event Name"
+            android:textSize="@dimen/subheader" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -45,21 +47,20 @@
 
                 <EditText
                     android:id="@+id/activity_new_event_event_name_editText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/FontBody"
                     android:layout_gravity="center_horizontal"
-                    android:hint="@string/autocomplete_hint"
+                    android:hint="@string/event_name_hint"
                     android:paddingLeft="30dp"
                     android:paddingRight="30dp"
-                    android:textColor="@android:color/primary_text_light" />
+                    android:textSize="@dimen/body" />
 
                 <ImageButton
                     android:id="@+id/activity_new_event_event_name_clear_button"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_gravity="right"
+                    android:layout_gravity="right|center_horizontal"
                     android:layout_toRightOf="@id/activity_new_event_event_name_editText"
-                    android:background="@drawable/ic_action_event" />
+                    android:background="@drawable/ic_action_remove" />
             </FrameLayout>
         </RelativeLayout>
     </RelativeLayout>
@@ -70,13 +71,15 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/activity_new_event_event_name_layout"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp" >
+        android:layout_marginLeft="@dimen/layout_margin_left"
+        android:layout_marginRight="@dimen/layout_margin_right"
+        android:layout_marginTop="@dimen/layout_margin_top" >
 
         <TextView
             android:id="@+id/activity_new_event_event_content_textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Event Content" />
+            style="@style/FontSubheader"
+            android:text="Event Content"
+            android:textSize="@dimen/subheader" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -91,21 +94,20 @@
 
                 <EditText
                     android:id="@+id/activity_new_event_event_content_editText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/FontBody"
                     android:layout_gravity="center_horizontal"
-                    android:hint="@string/autocomplete_hint"
+                    android:hint="@string/event_content_hint"
                     android:paddingLeft="30dp"
                     android:paddingRight="30dp"
-                    android:textColor="@android:color/primary_text_light" />
+                    android:textSize="@dimen/body" />
 
                 <ImageButton
                     android:id="@+id/activity_new_event_event_content_clear_button"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_gravity="right"
+                    android:layout_gravity="right|center_horizontal"
                     android:layout_toRightOf="@id/activity_new_event_event_name_editText"
-                    android:background="@drawable/ic_action_event" />
+                    android:background="@drawable/ic_action_remove" />
             </FrameLayout>
         </RelativeLayout>
     </RelativeLayout>
@@ -116,13 +118,15 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/activity_new_event_event_content_layout"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp" >
+        android:layout_marginLeft="@dimen/layout_margin_left"
+        android:layout_marginRight="@dimen/layout_margin_right"
+        android:layout_marginTop="@dimen/layout_margin_top" >
 
         <TextView
             android:id="@+id/activity_new_event_event_time_textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Event Time" />
+            style="@style/FontSubheader"
+            android:text="Event Time"
+            android:textSize="@dimen/subheader" />
 
         <LinearLayout
             android:id="@+id/activity_new_event_event_time_button_layout"
@@ -130,7 +134,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/activity_new_event_event_time_textView"
             android:gravity="center"
-            android:weightSum="3" >
+            android:weightSum="2" >
 
             <Button
                 android:id="@+id/activity_new_event_start_time_button"
@@ -138,7 +142,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
-                android:text="10:00 AM" />
+                android:text="10:00 AM"
+                android:textColor="@color/text_primary_dark" />
 
             <Button
                 android:id="@+id/activity_new_event_end_time_button"
@@ -146,7 +151,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
-                android:text="11:00 AM" />
+                android:text="11:00 AM"
+                android:textColor="@color/text_primary_dark" />
         </LinearLayout>
 
         <RelativeLayout
@@ -155,34 +161,49 @@
             android:layout_below="@id/activity_new_event_event_time_button_layout" >
 
             <TextView
-                android:id="@+id/activity_new_event_time_interval_textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="30 " />
+                android:id="@+id/activity_new_event_time_interval_title_textiVew"
+                style="@style/FontSubheader"
+                android:text="Event Time Interval"
+                android:textSize="@dimen/subheader" />
 
-            <TextView
-                android:id="@+id/activity_new_event_time_interval_min_textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@id/activity_new_event_time_interval_textView"
-                android:text=" Mins " />
-
-            <yicheng.android.ui.materialdesignlibrary.views.Slider
-                android:id="@+id/activity_new_event_time_interval_slider"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="10dp"
-                android:layout_toRightOf="@id/activity_new_event_time_interval_min_textView"
-                android:background="@color/theme_accent"
-                materialdesign:max="60"
-                materialdesign:min="0"
-                materialdesign:showNumberIndicator="true" />
+                android:layout_below="@id/activity_new_event_time_interval_title_textiVew"
+                android:gravity="center" >
+
+                <TextView
+                    android:id="@+id/activity_new_event_time_interval_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="30 " />
+
+                <TextView
+                    android:id="@+id/activity_new_event_time_interval_min_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/activity_new_event_time_interval_textView"
+                    android:fontFamily="sans-serif-medium"
+                    android:text=" Mins " />
+
+                <yicheng.android.ui.materialdesignlibrary.views.Slider
+                    android:id="@+id/activity_new_event_time_interval_slider"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_toRightOf="@id/activity_new_event_time_interval_min_textView"
+                    android:background="@color/theme_accent"
+                    materialdesign:max="60"
+                    materialdesign:min="0"
+                    materialdesign:showNumberIndicator="true" />
+            </RelativeLayout>
         </RelativeLayout>
     </RelativeLayout>
 
@@ -192,13 +213,15 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/activity_new_event_event_time_layout"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp" >
+        android:layout_marginLeft="@dimen/layout_margin_left"
+        android:layout_marginRight="@dimen/layout_margin_right"
+        android:layout_marginTop="@dimen/layout_margin_top" >
 
         <TextView
             android:id="@+id/activity_new_event_event_priority_textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Event Priority" />
+            style="@style/FontSubheader"
+            android:text="Event Priority"
+            android:textSize="@dimen/subheader" />
 
         <RatingBar
             android:id="@+id/activity_new_event_event_priority_ratingBar"
@@ -208,50 +231,59 @@
             android:layout_centerHorizontal="true"
             android:numStars="5"
             android:rating="3.0"
-            android:stepSize="1.0" />
+            android:scaleX="0.5"
+            android:scaleY="0.5"
+            android:stepSize="1" />
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/activity_new_event_event_priority_layout"
-        android:layout_centerHorizontal="true" >
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="@dimen/layout_margin_left"
+        android:layout_marginRight="@dimen/layout_margin_right"
+        android:layout_marginTop="@dimen/layout_margin_top" >
 
         <TextView
             android:id="@+id/activity_new_event_event_location_textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Event Location" />
-
-        <CheckBox
-            android:id="@+id/activity_new_event_event_location_checkbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/activity_new_event_event_location_textView"
-            android:text="Add Location" />
+            style="@style/FontSubheader"
+            android:text="Event Location"
+            android:textSize="@dimen/subheader" />
 
         <RelativeLayout
             android:id="@+id/activity_new_event_event_location_add_location_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_below="@id/activity_new_event_event_location_checkbox" >
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/activity_new_event_event_location_textView"
+            android:layout_marginTop="5dp" >
+
+            <CheckBox
+                android:id="@+id/activity_new_event_event_location_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:fontFamily="sans-serif-medium"
+                android:text="Add Location" />
 
             <ImageButton
                 android:id="@+id/activity_new_event_event_location_add_button"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 android:background="@drawable/background_ripple"
-                android:src="@drawable/ic_action_events" />
-
-            <ListView
-                android:id="@+id/activity_new_event_event_location_listView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/activity_new_event_event_location_add_button"
-                android:background="?android:attr/activatedBackgroundIndicator"
-                android:choiceMode="multipleChoice" >
-            </ListView>
+                android:src="@drawable/ic_action_add_circle" />
         </RelativeLayout>
+
+        <ListView
+            android:id="@+id/activity_new_event_event_location_listView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/activity_new_event_event_location_add_location_layout"
+            android:background="?android:attr/activatedBackgroundIndicator"
+            android:choiceMode="multipleChoice" >
+        </ListView>
     </RelativeLayout>
 
 </RelativeLayout>

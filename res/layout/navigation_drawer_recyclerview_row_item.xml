@@ -21,6 +21,6 @@
         android:layout_marginLeft="15dp"
         android:layout_toRightOf="@id/navigation_drawer_recyclerview_row_imageView"
         android:text="Medium Text"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>
