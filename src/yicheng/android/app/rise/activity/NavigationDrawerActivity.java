@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
@@ -151,7 +152,8 @@ public class NavigationDrawerActivity extends ActionBarActivity {
 							USER_AVATER_IMAGE_ID = currentPerson.getImage()
 									.getUrl();
 
-							USER_EMAIL = currentPerson.getUrl();
+							USER_EMAIL = Plus.AccountApi
+									.getAccountName(googleApiClient);
 
 							USER_BACKGROUND_IMAGE_ID = currentPerson.getCover()
 									.getCoverPhoto().getUrl();
@@ -194,10 +196,15 @@ public class NavigationDrawerActivity extends ActionBarActivity {
 							public void onConnectionFailed(
 									ConnectionResult result) {
 								// TODO Auto-generated method stub
-
+								if (!result.hasResolution()) {
+									GooglePlayServicesUtil.getErrorDialog(
+											result.getErrorCode(),
+											NavigationDrawerActivity.this, 0)
+											.show();
+								}
 							}
 						}).addApi(Plus.API).addScope(Plus.SCOPE_PLUS_LOGIN)
-				.build();
+				.addScope(Plus.SCOPE_PLUS_PROFILE).build();
 	}
 
 	private void setComponentStyle() {

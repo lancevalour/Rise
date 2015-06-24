@@ -3,6 +3,7 @@ package yicheng.android.app.rise.activity;
 import yicheng.android.app.rise.R;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
@@ -24,8 +25,11 @@ public class LoginActivity extends Activity {
 
 	GoogleApiClient googleApiClient;
 
-	private boolean googleIntentInProgress;
-	private boolean googleSignInClicked;
+	private boolean mIntentInProgress;
+
+	private boolean mSignInClicked;
+
+	private ConnectionResult mConnectionResult;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +65,7 @@ public class LoginActivity extends Activity {
 					@Override
 					public void onConnected(Bundle connectionHint) {
 						// TODO Auto-generated method stub
-						googleSignInClicked = false;
+						mSignInClicked = false;
 						Toast.makeText(getBaseContext(), "Logged in!",
 								Toast.LENGTH_SHORT).show();
 
@@ -71,7 +75,7 @@ public class LoginActivity extends Activity {
 					@Override
 					public void onConnectionSuspended(int cause) {
 						// TODO Auto-generated method stub
-
+						googleApiClient.connect();
 					}
 
 				})
@@ -82,48 +86,97 @@ public class LoginActivity extends Activity {
 							public void onConnectionFailed(
 									ConnectionResult result) {
 								// TODO Auto-generated method stub
-								if (!googleIntentInProgress) {
-									if (googleSignInClicked
-											&& result.hasResolution()) {
+								/*			if (!mIntentInProgress) {
+												if (mSignInClicked
+														&& result.hasResolution()) {
+													// The user has already clicked
+													// 'sign-in' so we attempt to resolve
+													// all
+													// errors until the user is signed in,
+													// or they cancel.
+													try {
+														result.startResolutionForResult(
+																LoginActivity.this,
+																RC_SIGN_IN);
+														mIntentInProgress = true;
+													}
+													catch (SendIntentException e) {
+														// The intent was canceled before it
+														// was sent. Return to the default
+														// state and attempt to connect to
+														// get an updated ConnectionResult.
+														mIntentInProgress = false;
+														googleApiClient.connect();
+													}
+												}
+											}*/
+
+								if (!result.hasResolution()) {
+									GooglePlayServicesUtil.getErrorDialog(
+											result.getErrorCode(),
+											LoginActivity.this, 0).show();
+									return;
+								}
+
+								if (!mIntentInProgress) {
+									// Store the ConnectionResult for later
+									// usage
+									mConnectionResult = result;
+
+									if (mSignInClicked) {
 										// The user has already clicked
-										// 'sign-in' so we attempt to resolve
-										// all
+										// 'sign-in' so we attempt to
+										// resolve all
 										// errors until the user is signed in,
 										// or they cancel.
-										try {
-											result.startResolutionForResult(
-													LoginActivity.this,
-													RC_SIGN_IN);
-											googleIntentInProgress = true;
-										}
-										catch (SendIntentException e) {
-											// The intent was canceled before it
-											// was sent. Return to the default
-											// state and attempt to connect to
-											// get an updated ConnectionResult.
-											googleIntentInProgress = false;
-											googleApiClient.connect();
-										}
+										resolveSignInError();
 									}
 								}
+
 							}
 						}).addApi(Plus.API).addScope(Plus.SCOPE_PLUS_LOGIN)
 				.build();
 	}
 
-	protected void onActivityResult(int requestCode, int responseCode,
-			Intent intent) {
-		if (requestCode == RC_SIGN_IN) {
-			if (responseCode != RESULT_OK) {
-				googleSignInClicked = false;
+	private void resolveSignInError() {
+		if (mConnectionResult.hasResolution()) {
+			try {
+				mIntentInProgress = true;
+				mConnectionResult.startResolutionForResult(this, RC_SIGN_IN);
 			}
-
-			googleIntentInProgress = false;
-
-			if (!googleApiClient.isConnected()) {
-				googleApiClient.reconnect();
+			catch (SendIntentException e) {
+				mIntentInProgress = false;
+				googleApiClient.connect();
 			}
 		}
+	}
+
+	protected void onActivityResult(int requestCode, int responseCode,
+			Intent intent) {
+		/*	if (requestCode == RC_SIGN_IN) {
+				if (responseCode != RESULT_OK) {
+					mSignInClicked = false;
+				}
+
+				mIntentInProgress = false;
+
+				if (!googleApiClient.isConnected()) {
+					googleApiClient.reconnect();
+				}
+			}*/
+
+		if (requestCode == RC_SIGN_IN) {
+			if (responseCode != RESULT_OK) {
+				mSignInClicked = false;
+			}
+
+			mIntentInProgress = false;
+
+			if (!googleApiClient.isConnecting()) {
+				googleApiClient.connect();
+			}
+		}
+
 	}
 
 	private void setComponentControl() {
@@ -137,10 +190,9 @@ public class LoginActivity extends Activity {
 					@Override
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
-						if (v.getId() == R.id.activity_login_signInButton
-								&& !googleApiClient.isConnecting()) {
-							googleSignInClicked = true;
-							googleApiClient.connect();
+						if (!googleApiClient.isConnecting()) {
+							mSignInClicked = true;
+							resolveSignInError();
 						}
 					}
 				});

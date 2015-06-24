@@ -31,6 +31,8 @@
         <TextView
             android:id="@+id/activity_new_event_event_name_textView"
             style="@style/FontSubheader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Event Name"
             android:textSize="@dimen/subheader" />
 
@@ -48,6 +50,8 @@
                 <EditText
                     android:id="@+id/activity_new_event_event_name_editText"
                     style="@style/FontBody"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:hint="@string/event_name_hint"
                     android:paddingLeft="30dp"
@@ -78,6 +82,8 @@
         <TextView
             android:id="@+id/activity_new_event_event_content_textView"
             style="@style/FontSubheader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Event Content"
             android:textSize="@dimen/subheader" />
 
@@ -95,6 +101,8 @@
                 <EditText
                     android:id="@+id/activity_new_event_event_content_editText"
                     style="@style/FontBody"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:hint="@string/event_content_hint"
                     android:paddingLeft="30dp"
@@ -125,6 +133,8 @@
         <TextView
             android:id="@+id/activity_new_event_event_time_textView"
             style="@style/FontSubheader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Event Time"
             android:textSize="@dimen/subheader" />
 
@@ -141,7 +151,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@android:color/transparent"
+                android:background="@drawable/background_ripple_rectangle"
                 android:text="10:00 AM"
                 android:textColor="@color/text_primary_dark" />
 
@@ -150,7 +160,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@android:color/transparent"
+                android:background="@drawable/background_ripple_rectangle"
                 android:text="11:00 AM"
                 android:textColor="@color/text_primary_dark" />
         </LinearLayout>
@@ -163,6 +173,8 @@
             <TextView
                 android:id="@+id/activity_new_event_time_interval_title_textiVew"
                 style="@style/FontSubheader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Event Time Interval"
                 android:textSize="@dimen/subheader" />
 
@@ -220,6 +232,8 @@
         <TextView
             android:id="@+id/activity_new_event_event_priority_textView"
             style="@style/FontSubheader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Event Priority"
             android:textSize="@dimen/subheader" />
 
@@ -248,6 +262,8 @@
         <TextView
             android:id="@+id/activity_new_event_event_location_textView"
             style="@style/FontSubheader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Event Location"
             android:textSize="@dimen/subheader" />
 

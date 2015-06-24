@@ -19,9 +19,13 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.PorterDuff.Mode;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.graphics.drawable.DrawableCompat;
@@ -127,14 +131,30 @@ public class NewEventActivity extends ActionBarActivity {
 	}
 
 	private void setComponentStyle() {
-		/*	if (Build.VERSION.SDK_INT >= 21) {
-				Window window = getWindow();
-				window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-				window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-				window.setStatusBarColor(getResources().getColor(
-						R.color.theme_primary_dark));
-			}
-		*/
+		/*if (Build.VERSION.SDK_INT >= 21) {
+			Window window = getWindow();
+
+			window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+			window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+			window.setStatusBarColor(getResources().getColor(
+					R.color.theme_primary_dark));
+
+		}*/
+
+		LayerDrawable layerDrawable = (LayerDrawable) activity_new_event_event_priority_ratingBar
+				.getProgressDrawable();
+		DrawableCompat.setTint(
+				DrawableCompat.wrap(layerDrawable.getDrawable(0)),
+				getResources().getColor(R.color.theme_accent)); // Empty
+		// star
+		DrawableCompat.setTint(
+				DrawableCompat.wrap(layerDrawable.getDrawable(1)),
+				getResources().getColor(R.color.theme_accent)); // Partial
+		// star
+		DrawableCompat.setTint(
+				DrawableCompat.wrap(layerDrawable.getDrawable(2)),
+				getResources().getColor(R.color.theme_accent)); // Full
+		// star
 	}
 
 	private void updatePlaceList() {
@@ -188,14 +208,6 @@ public class NewEventActivity extends ActionBarActivity {
 				.format(new Date()));
 
 		activity_new_event_event_priority_ratingBar = (RatingBar) findViewById(R.id.activity_new_event_event_priority_ratingBar);
-
-		LayerDrawable stars = (LayerDrawable) activity_new_event_event_priority_ratingBar
-				.getProgressDrawable();
-		stars.getDrawable(2).setColorFilter(
-				getResources().getColor(R.color.theme_accent), Mode.SRC_ATOP);
-
-		stars.getDrawable(0).setColorFilter(
-				getResources().getColor(R.color.theme_accent), Mode.SRC_ATOP);
 
 		activity_new_event_time_interval_slider = (Slider) findViewById(R.id.activity_new_event_time_interval_slider);
 
@@ -261,7 +273,7 @@ public class NewEventActivity extends ActionBarActivity {
 						activity_new_event_event_content_editText.setText("");
 					}
 				});
-		activity_new_event_event_name_editText
+		activity_new_event_event_name_clear_button
 				.setOnClickListener(new View.OnClickListener() {
 
 					@Override
@@ -498,6 +510,7 @@ public class NewEventActivity extends ActionBarActivity {
 						TimePickerDialogFragment fragment = new TimePickerDialogFragment(
 								activity_new_event_start_time_button,
 								activity_new_event_start_time_button);
+
 						// fragment.getDialog().getWindow().setLayout(100, 100);
 						fragment.show(getFragmentManager(),
 								"start_time_picker_dialog");
@@ -568,7 +581,53 @@ public class NewEventActivity extends ActionBarActivity {
 
 		new_event_actionbar_switch
 				.setChecked(Boolean.valueOf(isNotificationOn));
+		
+	/*	int colorOn = 0xFF323E46;
+		int colorOff = 0xFF666666;
+		int colorDisabled = 0xFF333333;
+		StateListDrawable thumbStates = new StateListDrawable();
+		thumbStates.addState(new int[] { android.R.attr.state_checked },
+				new ColorDrawable(colorOn));
+		thumbStates.addState(new int[] { -android.R.attr.state_enabled },
+				new ColorDrawable(colorDisabled));
+		thumbStates.addState(new int[] {}, new ColorDrawable(colorOff)); // this
+																			// one
+																			// has
+																			// to
+																			// come
+																			// last
+		new_event_actionbar_switch.setThumbDrawable(thumbStates);
+		
+*/
+		
+		/*new_event_actionbar_switch.getThumbDrawable().setColorFilter(
+				getResources().getColor(R.color.theme_accent), Mode.MULTIPLY);
+		new_event_actionbar_switch.getTrackDrawable().setColorFilter(
+				getResources().getColor(R.color.theme_accent), Mode.MULTIPLY);*/
 
+		/*	int colorOn = 0xFF323E46;
+			int colorOff = 0xFF666666;
+			int colorDisabled = 0xFF333333;
+			StateListDrawable thumbStates = new StateListDrawable();
+			thumbStates.addState(new int[] { android.R.attr.state_checked },
+					new ColorDrawable(colorOn));
+			thumbStates.addState(new int[] { -android.R.attr.state_enabled },
+					new ColorDrawable(colorDisabled));
+				thumbStates
+						.addState(new int[] {}, new ColorDrawable(this.app.colorOff)); // this
+																						// one
+																						// has
+																						// to
+																						// come
+																						// last
+					new_event_actionbar_switch.setThumbDrawable(thumbStates);*/
+		/*	ColorStateList buttonStates = new ColorStateList(new int[][] {
+					new int[] { android.R.attr.state_checked },
+					new int[] { -android.R.attr.state_enabled }, new int[] {} },
+					new int[] { getResources().getColor(R.color.theme_accent),
+							getResources().getColor(R.color.theme_accent),
+							getResources().getColor(R.color.theme_accent) });
+			new_event_actionbar_switch.setButtonTintList(buttonStates);*/
 		setSwitchControl();
 
 		return true;

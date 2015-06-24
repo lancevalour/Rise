@@ -95,7 +95,7 @@ public class TimePickerDialogFragment extends DialogFragment {
 		dialog = builder.create();
 
 		initiateComponents();
-		// setComponentStyle();
+		setComponentStyle();
 		setComponentControl();
 		// setHandlerControl();
 
@@ -106,6 +106,20 @@ public class TimePickerDialogFragment extends DialogFragment {
 		framgent_time_picker_time_picker = (TimePicker) rootView
 				.findViewById(R.id.framgent_time_picker_time_picker);
 
+	}
+
+	private void setComponentStyle() {
+		dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+			@Override
+			public void onShow(final DialogInterface dialog) {
+				Button positiveButton = ((AlertDialog) dialog)
+						.getButton(DialogInterface.BUTTON_POSITIVE);
+				positiveButton.setTextColor(getResources().getColor(
+						R.color.theme_accent));
+
+				positiveButton.invalidate();
+			}
+		});
 	}
 
 	private void setComponentControl() {
