@@ -24,9 +24,11 @@ import yicheng.android.app.rise.R;
 import yicheng.android.app.rise.adapter.PlaceAutoCompleteAdapter;
 import yicheng.android.app.rise.database.RisePlace;
 import yicheng.android.app.rise.database.SQLiteHelper;
+import android.app.Service;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.Toolbar.OnMenuItemClickListener;
@@ -39,6 +41,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -47,6 +50,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -60,6 +64,8 @@ public class NewPlaceActivity extends ActionBarActivity {
 			activity_new_place_place_label_play_checkbox;
 
 	Toolbar activity_new_place_toolbar;
+
+	RelativeLayout activity_new_place_layout;
 
 	AutoCompleteTextView activity_new_place_autocomplete_textView;
 
@@ -99,10 +105,8 @@ public class NewPlaceActivity extends ActionBarActivity {
 		}
 
 		setGoogleApiClient();
-
 		initiateComponents();
 		setComponentStyle();
-
 		setComponentControl();
 	}
 
@@ -128,6 +132,7 @@ public class NewPlaceActivity extends ActionBarActivity {
 	}
 
 	private void initiateComponents() {
+		activity_new_place_layout = (RelativeLayout) findViewById(R.id.activity_new_place_layout);
 
 		activity_new_place_autocomplete_clear_button = (ImageButton) findViewById(R.id.activity_new_place_autocomplete_clear_button);
 
@@ -170,6 +175,24 @@ public class NewPlaceActivity extends ActionBarActivity {
 			activity_new_place_autocomplete_textView.setEnabled(false);
 			activity_new_place_autocomplete_clear_button.setEnabled(false);
 			activity_new_place_place_picker_button.setEnabled(false);
+
+		}
+
+		if (!isUpdatingPlace) {
+			/*InputMethodManager imm = (InputMethodManager) this
+					.getSystemService(Service.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(activity_new_place_autocomplete_textView, 0);*/
+			activity_new_place_autocomplete_textView.requestFocus();
+			activity_new_place_autocomplete_textView
+					.dispatchTouchEvent(MotionEvent.obtain(
+							SystemClock.uptimeMillis(),
+							SystemClock.uptimeMillis(),
+							MotionEvent.ACTION_DOWN, 0, 0, 0));
+			activity_new_place_autocomplete_textView
+					.dispatchTouchEvent(MotionEvent.obtain(
+							SystemClock.uptimeMillis(),
+							SystemClock.uptimeMillis(), MotionEvent.ACTION_UP,
+							0, 0, 0));
 		}
 
 		if (placeTypes != null) {
@@ -195,15 +218,15 @@ public class NewPlaceActivity extends ActionBarActivity {
 	}
 
 	private void setComponentStyle() {
-	/*	if (Build.VERSION.SDK_INT >= 21) {
-			Window window = getWindow();
-		
-			window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-			window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-			window.setStatusBarColor(getResources().getColor(
-					R.color.theme_primary_dark));
+		/*	if (Build.VERSION.SDK_INT >= 21) {
+				Window window = getWindow();
+			
+				window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+				window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+				window.setStatusBarColor(getResources().getColor(
+						R.color.theme_primary_dark));
 
-		}*/
+			}*/
 	}
 
 	private void setComponentControl() {
@@ -213,6 +236,79 @@ public class NewPlaceActivity extends ActionBarActivity {
 		setPlacePickerButtonControl();
 		setClearButtonControl();
 		setEditTextControl();
+		setTouchHideKeyboardControl();
+	}
+
+	private void setTouchHideKeyboardControl() {
+		activity_new_place_layout
+				.setOnTouchListener(new View.OnTouchListener() {
+
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						// TODO Auto-generated method stub
+						hideKeyboard();
+						return false;
+					}
+				});
+		activity_new_place_toolbar
+				.setOnTouchListener(new View.OnTouchListener() {
+
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						// TODO Auto-generated method stub
+						hideKeyboard();
+						return false;
+					}
+				});
+		activity_new_place_place_label_work_checkbox
+				.setOnTouchListener(new View.OnTouchListener() {
+
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						// TODO Auto-generated method stub
+						hideKeyboard();
+						return false;
+					}
+				});
+		activity_new_place_place_label_home_checkbox
+				.setOnTouchListener(new View.OnTouchListener() {
+
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						// TODO Auto-generated method stub
+						hideKeyboard();
+						return false;
+					}
+				});
+		activity_new_place_place_label_play_checkbox
+				.setOnTouchListener(new View.OnTouchListener() {
+
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						// TODO Auto-generated method stub
+						hideKeyboard();
+						return false;
+					}
+				});
+
+	}
+
+	private void hideKeyboard() {
+		if (getCurrentFocus() != null) {
+			InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+		}
+
+		if (activity_new_place_autocomplete_clear_button.getAlpha() == 1.0f) {
+			activity_new_place_autocomplete_clear_button.animate().alpha(0.0f);
+
+		}
+		if (activity_new_place_autocomplete_clear_button.isEnabled()) {
+			activity_new_place_autocomplete_clear_button.setEnabled(false);
+		}
+
+		// activity_new_place_autocomplete_textView.clearFocus();
+
 	}
 
 	private void setEditTextControl() {

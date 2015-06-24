@@ -3,18 +3,20 @@
     android:id="@+id/fragment_events_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/card_background"
+    android:background="@drawable/card_background_ripple"
     android:clickable="true"
     android:padding="10dp" >
 
     <TextView
         android:id="@+id/fragment_events_event_name_textView"
-        android:layout_width="wrap_content"
+        android:layout_width="wrap_content"    android:fontFamily="sans-serif-medium"
+        android:textColor="@color/color_subheader" 
         android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/fragment_events_event_content_textView"
-        android:layout_width="match_parent"
+        android:layout_width="match_parent"    android:fontFamily="sans-serif-medium"
+        android:textColor="@color/color_subheader" 
         android:layout_height="match_parent"
         android:layout_below="@id/fragment_events_event_name_textView" />
 

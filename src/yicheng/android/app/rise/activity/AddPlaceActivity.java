@@ -135,7 +135,7 @@ public class AddPlaceActivity extends ActionBarActivity {
 						// TODO Auto-generated method stub
 						if (!selectedNameList.contains(placesList.get(position)
 								.getPlaceName())) {
-							view.setBackgroundResource(R.drawable.green_card_background);
+							view.setBackgroundResource(R.drawable.card_background_green_ripple);
 							/*		selectedList.add(placesList.get(position));*/
 							selectedNameList.add(placesList.get(position)
 									.getPlaceName());
@@ -151,7 +151,7 @@ public class AddPlaceActivity extends ActionBarActivity {
 									.getPlaceTypes());
 						}
 						else {
-							view.setBackgroundResource(R.drawable.card_background);
+							view.setBackgroundResource(R.drawable.card_background_ripple);
 							/*selectedList.remove(placesList.get(position));*/
 							selectedNameList.remove(placesList.get(position)
 									.getPlaceName());

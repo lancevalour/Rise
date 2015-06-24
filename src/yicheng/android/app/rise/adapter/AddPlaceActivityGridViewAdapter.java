@@ -107,10 +107,10 @@ public class AddPlaceActivityGridViewAdapter extends BaseAdapter {
 		}
 
 		if (selectedNameList.contains(placesList.get(position).getPlaceName())) {
-			gridView.setBackgroundResource(R.drawable.green_card_background);
+			gridView.setBackgroundResource(R.drawable.card_background_green_ripple);
 		}
 		else {
-			gridView.setBackgroundResource(R.drawable.card_background);
+			gridView.setBackgroundResource(R.drawable.card_background_ripple);
 		}
 
 		/*	final RelativeLayout fragment_places_layout = (RelativeLayout) gridView

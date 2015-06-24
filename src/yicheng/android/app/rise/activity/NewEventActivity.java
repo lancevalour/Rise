@@ -38,8 +38,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -47,9 +49,11 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,6 +61,8 @@ import android.widget.RatingBar.OnRatingBarChangeListener;
 import android.widget.TextClock;
 
 public class NewEventActivity extends ActionBarActivity {
+	ScrollView activity_new_event_scrollView;
+	RelativeLayout activity_new_event_layout;
 
 	Toolbar activity_new_event_toolbar;
 
@@ -122,6 +128,7 @@ public class NewEventActivity extends ActionBarActivity {
 			isNotificationOn = extras.getString("event_is_notification_on");
 			eventLocationList = extras.getString("event_location_list");
 			isUpdatingEvent = true;
+
 		}
 
 		initiateComponents();
@@ -164,10 +171,13 @@ public class NewEventActivity extends ActionBarActivity {
 				selectedNameList.toArray(new String[selectedNameList.size()]));
 
 		activity_new_event_event_location_listView.setAdapter(placeListAdapter);
+		adjustListViewHeight();
 	}
 
 	private void initiateComponents() {
+		activity_new_event_scrollView = (ScrollView) findViewById(R.id.activity_new_event_scrollView);
 
+		activity_new_event_layout = (RelativeLayout) findViewById(R.id.activity_new_event_layout);
 		activity_new_event_event_location_add_location_layout = (RelativeLayout) findViewById(R.id.activity_new_event_event_location_add_location_layout);
 
 		activity_new_event_event_location_checkbox = (CheckBox) findViewById(R.id.activity_new_event_event_location_checkbox);
@@ -192,6 +202,7 @@ public class NewEventActivity extends ActionBarActivity {
 		setSupportActionBar(activity_new_event_toolbar);
 		if (isUpdatingEvent) {
 			getSupportActionBar().setTitle(R.string.toolbar_edit_event_title);
+			// activity_new_event_event_content_editText.requestFocus();
 		}
 		else {
 			getSupportActionBar().setTitle(R.string.toolbar_new_event_title);
@@ -261,6 +272,163 @@ public class NewEventActivity extends ActionBarActivity {
 		setAddPlaceButtonControl();
 		setEditTextControl();
 		setClearButtonControl();
+		setTouchHideKeyboardControl();
+		setListViewControl();
+	}
+
+	private void adjustListViewHeight() {
+		ListAdapter listAdapter = activity_new_event_event_location_listView
+				.getAdapter();
+		if (listAdapter == null) {
+			// pre-condition
+			return;
+		}
+
+		int totalHeight = 0;
+		for (int i = 0; i < listAdapter.getCount(); i++) {
+			View listItem = listAdapter.getView(i, null,
+					activity_new_event_event_location_listView);
+			listItem.measure(0, 0);
+			totalHeight += listItem.getMeasuredHeight();
+		}
+
+		ViewGroup.LayoutParams params = activity_new_event_event_location_listView
+				.getLayoutParams();
+		params.height = totalHeight
+				+ (activity_new_event_event_location_listView
+						.getDividerHeight() * (listAdapter.getCount() - 1));
+		activity_new_event_event_location_listView.setLayoutParams(params);
+
+	}
+
+	private void setListViewControl() {
+		adjustListViewHeight();
+		/*	activity_new_event_event_location_listView
+					.setOnTouchListener(new View.OnTouchListener() {
+						@Override
+						public boolean onTouch(View v, MotionEvent event) {
+							activity_new_event_scrollView
+									.requestDisallowInterceptTouchEvent(true);
+							int action = event.getActionMasked();
+							switch (action) {
+							case MotionEvent.ACTION_UP:
+								activity_new_event_scrollView
+										.requestDisallowInterceptTouchEvent(false);
+								break;
+							}
+							return false;
+						}
+					});*/
+	}
+
+	private void setTouchHideKeyboardControl() {
+		activity_new_event_scrollView
+				.setOnTouchListener(new View.OnTouchListener() {
+
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						// TODO Auto-generated method stub
+						hideKeyboard();
+						return false;
+					}
+				});
+		activity_new_event_toolbar
+				.setOnTouchListener(new View.OnTouchListener() {
+
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						// TODO Auto-generated method stub
+						hideKeyboard();
+						return false;
+					}
+				});
+		activity_new_event_start_time_button
+				.setOnTouchListener(new View.OnTouchListener() {
+
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						// TODO Auto-generated method stub
+						hideKeyboard();
+						return false;
+					}
+				});
+		activity_new_event_end_time_button
+				.setOnTouchListener(new View.OnTouchListener() {
+
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						// TODO Auto-generated method stub
+						hideKeyboard();
+						return false;
+					}
+				});
+		activity_new_event_time_interval_slider
+				.setOnTouchListener(new View.OnTouchListener() {
+
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						// TODO Auto-generated method stub
+						hideKeyboard();
+						return false;
+					}
+				});
+
+		activity_new_event_event_priority_ratingBar
+				.setOnTouchListener(new View.OnTouchListener() {
+
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						// TODO Auto-generated method stub
+						hideKeyboard();
+						return false;
+					}
+				});
+		activity_new_event_event_location_checkbox
+				.setOnTouchListener(new View.OnTouchListener() {
+
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						// TODO Auto-generated method stub
+						hideKeyboard();
+						return false;
+					}
+				});
+
+		activity_new_event_event_location_add_button
+				.setOnTouchListener(new View.OnTouchListener() {
+
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						// TODO Auto-generated method stub
+						hideKeyboard();
+						return false;
+					}
+				});
+
+	}
+
+	private void hideKeyboard() {
+		if (getCurrentFocus() != null) {
+			InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+		}
+
+		if (activity_new_event_event_name_clear_button.getAlpha() == 1.0f) {
+			activity_new_event_event_name_clear_button.animate().alpha(0.0f);
+
+		}
+		if (activity_new_event_event_name_clear_button.isEnabled()) {
+			activity_new_event_event_name_clear_button.setEnabled(false);
+		}
+		if (activity_new_event_event_content_clear_button.getAlpha() == 1.0f) {
+			activity_new_event_event_content_clear_button.animate().alpha(0.0f);
+
+		}
+		if (activity_new_event_event_content_clear_button.isEnabled()) {
+			activity_new_event_event_content_clear_button.setEnabled(false);
+		}
+		activity_new_event_event_name_editText.clearFocus();
+		activity_new_event_event_content_editText.clearFocus();
 	}
 
 	private void setClearButtonControl() {
@@ -581,25 +749,25 @@ public class NewEventActivity extends ActionBarActivity {
 
 		new_event_actionbar_switch
 				.setChecked(Boolean.valueOf(isNotificationOn));
-		
-	/*	int colorOn = 0xFF323E46;
-		int colorOff = 0xFF666666;
-		int colorDisabled = 0xFF333333;
-		StateListDrawable thumbStates = new StateListDrawable();
-		thumbStates.addState(new int[] { android.R.attr.state_checked },
-				new ColorDrawable(colorOn));
-		thumbStates.addState(new int[] { -android.R.attr.state_enabled },
-				new ColorDrawable(colorDisabled));
-		thumbStates.addState(new int[] {}, new ColorDrawable(colorOff)); // this
-																			// one
-																			// has
-																			// to
-																			// come
-																			// last
-		new_event_actionbar_switch.setThumbDrawable(thumbStates);
-		
-*/
-		
+
+		/*	int colorOn = 0xFF323E46;
+			int colorOff = 0xFF666666;
+			int colorDisabled = 0xFF333333;
+			StateListDrawable thumbStates = new StateListDrawable();
+			thumbStates.addState(new int[] { android.R.attr.state_checked },
+					new ColorDrawable(colorOn));
+			thumbStates.addState(new int[] { -android.R.attr.state_enabled },
+					new ColorDrawable(colorDisabled));
+			thumbStates.addState(new int[] {}, new ColorDrawable(colorOff)); // this
+																				// one
+																				// has
+																				// to
+																				// come
+																				// last
+			new_event_actionbar_switch.setThumbDrawable(thumbStates);
+			
+		*/
+
 		/*new_event_actionbar_switch.getThumbDrawable().setColorFilter(
 				getResources().getColor(R.color.theme_accent), Mode.MULTIPLY);
 		new_event_actionbar_switch.getTrackDrawable().setColorFilter(

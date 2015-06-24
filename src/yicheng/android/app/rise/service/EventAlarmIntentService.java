@@ -1,6 +1,7 @@
 package yicheng.android.app.rise.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import yicheng.android.app.rise.R;
@@ -61,15 +62,20 @@ public class EventAlarmIntentService extends IntentService {
 	private void readLocationListFromDatabase() {
 		String[] locations = eventLocationList.split(",");
 		locationList = new ArrayList<Location>();
-		placeSQLiteHelper = new SQLiteHelper(getBaseContext(),
-				SQLiteHelper.TABLE_PLACE);
+		if (locations.length > 0 && locations[0].trim().length() > 0) {
 
-		for (String s : locations) {
-			RisePlace place = placeSQLiteHelper.getPlaceByName(s);
-			Location location = new Location("");
-			location.setLatitude(Double.parseDouble(place.getPlaceLatitude()));
-			location.setLongitude(Double.parseDouble(place.getPlaceLongitude()));
-			locationList.add(location);
+			placeSQLiteHelper = new SQLiteHelper(getBaseContext(),
+					SQLiteHelper.TABLE_PLACE);
+			System.out.println(Arrays.toString(locations));
+			for (String s : locations) {
+				RisePlace place = placeSQLiteHelper.getPlaceByName(s);
+				Location location = new Location("");
+				location.setLatitude(Double.parseDouble(place
+						.getPlaceLatitude()));
+				location.setLongitude(Double.parseDouble(place
+						.getPlaceLongitude()));
+				locationList.add(location);
+			}
 		}
 	}
 

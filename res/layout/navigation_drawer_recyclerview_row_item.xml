@@ -15,12 +15,15 @@
 
     <TextView
         android:id="@+id/navigation_drawer_recyclerview_row_textView"
+        style="@style/FontBody"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="15dp"
         android:layout_toRightOf="@id/navigation_drawer_recyclerview_row_imageView"
+        android:fontFamily="sans-serif-medium"
         android:text="Medium Text"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/color_subheader" />
 
 </RelativeLayout>
