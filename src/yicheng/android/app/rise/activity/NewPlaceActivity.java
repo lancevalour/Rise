@@ -25,6 +25,7 @@ import yicheng.android.app.rise.adapter.PlaceAutoCompleteAdapter;
 import yicheng.android.app.rise.database.RisePlace;
 import yicheng.android.app.rise.database.SQLiteHelper;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -182,17 +183,8 @@ public class NewPlaceActivity extends ActionBarActivity {
 			/*InputMethodManager imm = (InputMethodManager) this
 					.getSystemService(Service.INPUT_METHOD_SERVICE);
 			imm.showSoftInput(activity_new_place_autocomplete_textView, 0);*/
-			activity_new_place_autocomplete_textView.requestFocus();
-			activity_new_place_autocomplete_textView
-					.dispatchTouchEvent(MotionEvent.obtain(
-							SystemClock.uptimeMillis(),
-							SystemClock.uptimeMillis(),
-							MotionEvent.ACTION_DOWN, 0, 0, 0));
-			activity_new_place_autocomplete_textView
-					.dispatchTouchEvent(MotionEvent.obtain(
-							SystemClock.uptimeMillis(),
-							SystemClock.uptimeMillis(), MotionEvent.ACTION_UP,
-							0, 0, 0));
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 		}
 
 		if (placeTypes != null) {
@@ -384,6 +376,7 @@ public class NewPlaceActivity extends ActionBarActivity {
 		PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
 
 		try {
+
 			startActivityForResult(builder.build(getApplicationContext()),
 					PLACE_PICKER_REQUEST);
 		}
@@ -590,6 +583,7 @@ public class NewPlaceActivity extends ActionBarActivity {
 					@Override
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
+						hideKeyboard();
 						finish();
 
 					}
@@ -615,6 +609,7 @@ public class NewPlaceActivity extends ActionBarActivity {
 
 		switch (item.getItemId()) {
 		case R.id.menu_new_place_add: {
+			hideKeyboard();
 			addNewPlace();
 		}
 			break;

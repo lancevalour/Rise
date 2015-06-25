@@ -289,7 +289,7 @@
                     <CheckBox
                         android:id="@+id/activity_new_event_event_location_checkbox"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
                         android:layout_centerVertical="true"
                         android:fontFamily="sans-serif-medium"
                         android:text="Add Location" />

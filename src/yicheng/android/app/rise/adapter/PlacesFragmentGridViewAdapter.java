@@ -1,9 +1,9 @@
 package yicheng.android.app.rise.adapter;
 
+import java.util.Arrays;
 import java.util.List;
 
 import yicheng.android.ui.materialdesignlibrary.widgets.SnackBar;
-
 import yicheng.android.app.rise.R;
 import yicheng.android.app.rise.activity.NavigationDrawerActivity;
 import yicheng.android.app.rise.activity.NewEventActivity;
@@ -79,54 +79,67 @@ public class PlacesFragmentGridViewAdapter extends BaseAdapter {
 
 		final int curPosition = position;
 
-		LayoutInflater inflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-		View gridView;
+		ViewHolder viewHolder;
 
 		if (convertView == null) {
 
-			gridView = new View(context);
+			LayoutInflater inflater = (LayoutInflater) context
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-			// get layout from mobile.xml
-			gridView = inflater.inflate(R.layout.fragment_places_grid_item,
-					null);
+			convertView = inflater.inflate(R.layout.fragment_places_grid_item,
+					parent, false);
 
-			TextView fragment_places_place_name_textView = (TextView) gridView
+			viewHolder = new ViewHolder();
+
+			viewHolder.fragment_places_place_name_textView = (TextView) convertView
 					.findViewById(R.id.fragment_places_place_name_textView);
-			fragment_places_place_name_textView.setText(placesList
-					.get(position).getPlaceName());
-			TextView fragment_places_place_address_textView = (TextView) gridView
+			viewHolder.fragment_places_place_address_textView = (TextView) convertView
 					.findViewById(R.id.fragment_places_place_address_textView);
-			fragment_places_place_address_textView.setText(placesList.get(
-					position).getPlaceAddress());
-			TextView fragment_places_place_latlong_textView = (TextView) gridView
-					.findViewById(R.id.fragment_places_place_latlong_textView);
-			fragment_places_place_latlong_textView.setText(placesList.get(
-					position).getPlaceLatitude()
-					+ " " + placesList.get(position).getPlaceLongitude());
+			viewHolder.fragment_places_place_label_textView = (TextView) convertView
+					.findViewById(R.id.fragment_places_place_label_textView);
+
+			convertView.setTag(viewHolder);
 
 		}
 		else {
-			gridView = (View) convertView;
 
-			TextView fragment_places_place_name_textView = (TextView) gridView
-					.findViewById(R.id.fragment_places_place_name_textView);
-			fragment_places_place_name_textView.setText(placesList
-					.get(position).getPlaceName());
-			TextView fragment_places_place_address_textView = (TextView) gridView
-					.findViewById(R.id.fragment_places_place_address_textView);
-			fragment_places_place_address_textView.setText(placesList.get(
-					position).getPlaceAddress());
-			TextView fragment_places_place_latlong_textView = (TextView) gridView
-					.findViewById(R.id.fragment_places_place_latlong_textView);
-			fragment_places_place_latlong_textView.setText(placesList.get(
-					position).getPlaceLatitude()
-					+ " " + placesList.get(position).getPlaceLongitude());
+			viewHolder = (ViewHolder) convertView.getTag();
 
 		}
 
-		gridView.setOnClickListener(new View.OnClickListener() {
+		viewHolder.fragment_places_place_name_textView.setText(placesList.get(
+				position).getPlaceName());
+
+		viewHolder.fragment_places_place_address_textView.setText(placesList
+				.get(position).getPlaceAddress());
+
+		String[] types = placesList.get(position).getPlaceTypes().split(",");
+
+		System.out.println(Arrays.toString(types));
+
+		StringBuilder sBuilder = new StringBuilder();
+		for (String s : types) {
+			switch (s) {
+			case "work": {
+				sBuilder.append("W ");
+			}
+				break;
+			case "home": {
+				sBuilder.append("H ");
+			}
+				break;
+			case "play": {
+				sBuilder.append("P ");
+			}
+				break;
+
+			}
+		}
+
+		viewHolder.fragment_places_place_label_textView.setText(sBuilder
+				.toString().trim());
+
+		convertView.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -140,8 +153,9 @@ public class PlacesFragmentGridViewAdapter extends BaseAdapter {
 			}
 		});
 
-		gridView.setOnTouchListener(new SwipeDimissTouchListener(gridView,
-				null, new SwipeDimissTouchListener.DismissCallbacks() {
+		convertView.setOnTouchListener(new SwipeDimissTouchListener(
+				convertView, null,
+				new SwipeDimissTouchListener.DismissCallbacks() {
 
 					@Override
 					public boolean canDismiss(Object token) {
@@ -152,8 +166,8 @@ public class PlacesFragmentGridViewAdapter extends BaseAdapter {
 					@Override
 					public void onDismiss(View view, Object token) {
 						// TODO Auto-generated method stub
-						Toast.makeText(activity, "" + curPosition,
-								Toast.LENGTH_SHORT).show();
+			/*			Toast.makeText(activity, "" + curPosition,
+								Toast.LENGTH_SHORT).show();*/
 
 						deletedPlace = placesList.remove(curPosition);
 
@@ -173,13 +187,13 @@ public class PlacesFragmentGridViewAdapter extends BaseAdapter {
 									@Override
 									public void onClick(View v) {
 										// TODO Auto-generated method stub
-										Toast.makeText(context, "Clicked",
-												Toast.LENGTH_SHORT).show();
+										/*		Toast.makeText(context, "Clicked",
+														Toast.LENGTH_SHORT).show();
 
-										Toast.makeText(context,
-												"curPosition: " + curPosition,
-												Toast.LENGTH_SHORT).show();
-
+												Toast.makeText(context,
+														"curPosition: " + curPosition,
+														Toast.LENGTH_SHORT).show();
+										*/
 										placesList.add(curPosition,
 												deletedPlace);
 
@@ -221,7 +235,7 @@ public class PlacesFragmentGridViewAdapter extends BaseAdapter {
 
 				}));
 
-		return gridView;
+		return convertView;
 
 	}
 
@@ -248,5 +262,10 @@ public class PlacesFragmentGridViewAdapter extends BaseAdapter {
 
 			fragment_places_gridView.setAdapter(gridViewAdapter);
 		}*/
+	private class ViewHolder {
+		TextView fragment_places_place_name_textView;
+		TextView fragment_places_place_address_textView;
+		TextView fragment_places_place_label_textView;
 
+	}
 }

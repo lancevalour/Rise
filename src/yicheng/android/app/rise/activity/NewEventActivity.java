@@ -181,9 +181,11 @@ public class NewEventActivity extends ActionBarActivity {
 		activity_new_event_event_location_add_location_layout = (RelativeLayout) findViewById(R.id.activity_new_event_event_location_add_location_layout);
 
 		activity_new_event_event_location_checkbox = (CheckBox) findViewById(R.id.activity_new_event_event_location_checkbox);
-		activity_new_event_event_location_checkbox.setChecked(true);
+		activity_new_event_event_location_checkbox.setChecked(false);
 
 		activity_new_event_event_location_add_button = (ImageButton) findViewById(R.id.activity_new_event_event_location_add_button);
+		activity_new_event_event_location_add_button.setVisibility(View.GONE);
+		
 		activity_new_event_event_name_clear_button = (ImageButton) findViewById(R.id.activity_new_event_event_name_clear_button);
 		activity_new_event_event_content_clear_button = (ImageButton) findViewById(R.id.activity_new_event_event_content_clear_button);
 		activity_new_event_event_name_clear_button.setAlpha(0.0f);
@@ -235,9 +237,20 @@ public class NewEventActivity extends ActionBarActivity {
 
 		activity_new_event_event_location_listView = (ListView) findViewById(R.id.activity_new_event_event_location_listView);
 
+		if (!isUpdatingEvent) {
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+		}
+
 		if (isUpdatingEvent) {
+
 			activity_new_event_event_content_editText
 					.setText(this.eventContent);
+			activity_new_event_event_content_editText.requestFocus();
+			activity_new_event_event_content_editText
+					.setSelection(activity_new_event_event_content_editText
+							.getText().length());
+
 			activity_new_event_event_name_editText.setText(this.eventName);
 			activity_new_event_event_name_editText.setEnabled(false);
 
@@ -710,6 +723,7 @@ public class NewEventActivity extends ActionBarActivity {
 					@Override
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
+						hideKeyboard();
 						finish();
 
 					}
@@ -724,6 +738,7 @@ public class NewEventActivity extends ActionBarActivity {
 					public void onCheckedChanged(CompoundButton buttonView,
 							boolean isChecked) {
 						// TODO Auto-generated method stub
+						hideKeyboard();
 						if (isChecked) {
 							isNotificationOn = String.valueOf(true);
 						}
@@ -809,7 +824,7 @@ public class NewEventActivity extends ActionBarActivity {
 
 		switch (item.getItemId()) {
 		case R.id.menu_new_event_add: {
-
+			hideKeyboard();
 			addNewEvent();
 		}
 			break;

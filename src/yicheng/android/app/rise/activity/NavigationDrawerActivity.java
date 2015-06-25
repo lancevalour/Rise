@@ -315,7 +315,11 @@ public class NavigationDrawerActivity extends ActionBarActivity {
 
 					@Override
 					public void onClick(View v) {
-
+						if (activity_navigation_drawer_floatingActionMenu
+								.isExpanded()) {
+							activity_navigation_drawer_floatingActionMenu
+									.collapse();
+						}
 						goToNewPlaceActivity();
 
 					}
@@ -326,7 +330,11 @@ public class NavigationDrawerActivity extends ActionBarActivity {
 
 					@Override
 					public void onClick(View v) {
-
+						if (activity_navigation_drawer_floatingActionMenu
+								.isExpanded()) {
+							activity_navigation_drawer_floatingActionMenu
+									.collapse();
+						}
 						goToNewEventActivity();
 					}
 				});
@@ -465,12 +473,12 @@ public class NavigationDrawerActivity extends ActionBarActivity {
 							case 1: {
 								activity_navigation_drawer_layout
 										.closeDrawers();
-								Toast.makeText(
-										NavigationDrawerActivity.this,
-										"The Item Clicked is: "
-												+ recyclerView
-														.getChildPosition(child),
-										Toast.LENGTH_SHORT).show();
+								/*		Toast.makeText(
+												NavigationDrawerActivity.this,
+												"The Item Clicked is: "
+														+ recyclerView
+																.getChildPosition(child),
+												Toast.LENGTH_SHORT).show();*/
 
 								FragmentManager fragmentManager = getFragmentManager();
 
@@ -489,12 +497,12 @@ public class NavigationDrawerActivity extends ActionBarActivity {
 							case 2: {
 								activity_navigation_drawer_layout
 										.closeDrawers();
-								Toast.makeText(
-										NavigationDrawerActivity.this,
-										"The Item Clicked is: "
-												+ recyclerView
-														.getChildPosition(child),
-										Toast.LENGTH_SHORT).show();
+								/*					Toast.makeText(
+															NavigationDrawerActivity.this,
+															"The Item Clicked is: "
+																	+ recyclerView
+																			.getChildPosition(child),
+															Toast.LENGTH_SHORT).show();*/
 								FragmentManager fragmentManager = getFragmentManager();
 
 								Fragment frontFragment = new PlacesFragment();

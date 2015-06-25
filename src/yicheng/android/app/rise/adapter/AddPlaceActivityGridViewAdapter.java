@@ -61,56 +61,40 @@ public class AddPlaceActivityGridViewAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
-
-		LayoutInflater inflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-		View gridView;
+		ViewHolder viewHolder;
 
 		if (convertView == null) {
 
-			gridView = new View(context);
+			LayoutInflater inflater = (LayoutInflater) context
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-			// get layout from mobile.xml
-			gridView = inflater.inflate(R.layout.activity_add_place_grid_item,
-					null);
-
-			TextView activity_add_place_place_name_textView = (TextView) gridView
+			convertView = inflater.inflate(
+					R.layout.activity_add_place_grid_item, null);
+			viewHolder = new ViewHolder();
+			viewHolder.activity_add_place_place_name_textView = (TextView) convertView
 					.findViewById(R.id.activity_add_place_place_name_textView);
-			activity_add_place_place_name_textView.setText(placesList.get(
-					position).getPlaceName());
-			TextView activity_add_place_place_address_textView = (TextView) gridView
+			viewHolder.activity_add_place_place_address_textView = (TextView) convertView
 					.findViewById(R.id.activity_add_place_place_address_textView);
-			activity_add_place_place_address_textView.setText(placesList.get(
-					position).getPlaceAddress());
-			TextView activity_add_place_place_latlong_textView = (TextView) gridView
-					.findViewById(R.id.activity_add_place_place_latlong_textView);
-			activity_add_place_place_latlong_textView.setText(placesList.get(
-					position).getPlaceLatitude()
-					+ " " + placesList.get(position).getPlaceLongitude());
+			convertView.setTag(viewHolder);
+
 		}
 		else {
-			gridView = (View) convertView;
-			TextView activity_add_place_place_name_textView = (TextView) gridView
-					.findViewById(R.id.activity_add_place_place_name_textView);
-			activity_add_place_place_name_textView.setText(placesList.get(
-					position).getPlaceName());
-			TextView activity_add_place_place_address_textView = (TextView) gridView
-					.findViewById(R.id.activity_add_place_place_address_textView);
-			activity_add_place_place_address_textView.setText(placesList.get(
-					position).getPlaceAddress());
-			TextView activity_add_place_place_latlong_textView = (TextView) gridView
-					.findViewById(R.id.activity_add_place_place_latlong_textView);
-			activity_add_place_place_latlong_textView.setText(placesList.get(
-					position).getPlaceLatitude()
-					+ " " + placesList.get(position).getPlaceLongitude());
+			viewHolder = (ViewHolder) convertView.getTag();
 		}
+
+		viewHolder.activity_add_place_place_name_textView.setText(placesList
+				.get(position).getPlaceName());
+
+		viewHolder.activity_add_place_place_address_textView.setText(placesList
+				.get(position).getPlaceAddress());
 
 		if (selectedNameList.contains(placesList.get(position).getPlaceName())) {
-			gridView.setBackgroundResource(R.drawable.card_background_green_ripple);
+			convertView
+					.setBackgroundResource(R.drawable.card_background_green_ripple);
 		}
 		else {
-			gridView.setBackgroundResource(R.drawable.card_background_ripple);
+			convertView
+					.setBackgroundResource(R.drawable.card_background_ripple);
 		}
 
 		/*	final RelativeLayout fragment_places_layout = (RelativeLayout) gridView
@@ -137,7 +121,13 @@ public class AddPlaceActivityGridViewAdapter extends BaseAdapter {
 				}
 
 			});*/
-		return gridView;
+		return convertView;
+	}
+
+	private class ViewHolder {
+		TextView activity_add_place_place_name_textView;
+		TextView activity_add_place_place_address_textView;
+
 	}
 
 }

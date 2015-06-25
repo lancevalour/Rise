@@ -80,43 +80,54 @@ public class EventsFragmentGridViewAdapter extends BaseAdapter {
 
 		final int curPosition = position;
 
-		LayoutInflater inflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-		View gridView;
+		ViewHolder viewHolder;
 
 		if (convertView == null) {
 
-			gridView = new View(context);
+			LayoutInflater inflater = (LayoutInflater) context
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-			// get layout from mobile.xml
-			gridView = inflater.inflate(R.layout.fragment_events_grid_item,
-					null);
+			convertView = inflater.inflate(R.layout.fragment_events_grid_item,
+					parent, false);
 
-			TextView fragment_events_event_name_textView = (TextView) gridView
+			viewHolder = new ViewHolder();
+
+			viewHolder.fragment_events_event_name_textView = (TextView) convertView
 					.findViewById(R.id.fragment_events_event_name_textView);
-			fragment_events_event_name_textView.setText(eventsList
-					.get(position).getEventName());
-			TextView fragment_events_event_content_textView = (TextView) gridView
+			viewHolder.fragment_events_event_content_textView = (TextView) convertView
 					.findViewById(R.id.fragment_events_event_content_textView);
-			fragment_events_event_content_textView.setText(eventsList.get(
-					position).getEventContent());
+
+			viewHolder.fragment_events_event_start_time_textView = (TextView) convertView
+					.findViewById(R.id.fragment_events_event_start_time_textView);
+			viewHolder.fragment_events_event_end_time_textView = (TextView) convertView
+					.findViewById(R.id.fragment_events_event_end_time_textView);
+
+			viewHolder.fragment_events_event_create_date_textView = (TextView) convertView
+					.findViewById(R.id.fragment_events_event_create_date_textView);
+
+			convertView.setTag(viewHolder);
 
 		}
 		else {
-			gridView = (View) convertView;
 
-			TextView fragment_events_event_name_textView = (TextView) gridView
-					.findViewById(R.id.fragment_events_event_name_textView);
-			fragment_events_event_name_textView.setText(eventsList
-					.get(position).getEventName());
-			TextView fragment_events_event_content_textView = (TextView) gridView
-					.findViewById(R.id.fragment_events_event_content_textView);
-			fragment_events_event_content_textView.setText(eventsList.get(
-					position).getEventContent());
+			viewHolder = (ViewHolder) convertView.getTag();
 		}
 
-		gridView.setOnClickListener(new View.OnClickListener() {
+		viewHolder.fragment_events_event_content_textView.setText(eventsList
+				.get(position).getEventContent());
+		viewHolder.fragment_events_event_name_textView.setText(eventsList.get(
+				position).getEventName());
+
+		viewHolder.fragment_events_event_start_time_textView.setText(eventsList
+				.get(position).getEventStartTime());
+		viewHolder.fragment_events_event_end_time_textView.setText(eventsList
+				.get(position).getEventEndTime());
+
+		viewHolder.fragment_events_event_create_date_textView
+				.setText(eventsList.get(position).getEventCreateDate()
+						.split(" ")[0]);
+
+		convertView.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -129,9 +140,9 @@ public class EventsFragmentGridViewAdapter extends BaseAdapter {
 				goToNewEventActivity(eventsList.get(curPosition));
 			}
 		});
-
-		gridView.setOnTouchListener(new SwipeDimissTouchListener(gridView,
-				null, new SwipeDimissTouchListener.DismissCallbacks() {
+		convertView.setOnTouchListener(new SwipeDimissTouchListener(
+				convertView, null,
+				new SwipeDimissTouchListener.DismissCallbacks() {
 
 					@Override
 					public boolean canDismiss(Object token) {
@@ -142,8 +153,8 @@ public class EventsFragmentGridViewAdapter extends BaseAdapter {
 					@Override
 					public void onDismiss(View view, Object token) {
 						// TODO Auto-generated method stub
-						Toast.makeText(activity, "" + curPosition,
-								Toast.LENGTH_SHORT).show();
+						/*		Toast.makeText(activity, "" + curPosition,
+										Toast.LENGTH_SHORT).show();*/
 
 						deletedEvent = eventsList.remove(curPosition);
 
@@ -163,12 +174,12 @@ public class EventsFragmentGridViewAdapter extends BaseAdapter {
 									@Override
 									public void onClick(View v) {
 										// TODO Auto-generated method stub
-										Toast.makeText(context, "Clicked",
-												Toast.LENGTH_SHORT).show();
+										/*		Toast.makeText(context, "Clicked",
+														Toast.LENGTH_SHORT).show();
 
-										Toast.makeText(context,
-												"curPosition: " + curPosition,
-												Toast.LENGTH_SHORT).show();
+												Toast.makeText(context,
+														"curPosition: " + curPosition,
+														Toast.LENGTH_SHORT).show();*/
 
 										eventsList.add(curPosition,
 												deletedEvent);
@@ -216,7 +227,7 @@ public class EventsFragmentGridViewAdapter extends BaseAdapter {
 
 				}));
 
-		return gridView;
+		return convertView;
 
 	}
 
@@ -254,6 +265,17 @@ public class EventsFragmentGridViewAdapter extends BaseAdapter {
 		activity.startActivity(intent);
 
 		// finish();
+	}
+
+	private class ViewHolder {
+
+		TextView fragment_events_event_name_textView;
+		TextView fragment_events_event_content_textView;
+
+		TextView fragment_events_event_start_time_textView;
+		TextView fragment_events_event_end_time_textView;
+
+		TextView fragment_events_event_create_date_textView;
 	}
 
 }
