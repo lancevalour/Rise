@@ -3,7 +3,6 @@ package yicheng.android.app.rise.adapter;
 import java.util.List;
 
 import yicheng.android.ui.materialdesignlibrary.widgets.SnackBar;
-
 import yicheng.android.app.rise.R;
 import yicheng.android.app.rise.activity.NavigationDrawerActivity;
 import yicheng.android.app.rise.activity.NewEventActivity;
@@ -11,6 +10,7 @@ import yicheng.android.app.rise.database.RiseEvent;
 import yicheng.android.app.rise.fragment.EventsFragment;
 import yicheng.android.app.rise.fragment.PlacesFragment;
 import yicheng.android.app.rise.receiver.EventAlarmReceiver;
+import yicheng.android.app.rise.receiver.EventIntervalAlarmReceiver;
 import yicheng.android.app.rise.ui.utility.SwipeDimissTouchListener;
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -102,6 +102,9 @@ public class EventsFragmentGridViewAdapter extends BaseAdapter {
 			viewHolder.fragment_events_event_end_time_textView = (TextView) convertView
 					.findViewById(R.id.fragment_events_event_end_time_textView);
 
+			viewHolder.fragment_events_event_hyphen_textView = (TextView) convertView
+					.findViewById(R.id.fragment_events_event_hyphen_textView);
+
 			viewHolder.fragment_events_event_create_date_textView = (TextView) convertView
 					.findViewById(R.id.fragment_events_event_create_date_textView);
 
@@ -126,6 +129,49 @@ public class EventsFragmentGridViewAdapter extends BaseAdapter {
 		viewHolder.fragment_events_event_create_date_textView
 				.setText(eventsList.get(position).getEventCreateDate()
 						.split(" ")[0]);
+
+		if (eventsList.get(position).getIsNotificationOn().equals("true")) {
+			viewHolder.fragment_events_event_content_textView
+					.setTextColor(activity.getResources().getColor(
+							R.color.color_subheader));
+			viewHolder.fragment_events_event_name_textView
+					.setTextColor(activity.getResources().getColor(
+							R.color.color_subheader));
+			viewHolder.fragment_events_event_start_time_textView
+					.setTextColor(activity.getResources().getColor(
+							R.color.color_subheader));
+			viewHolder.fragment_events_event_end_time_textView
+					.setTextColor(activity.getResources().getColor(
+							R.color.color_subheader));
+			viewHolder.fragment_events_event_hyphen_textView
+					.setTextColor(activity.getResources().getColor(
+							R.color.color_subheader));
+			viewHolder.fragment_events_event_create_date_textView
+					.setTextColor(activity.getResources().getColor(
+							R.color.color_subheader));
+
+		}
+		else {
+			viewHolder.fragment_events_event_content_textView
+					.setTextColor(activity.getResources().getColor(
+							R.color.text_disabled_dark));
+			viewHolder.fragment_events_event_name_textView
+					.setTextColor(activity.getResources().getColor(
+							R.color.text_disabled_dark));
+			viewHolder.fragment_events_event_start_time_textView
+					.setTextColor(activity.getResources().getColor(
+							R.color.text_disabled_dark));
+			viewHolder.fragment_events_event_end_time_textView
+					.setTextColor(activity.getResources().getColor(
+							R.color.text_disabled_dark));
+			viewHolder.fragment_events_event_hyphen_textView
+					.setTextColor(activity.getResources().getColor(
+							R.color.text_disabled_dark));
+			viewHolder.fragment_events_event_create_date_textView
+					.setTextColor(activity.getResources().getColor(
+							R.color.text_disabled_dark));
+
+		}
 
 		convertView.setOnClickListener(new View.OnClickListener() {
 
@@ -245,6 +291,15 @@ public class EventsFragmentGridViewAdapter extends BaseAdapter {
 		AlarmManager alarmManager = (AlarmManager) activity
 				.getSystemService(Context.ALARM_SERVICE);
 
+		Intent intervalAlarmIntent = new Intent(context,
+				EventIntervalAlarmReceiver.class);
+
+		PendingIntent intervalPendingIntent = PendingIntent.getBroadcast(
+				context, (eventID + 1) * 100000, intervalAlarmIntent,
+				PendingIntent.FLAG_UPDATE_CURRENT);
+
+		alarmManager.cancel(intervalPendingIntent);
+
 		alarmManager.cancel(pendingIntent);
 
 	}
@@ -274,6 +329,8 @@ public class EventsFragmentGridViewAdapter extends BaseAdapter {
 
 		TextView fragment_events_event_start_time_textView;
 		TextView fragment_events_event_end_time_textView;
+
+		TextView fragment_events_event_hyphen_textView;
 
 		TextView fragment_events_event_create_date_textView;
 	}

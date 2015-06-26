@@ -14,7 +14,7 @@
         android:fontFamily="sans-serif-medium"
         android:text="Title"
         android:textColor="@color/color_subheader"
-        android:textSize="22sp" />
+        android:textSize="24sp" />
 
     <TextView
         android:id="@+id/fragment_places_place_address_textView"
@@ -24,7 +24,8 @@
         android:layout_marginTop="5dp"
         android:fontFamily="sans-serif-medium"
         android:text="address"
-        android:textColor="@color/color_subheader" />
+        android:textColor="@color/color_subheader"
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/fragment_places_place_label_textView"
@@ -36,6 +37,6 @@
         android:fontFamily="sans-serif"
         android:text="W"
         android:textColor="@color/theme_primary_dark"
-        android:textSize="12sp" />
+        android:textSize="14sp" />
 
 </RelativeLayout>

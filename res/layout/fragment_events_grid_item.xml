@@ -12,6 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
+        android:text="Event Title"
         android:textColor="@color/color_subheader"
         android:textSize="22sp" />
 
@@ -27,6 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-medium"
+            android:text="10:00"
             android:textColor="@color/color_subheader"
             android:textSize="18sp" />
 
@@ -46,6 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/fragment_events_event_hyphen_textView"
             android:fontFamily="sans-serif-medium"
+            android:text="11:00"
             android:textColor="@color/color_subheader"
             android:textSize="18sp" />
     </RelativeLayout>
@@ -57,6 +60,7 @@
         android:layout_below="@id/fragment_events_event_time_layout"
         android:layout_marginTop="5dp"
         android:fontFamily="sans-serif-medium"
+        android:text="Event Contentf asf sfsdf adasfsadf saf saf s adsfasd fasfas saf asfasdf asdf asfas fsa"
         android:textColor="@color/color_subheader" />
 
     <TextView
@@ -67,6 +71,7 @@
         android:layout_below="@id/fragment_events_event_content_textView"
         android:layout_marginTop="5dp"
         android:fontFamily="sans-serif"
+        android:text="2014/06/30"
         android:textColor="@color/color_subheader"
         android:textSize="12sp" />
 

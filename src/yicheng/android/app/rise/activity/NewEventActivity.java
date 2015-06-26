@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import yicheng.android.ui.materialdesignlibrary.views.Slider;
 import yicheng.android.ui.materialdesignlibrary.views.Slider.OnValueChangedListener;
@@ -15,6 +16,7 @@ import yicheng.android.app.rise.database.RisePlace;
 import yicheng.android.app.rise.database.SQLiteHelper;
 import yicheng.android.app.rise.fragment.TimePickerDialogFragment;
 import yicheng.android.app.rise.receiver.EventAlarmReceiver;
+import yicheng.android.app.rise.receiver.EventIntervalAlarmReceiver;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -185,7 +187,7 @@ public class NewEventActivity extends ActionBarActivity {
 
 		activity_new_event_event_location_add_button = (ImageButton) findViewById(R.id.activity_new_event_event_location_add_button);
 		activity_new_event_event_location_add_button.setVisibility(View.GONE);
-		
+
 		activity_new_event_event_name_clear_button = (ImageButton) findViewById(R.id.activity_new_event_event_name_clear_button);
 		activity_new_event_event_content_clear_button = (ImageButton) findViewById(R.id.activity_new_event_event_content_clear_button);
 		activity_new_event_event_name_clear_button.setAlpha(0.0f);
@@ -834,6 +836,31 @@ public class NewEventActivity extends ActionBarActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	long gapInMins;
+
+	private boolean isEndTimeAfterStartTime() {
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.HOUR_OF_DAY,
+				Integer.valueOf(eventStartTime.split(":")[0]));
+		cal.set(Calendar.MINUTE, Integer.valueOf(eventStartTime.split(":")[1]));
+
+		Date startDate = cal.getTime();
+
+		cal.set(Calendar.HOUR_OF_DAY,
+				Integer.valueOf(eventEndTime.split(":")[0]));
+		cal.set(Calendar.MINUTE, Integer.valueOf(eventEndTime.split(":")[1]));
+		Date endDate = cal.getTime();
+
+		long diffInMs = endDate.getTime() - startDate.getTime();
+
+		gapInMins = TimeUnit.MILLISECONDS.toMinutes(diffInMs);
+		return endDate.after(startDate);
+	}
+
+	private boolean isTimeIntervalValid() {
+		return Long.parseLong(eventCycleInterval) < gapInMins;
+	}
+
 	private void addNewEvent() {
 		this.eventName = activity_new_event_event_name_editText.getText()
 				.toString().trim();
@@ -874,14 +901,30 @@ public class NewEventActivity extends ActionBarActivity {
 				|| this.isEventFinished == null
 				|| this.isNotificationOn == null
 				|| this.eventLocationList == null) {
-			Toast.makeText(getBaseContext(), "One of the event info is empty!",
+
+			Toast.makeText(getBaseContext(), "One of the event info is empty.",
 					Toast.LENGTH_SHORT).show();
 		}
 		else {
-			addNewEventInDatabase();
 
-			startAlarm(isUpdatingEvent);
-			finish();
+			if (isEndTimeAfterStartTime()) {
+				if (isTimeIntervalValid()) {
+					addNewEventInDatabase();
+
+					startAlarm(isUpdatingEvent);
+					finish();
+				}
+				else {
+					Toast.makeText(getBaseContext(),
+							"Please set time interval within range.",
+							Toast.LENGTH_SHORT).show();
+				}
+			}
+			else {
+				Toast.makeText(getBaseContext(),
+						"End time should be after start time.",
+						Toast.LENGTH_SHORT).show();
+			}
 		}
 
 	}
@@ -910,6 +953,7 @@ public class NewEventActivity extends ActionBarActivity {
 
 	private AlarmManager alarmManager;
 	PendingIntent pendingIntent;
+	PendingIntent intervalPendingIntent;
 
 	public void startAlarm(boolean isUpdatingEvent) {
 
@@ -921,9 +965,13 @@ public class NewEventActivity extends ActionBarActivity {
 
 			Intent alarmIntent = new Intent(this, EventAlarmReceiver.class);
 
+			alarmIntent.putExtra("event_name", this.eventName);
 			alarmIntent.putExtra("event_content", this.eventContent);
 			alarmIntent.putExtra("event_id", eventID);
 			alarmIntent.putExtra("event_location_list", this.eventLocationList);
+			alarmIntent.putExtra("event_interval", this.eventCycleInterval);
+			alarmIntent.putExtra("event_end_time", this.eventEndTime);
+			alarmIntent.putExtra("event_start_time", this.eventStartTime);
 
 			pendingIntent = PendingIntent.getBroadcast(this, eventID,
 					alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -948,7 +996,7 @@ public class NewEventActivity extends ActionBarActivity {
 			// 20 minutes.
 
 			alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
-					calendar.getTimeInMillis(), (long) 1000 * 60 * 60 * 24,
+					calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY,
 					pendingIntent);
 
 			Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
@@ -961,33 +1009,21 @@ public class NewEventActivity extends ActionBarActivity {
 
 			Intent alarmIntent = new Intent(this, EventAlarmReceiver.class);
 
-			/*alarmIntent.putExtra("event_content", this.eventContent);
-			alarmIntent.putExtra("event_id", eventID);*/
-
 			pendingIntent = PendingIntent.getBroadcast(this, eventID,
 					alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 			alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
-			/*	alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
-						System.currentTimeMillis(), interval, pendingIntent);*/
-
-			/*	String[] startTime = eventStartTime.split(":");
-
-				Calendar calendar = Calendar.getInstance();
-				calendar.setTimeInMillis(System.currentTimeMillis());
-				calendar.set(Calendar.HOUR_OF_DAY, Integer.valueOf(startTime[0]));
-				calendar.set(Calendar.MINUTE, Integer.valueOf(startTime[1]));*/
-
-			// setRepeating() lets you specify a precise custom interval--in
-			// this
-			// case,
-			// 20 minutes.
 			alarmManager.cancel(pendingIntent);
 
-			/*	alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
-						calendar.getTimeInMillis(), (long) 1000 * 60 * 1,
-						pendingIntent);*/
+			Intent intervalAlarmIntent = new Intent(this,
+					EventIntervalAlarmReceiver.class);
+
+			intervalPendingIntent = PendingIntent.getBroadcast(this,
+					(eventID + 1) * 100000, intervalAlarmIntent,
+					PendingIntent.FLAG_UPDATE_CURRENT);
+
+			alarmManager.cancel(intervalPendingIntent);
 
 			Toast.makeText(this, "Alarm Canceled", Toast.LENGTH_SHORT).show();
 		}

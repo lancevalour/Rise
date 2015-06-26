@@ -2697,11 +2697,15 @@ containing a value of this type.
 
 
 
+
+
     
          */
         public static final int activity_horizontal_margin=0x7f06004d;
         public static final int activity_vertical_margin=0x7f06004e;
         public static final int body=0x7f060052;
+        public static final int card_bottom_margin=0x7f060056;
+        public static final int card_radius=0x7f060057;
         /**  The platform's desired fixed height for a dialog along the major axis
          (the screen is in portrait). This may be either a fraction or a dimension.
  The platform's desired fixed height for a dialog along the major axis
@@ -2767,11 +2771,13 @@ containing a value of this type.
 
 
 
+
+
     
          */
         public static final int navigation_drawer_width=0x7f06004f;
         public static final int subheader=0x7f060051;
-        public static final int toolbar_padding_bottom=0x7f060056;
+        public static final int toolbar_padding_bottom=0x7f060058;
         public static final int toolbar_padding_top=0x7f060050;
     }
     public static final class drawable {
@@ -2895,24 +2901,25 @@ containing a value of this type.
         public static final int ic_action_events=0x7f020075;
         public static final int ic_action_navigation_arrow_back=0x7f020076;
         public static final int ic_action_navigation_menu=0x7f020077;
-        public static final int ic_action_place=0x7f020078;
-        public static final int ic_action_places=0x7f020079;
-        public static final int ic_action_remove=0x7f02007a;
-        public static final int ic_action_search=0x7f02007b;
-        public static final int ic_action_search_dark=0x7f02007c;
-        public static final int ic_drawer=0x7f02007d;
-        public static final int ic_launcher=0x7f02007e;
-        public static final int ic_plusone_medium_off_client=0x7f02007f;
-        public static final int ic_plusone_small_off_client=0x7f020080;
-        public static final int ic_plusone_standard_off_client=0x7f020081;
-        public static final int ic_plusone_tall_off_client=0x7f020082;
-        public static final int ic_reloj_max=0x7f020083;
-        public static final int list_item_background=0x7f020084;
-        public static final int powered_by_google_dark=0x7f020085;
-        public static final int powered_by_google_light=0x7f020086;
-        public static final int shadow_down=0x7f020087;
-        public static final int shadow_right=0x7f020088;
-        public static final int sprite_check=0x7f020089;
+        public static final int ic_action_notification_event=0x7f020078;
+        public static final int ic_action_place=0x7f020079;
+        public static final int ic_action_places=0x7f02007a;
+        public static final int ic_action_remove=0x7f02007b;
+        public static final int ic_action_search=0x7f02007c;
+        public static final int ic_action_search_dark=0x7f02007d;
+        public static final int ic_drawer=0x7f02007e;
+        public static final int ic_launcher=0x7f02007f;
+        public static final int ic_plusone_medium_off_client=0x7f020080;
+        public static final int ic_plusone_small_off_client=0x7f020081;
+        public static final int ic_plusone_standard_off_client=0x7f020082;
+        public static final int ic_plusone_tall_off_client=0x7f020083;
+        public static final int ic_reloj_max=0x7f020084;
+        public static final int list_item_background=0x7f020085;
+        public static final int powered_by_google_dark=0x7f020086;
+        public static final int powered_by_google_light=0x7f020087;
+        public static final int shadow_down=0x7f020088;
+        public static final int shadow_right=0x7f020089;
+        public static final int sprite_check=0x7f02008a;
     }
     public static final class id {
         public static final int action_bar=0x7f07005e;
