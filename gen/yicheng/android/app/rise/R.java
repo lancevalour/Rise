@@ -2773,6 +2773,7 @@ containing a value of this type.
 
 
 
+
     
          */
         public static final int navigation_drawer_width=0x7f06004f;
